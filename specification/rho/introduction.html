@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+</style>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Rho Languague Specification</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+        <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="../index.html">
+                        Rho Language
+                    </a>
+                </li>
+                <li>
+                    <a href="../rho/introduction.html">Introduction</a>
+                </li>
+                <li>
+                    <a href="../rho/getting_started.html">Getting Started</a>
+                </li>
+                <li>
+                    <a href="../examples/example1.html">Tutorial: Something</a>
+                </li>
+                <li>
+                    <a href="../rho/syntax_semantics.html">Syntax and Semantics</a>
+                </li>
+                <li>
+                    <a href="#">More</a>
+                </li>
+                <li>
+                    <a href="#">Glossary</a>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <h1>Introduction</h1>
+                This is a prelemary specification for a new programming language <em>Rho</em>. At a simple introduction here
+                is a table of all the keywords in the langauge, int and float might be removed:
+
+                <br>
+                <br>
+                <div style="">
+                <table style="width: 100%;
+                              align-content: center;
+                              text-align: center">
+                    <tr style="text-align: center">
+                        Keywords
+                    </tr>
+                    <tr>
+                        <td>if</td>
+                        <td>for</td>
+                        <td>else</td>
+                        <td>loop</td>
+                        <td>class</td>
+                        <td>struct</td>
+                        <td>import</td>
+                    </tr>
+                    <tr>
+                        <td>using</td>
+                        <td>namespace</td>
+                        <td>return</td>
+                        <td>switch</td>
+                        <td>defer</td>
+                        <td>workspace</td>
+                        <td>new</td>
+                    </tr>
+                    <tr>
+                        <td>int</td>
+                        <td>i8</td>
+                        <td>i16</td>
+                        <td>i32</td>
+                        <td>i64</td>
+                        <td>uint</td>
+                        <td>u8</td>
+                    </tr>
+                    <tr>
+                        <td>u16</td>
+                        <td>u32</td>
+                        <td>u64</td>
+                        <td>float</td>
+                        <td>f32</td>
+                        <td>f64</td>
+                        <td>ufloat</td>
+                   </tr>
+                    <tr>
+                        <td>uf32</td>
+                        <td>uf64</td>
+                        <td>char</td>
+                        <td>wchar</td>
+                        <td>true</td>
+                        <td>false</td>
+                        <td>bool</td>
+                   </tr>
+                    <tr>
+                        <td>module</td>
+                        <td>byte</td>
+                        <td>asm</td>
+                        <td>nil</td>
+                        <td>enum</td>
+                        <td>string</td>
+                        <td>union</td>
+                   </tr>
+                </table>
+                </div>
+
+            </div id="page-content-wrapper">
+        </div class="container-fluid">
+        </div>
+   <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+ 
+</body>
+
+</html>

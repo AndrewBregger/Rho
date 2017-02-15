@@ -1,0 +1,151 @@
+# This file is the Backus Naur Form specification for the language Rho.
+# This specification is preliminary and subject to change.
+# Format Definitions:
+#     prod : production with the name of "prod"
+#     [name] : optional production
+#     [1..12] : range operator, meaning 1 to 12
+#         [a..zA..Z] : multiple range definition a - z and A - Z
+#     := : is defining the terminals or meaning of a production
+#     # : comment
+#     eps : epsilon, means empty
+#     "values" : string literal of values
+#     'c' : character literal of c
+#     | : or operator
+
+# A letter definition
+# this will be expanded to except unicode characters
+letter := [a..zA..Z]
+number := [0..9]
+octdigit := [0..7]
+hexdigit := [0..9a-fA-F]
+
+
+id := (letter  | '_') (letter | number | '_') 
+valid:
+    _a
+    num_ber
+    num2
+invalid:
+    _
+    123
+
+intliteral := declit | hexlit | hexlit
+
+declit := number [number]
+octlit := '0' [octdigit]
+hexlit := '0' [xX] hexdigit [hexdigit]
+
+floatintpoint := declit '.' (declit | eps)|
+            | declit [eE] [+-] declit 
+
+compilationunit := compilationheader program
+
+compilationheader := moduleNode importList 
+
+importList := importList import
+            | import
+
+import := 'import' id
+            | eps
+
+moduleNode := 'module' id
+            | eps
+
+program := declList
+
+declList := declList decl
+        | decl
+
+decl := vardecl ';'
+      | vardelcandasn ';'
+      | classdecl
+      | methodImpl
+      | structdecl
+      | funcdecl
+      | interdecl
+      | enumdecl
+
+vardecl := variable
+        | multiVarSameTypeDecl
+
+vardelcandasn := vardecl '=' initalizer 
+             | id ':=' initalizer
+
+multiVarSameTypeDecl := idList ':' type
+
+idList := idList ',' id
+        | id
+
+
+variable := id ':' type
+
+
+type := basictype | funtype | pointertype | optionaltype | arrayType
+
+basictype := primativetype | id
+
+
+primativetype := i8 | i16 | i32 | i64 | u8 | u16 | u32 | u64
+              | f32 | f64 | uf32 | uf64 | byte | char
+
+pointertype := '^' basictype
+
+optionaltype := '?' basictype
+
+arrayType
+
+stmt := OptExpr ';'
+    | stmtblock
+    | ifstmt
+    | whilestmt
+    | loopstmt
+    | forstmt
+    | returnstmt
+
+expr := assignExpr
+    | callExpr
+    | dereferencePointerExpr
+    | logicalExpr
+    | arithmeticExpr
+    | conditionalExpr
+    | lvalue
+
+dereferencePointerExpr := id '^'
+
+variableList := variableList variable ';'
+            | variable ';'
+
+fntype := '(' variableList ')' '->' returntype
+
+returntype := bindedReturns
+            | nonbindedReturns
+
+bindedReturns := bindedList
+
+bindedList := bindedList ',' bindedType
+            | bindedType
+
+bindedType := variable
+            | multiVarSameTypeDecl
+
+nonbindedReturns := nonbindedList
+
+nonbindedList := typeList
+
+typeList := typeList ',' type
+            | type
+
+
+
+fnproto := id :: fntype ';'
+
+fnprotolist := fnprotolist fnproto
+            | fnproto
+
+classdecl   := id '::' 'class' '{' variableList '}'
+
+structdecl  := id '::' 'struct' '{' variableList '}' 
+
+funcdecl    := id :: fntype stmtblock
+
+interdecl   := id :: 'inter' '{' fnprotolist '}'

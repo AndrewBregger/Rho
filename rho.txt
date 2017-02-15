@@ -1,0 +1,73 @@
+/*
+	this is the preliminary set up for new language rho
+	it will start with:
+	strings
+	numbers
+	expressions
+	arithmetic
+	objects
+	inheritance
+	functional operations: lamdas, immutable and mutable data
+	imbedded objects
+	imbedded functions
+	modular imports
+	generics
+	type inferencing or statically typed:
+		inference type:
+			value := 1;  type will be Int
+		static:
+			value: Int := 1; || value: Int = 1;
+	initial start point: i.e. a main function
+	option of using brackets of using indention
+
+	blocked comments will be inclosed in a slash+astride
+*/
+
+// this is also a single line comment
+
+import test; // import statement
+
+// this signifies a mutable function binding
+add := (_x: i32, _y: i32) -> i32 {
+	return _x + _y;
+}
+
+multiply :: (_x: i32, _y: i32) -> i32 {
+	return _x * _y;
+}
+
+// meaning, this is valid
+new_add := add;
+
+// this will give you an error
+new_multiply := multiply;
+
+main :: () {
+	alpha: string; // alpha is a string
+	boolean := true;
+	v1: Vector2 = {3.5, 3.,5.};
+	alpha = "this is a ¢∞string";
+	value: int = 16;
+	beta := 4;
+	arr_int : int[] = {1,2,3,4,5,6};
+	arr_float := {1.0, 2.0, 3.0, 4.0};
+	result := value / beta;
+  temp := multiply(value, beta);
+	/*
+		/*
+		this is a test of an embed block comment
+		*/
+	*/
+	if value % 2 == 0 {
+		println("Value is ™£oeven");
+	}
+	else {
+		println("Value is odd");
+	}
+	beta++;
+	tmp: string := alpha + ", this is string composition";
+	animal := Animal(3, "Dog", "Tom");
+	age := animal.getName();
+	println(alpha);
+	print(result);
+}

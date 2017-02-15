@@ -1,0 +1,27 @@
+module main;
+import test;
+import test2;
+
+#stop
+
+a: i16;
+b: i32;
+
+
+
+a: const byte = expr
+
+c := 5;
+
+foo :: (x: f32) -> f32 {
+    return x;
+}
+
+foo2 :: (x: f32, y: f32) -> f32, f32 {
+    return x, y;
+}
+
+foo3 :: (x: f32, y: f32) -> a: f32,b: f32 {
+    a = x;
+    b = y;
+}
