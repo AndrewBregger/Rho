@@ -2,18 +2,17 @@ module main;
 import test;
 import test2;
 
-#stop
-
 a: i16;
 b: i32;
 
+c: f8 :: 0.0;
+g := 'df';
 
-
-a: const byte = expr
+a: mut byte = expr
 
 c := 5;
 
-foo :: (x: f32) -> f32 {
+foo :: (x: &f32) -> f32 {
     return x;
 }
 

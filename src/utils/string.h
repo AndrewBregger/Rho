@@ -1,6 +1,8 @@
 #ifndef STRING_H_
 #define STRING_H_
 #include <string>
+#include <vector>
+#include <fstream>
 
 
 /// @breif A string implementation for the Rho compiler.
@@ -11,7 +13,12 @@ struct string {
   char* m_str;    ///< character array
   size_t m_size;  ///< size of the string content
   size_t m_cap;   ///< allocated size of the string
-  static size_t mpos = (size_t) -1;
+
+  char& operator[] (size_t _index) {
+  	return m_str[_index];
+  }
+  
+  static size_t mpos;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,14 +53,18 @@ char* to_str(const string& _str);
 /// @param _str string being search
 /// @param _start the starting point
 /// @param _end The end point.
-/// @return string containing sub=string.
-/// @note The memory is the same.
-string substr(const string& _str, size_t _start, size_t _end = string::mpos);
+/// @return string containing sub-string.
+/// @note Returns a copied data.
+string substr(const string& _str, size_t _start, size_t _end = str::string::mpos);
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @brief Creates a sub string from the inputted string.
-/// @note Returns a copied data.
-string substr_clone(const string& _str, size_t _start, size_t _end = string::mpos);
+/// @brief gets a substring.
+/// @param _str string being search
+/// @param _start the starting point
+/// @param _end The end point.
+/// @return string containing sub=string.
+/// @note The memory is the same.
+string substr_c(const string& _str, size_t _start, size_t _end = str::string::mpos);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @brief Concatinates Strings
@@ -75,6 +86,41 @@ void strncat(string& _l, const string& _r, size_t _len);
 /// @param _str String being copied.
 /// @return copied string.
 string clone(const string& _str);
+
+///////////////////////////////////////////////////////////////////////////////
+/// @brief Find a substring within _str
+/// @param _str String being copied.
+/// @return Index of where it starts
+size_t find(const string& _str, const string& _s);
+size_t find(const string& _str, const char* _s);
+size_t find(const string& _str, const std::string& _s);
+size_t find(const string& _str, char _ch);
+
+///////////////////////////////////////////////////////////////////////////////
+/// @brief Find a substring within _str
+/// @param _str String being copied.
+/// @return Index of where it starts
+size_t find_last(const string& _str, const string& _s);
+size_t find_last(const string& _str, const char* _s);
+size_t find_last(const string& _str, const std::string& _s);
+size_t find_last(const string& _str, char _ch);
+
+///////////////////////////////////////////////////////////////////////////////
+/// @brief Finds all substring within _str
+/// @param _str String being copied.
+/// @return all of the indexs
+std::vector<size_t> find_all(const string& _str, const string& _s);
+std::vector<size_t> find_all(const string& _str, const char* _s);
+std::vector<size_t> find_all(const string& _str, const std::string& _s);
+std::vector<size_t> find_all(const string& _str, char _ch);
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// @brief Output operator
+/// @param _out Output stream
+/// @param _str String being operated on.
+/// @return modified stream.
+std::ostream& operator<< (std::ostream& _out, const string& _str);
 
 }
 
