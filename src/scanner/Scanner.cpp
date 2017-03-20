@@ -230,11 +230,11 @@ namespace scanner {
 							next();
 						}
 						if(m_ch == '=') {
-							token = TKN_NEQ;
+							token = TKN_GEQ;
 							next();
 						}
 						else {
-							token = TKN_NOT;
+							token = TKN_GRET;
 						}
 					} break;
 					case '@': {
@@ -306,8 +306,8 @@ namespace scanner {
 		if(is_operator(token))
 			return new Token(token, Operator, diff(curr, m_loc));
 		else {
-			printf("Return Nullptr\n");
-			return nullptr;
+			printf("Token: %s\n", Token::get_str(token));
+			return new Token(TKN_ERROR, Special, diff(curr, m_loc));
 		}
 	}
 
@@ -339,14 +339,13 @@ namespace scanner {
 	void
 	Scanner::
 	next() {
-		if(m_index < m_end) {
+		if(m_index < m_end - 1) {
       if(m_source[m_index] == '\n') {
         m_loc.m_column = 0;
         ++m_loc.m_line;
       }
-      m_ch = m_source[m_index];
+      m_ch = m_source[++m_index];
       ++m_loc.m_column;
-      ++m_index;
     }
     else
       m_ch = -1;
@@ -356,9 +355,9 @@ namespace scanner {
 	Scanner::
 	scan_string() {
 		Token_Type token = TKN_LSTRING;
-		size_t start = m_index;
+		size_t start = m_index - 1;
 		while(m_ch != '"') {
-      if(m_ch == '\n' || m_ch == -1) {
+      if(m_ch == -1) {
       	report_error(m_loc, "String not ended before end of file");
       	token = TKN_ERROR;
         break;
@@ -366,7 +365,7 @@ namespace scanner {
       next();
     }
     next();
-    str::string lit = str::substr(m_source, start, m_index - 1);
+    str::string lit = str::substr(m_source, start, m_index);
     return new Token(token, Constant, diff(curr, m_loc), lit);
 	}
 
@@ -377,7 +376,7 @@ namespace scanner {
     while(is_number(m_ch)) {
       next();
     }
-    auto str = str::substr(m_source, _start, m_index - 1);
+    auto str = str::substr(m_source, _start, m_index);
     double d = strtod(str::to_str(str), NULL);
     str::dest_string(&str);
     return d;
@@ -390,7 +389,7 @@ namespace scanner {
     while(isxdigit(m_ch)) {
       next();
     }
-    auto str = str::substr(m_source, _start, m_index - 1);
+    auto str = str::substr(m_source, _start, m_index);
     std::stringstream ss;
     ss << std::hex << str::to_string(str);
     int t;
@@ -415,7 +414,7 @@ namespace scanner {
     while(is_number(m_ch)) {
         next();
     }
-    auto str = str::substr(m_source, _start, m_index - 1);
+    auto str = str::substr(m_source, _start, m_index);
     std::stringstream ss;
     ss << std::scientific << str::to_string(str);
     double t;
@@ -427,7 +426,7 @@ namespace scanner {
 	Token*
 	Scanner::
 	scan_number() {
-		size_t start = m_index - 1;
+		size_t start = m_index;
 	 	auto t = [](char _c) {
       return (is_number(_c) || _c == '.'
         || _c == 'E' || _c == 'e' || _c == 'x' || _c == 'X' ||
@@ -457,7 +456,7 @@ namespace scanner {
       }
       next();
     }
-    auto lit = str::substr(m_source, start, m_index - 1);
+    auto lit = str::substr(m_source, start, m_index);
 
     d = atoi(to_str(lit));
   	return new Token(token, Constant, diff(curr, m_loc), d);
@@ -494,23 +493,24 @@ namespace scanner {
 	scan_char() {
 		size_t start = m_index - 1;
 		next();
-		if(m_ch == '\'') {
-			auto lit = str::substr(m_source, start, m_index);
-			return new Token(TKN_LCHAR, Constant, diff(curr, m_loc), lit[1]);
+		while(m_ch == '\'') next();
+
+		if(m_index - start != 3) {
+			report_error(curr, "multi-character characters are not allowed");
+			return new Token(TKN_ERROR, Constant, diff(curr, m_loc)) ;
 		}
-		while(m_ch != '\'') next();
-		report_error(curr, "multi-character characters are not allowed");
-		return new Token(TKN_ERROR, Constant, diff(curr, m_loc)) ;
+		str::string lit = str::substr(m_source, start, m_index);
+		printf("Chacter Lit: %s\n", str::to_str(lit));
+		return new Token(TKN_LCHAR, Constant, diff(curr, m_loc), lit) ;
 	}
 
 	str::string
 	Scanner::
 	scan_id() {
-		size_t start = m_index - 1;
+		size_t start = m_index;
 		auto t = [](char _c) {return is_letter(_c) || is_number(_c);};
 		while(t(m_ch)) next();
-		printf("Start: %zu\n", start);
-		return str::substr(m_source, start, m_index - 1);
+		return str::substr(m_source, start, m_index);
 	}
 
 	void

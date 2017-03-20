@@ -24,7 +24,7 @@ namespace scanner {
 
 		private:
 			char m_ch{-1};
-			Location m_loc;
+			Location m_loc{1,1};
 			Location curr;
 			size_t m_index{0};
 			size_t m_end{0};

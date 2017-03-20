@@ -5,10 +5,12 @@ import test2;
 a: i16;
 b: i32;
 
-c: f8 :: 0.0;
-g := 'df';
+h := "Hello, World";
 
-a: mut byte = expr
+c: f32 :: 0.0;
+g := 'd';
+
+a: byte = expr;
 
 c := 5;
 

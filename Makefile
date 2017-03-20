@@ -1,4 +1,4 @@
-CXX=g++
+`CXX=g++
 CFLAGS=-pedantic -Wall -Werror -Wextra -I./src
 debug=0
 
@@ -12,7 +12,7 @@ ifeq ($(debug), 1)
 endif
 
 $(EXECUTABLE) : $(OBJECTS)
-	@echo "Linking"
+	@echo "Linking Compiler"
 	@$(CXX) $(CFLAGS) $(OBJECTS) -o $@
 
 .cpp.o: $(SOURCE)

@@ -7,6 +7,8 @@
 #include "utils/File.h"
 #include "utils/string.h"
 
+#include "parser/RhoContext.h"
+
 
 
 using str::string;
@@ -39,6 +41,9 @@ void print_token(Token* _token) {
     case TKN_LBOOL:
       cout << "(" << _token->get_boolean() << ")\n";
       break;
+    case TKN_ERROR:
+      cout << "Error" << endl;
+      break;
      /*
     case TKN_DIRECTIVE:
       cout << "(" << _token.m_values.directiveString << ")\n";
@@ -52,8 +57,13 @@ void print_token(Token* _token) {
 int main(int argc, const char** argv) {
 	if(argc < 2) {
 		cout << "Error: Usage ./rhoc {file}" << endl;
+    cout << *argv << endl;
 		return 1;
 	}
+
+  str::string test = str::new_string("module main;");
+  auto m = str::substr(test, 7, 11);
+  cout << m << endl;
 	str::string path = str::new_string(argv[1]);
 	sys::File* file = sys::File::read_file(path);
 	scanner::Scanner scanner(file);
