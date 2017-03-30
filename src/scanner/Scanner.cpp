@@ -50,8 +50,16 @@ namespace scanner {
 			else {
 				if(is_type(token))
 					return new Token(token, PrimativeType, diff(curr, m_loc));
-				else
+				else {
+					if(token == TKN_ELSE) {
+						Token* n = peak();
+						if(n->token() == TKN_IF) {
+							m_next = nullptr;
+							return new Token(TKN_ELIF, Keyword, diff(curr, n->location()));
+						}
+					}
 					return new Token(token, Keyword, diff(curr, m_loc));
+				}
 			}
 		}
 		else if(is_number(ch)) {
@@ -241,13 +249,11 @@ namespace scanner {
 	          token = TKN_AT;
 					} break;
 					case '#': {
-	          token = TKN_DIRECTIVE;
-						Token* t = scan();
-						if(t->token() != TKN_IDENTIFIER) {
-							// @todo(Andrew): error handling
-							token = TKN_ERROR;
-							// cache_current(t, l);
+						str::string lit = scan_id();
+						if(str::str_eq(lit, str::new_string("load"))) {
+							return new token::Token(TKN_LOAD, Directive, diff(curr, m_loc), lit);
 						}
+						return new token::Token(TKN_ERROR, Special, diff(curr, m_loc));
 					} break;
 					case '$': {
 	          token = TKN_DOLLAR;
@@ -500,7 +506,6 @@ namespace scanner {
 			return new Token(TKN_ERROR, Constant, diff(curr, m_loc)) ;
 		}
 		str::string lit = str::substr(m_source, start, m_index);
-		printf("Chacter Lit: %s\n", str::to_str(lit));
 		return new Token(TKN_LCHAR, Constant, diff(curr, m_loc), lit) ;
 	}
 

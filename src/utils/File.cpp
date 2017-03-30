@@ -1,4 +1,6 @@
 #include "File.h"
+#include <string>
+#include <cassert>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -12,6 +14,7 @@ namespace sys {
 		m_content = _content;	
 		m_path = _path;
 		m_mode = _mode;
+		SplitIntoLines();
 	}
 
 	const File::Content&
@@ -34,6 +37,29 @@ namespace sys {
 		}
 		else
 			return nullptr;
+	}
+
+	str::string
+	File::
+	GetLine(size_t _size) {
+		assert(_size >= 1);
+		return m_lineCache[_size - 1];
+	}
+
+	void
+	File::
+	SplitIntoLines() {
+		size_t start = 0;
+		for(size_t i = 0; i < m_content.m_size; ++i) {
+			if(m_content.m_content[i] == '\n') {
+				std::string temp;
+				for(size_t j = start; j <= i; ++j)
+					temp += m_content.m_content[j];
+
+				m_lineCache.push_back(str::new_string(temp.c_str()));
+				start = i + 1;
+			}
+		}	
 	}
 
 	void

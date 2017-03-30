@@ -5,18 +5,37 @@
 
 
 namespace type {
-  class Type {
-    public:
-      Type() = default;
-      virtual size_t size() = 0;
-    private:
-      size_t m_size;
+  enum TypeKind : int {
+    TypeBase = -1,
+    TypePrimative,
+    TypeFunction,
+    /*
+    TypeClass,
+    TypeStruct,
+    TypeEnum,
+    TypeUnion,
+    TypeMethod,
+
+    // Syntax hasn't been determined 
+    TypeGenericType,
+    TypeGenericFunction,
+    TypeGenericStruct,
+    TypeGenericClass,
+    */
   };
 
-  class PrimativeType : public Type {
+  class Type {
     public:
-      PrimativeType();
+      Type(size_t _size = 0, TypeKind _kind = TypeBase) {
+        m_size = _size;
+        m_kind = _kind;
+      }
+
+      virtual ~Type() = default;
+      size_t size() { return m_size; }
     private:
+      size_t m_size;  // size in bytes
+      TypeKind m_kind;
   };
 }
 

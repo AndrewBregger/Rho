@@ -85,10 +85,10 @@ namespace token {
 		{"u16",                              TKN_U16    } ,
 		{"u32",                              TKN_U32    } ,
 		{"u64",		                           TKN_U64    } ,
-		{"float",                            TKN_FLOAT     } ,
+		{"float",                            TKN_FLOAT32     } ,
 		{"f32",                              TKN_FLOAT32   } ,
 		{"f64",                              TKN_FLOAT64   } ,
-		{"ufloat",                           TKN_UFLOAT    } ,
+		{"ufloat",                           TKN_UFLOAT32    } ,
 		{"uf32",                             TKN_UFLOAT32  } ,
 		{"uf64",                             TKN_UFLOAT64  } ,
 		{"string",                           TKN_STRING    } ,
@@ -106,7 +106,7 @@ namespace token {
 
 	const std::map<Token_Type, const char*> token_str{
 	  {TKN_LDOUBLE     ,      "TKN_LDOUBLE"},
-	  {TKN_LINT        ,      "TKN_Li32"},
+	  {TKN_LINT        ,      "TKN_LINT"},
 	  {TKN_IDENTIFIER  ,      "TKN_IDENTIFIER"},
 	  {TKN_LCHAR       ,      "TKN_LCHAR"},
 	  {TKN_LSTRING     ,      "TKN_LSTRING"},

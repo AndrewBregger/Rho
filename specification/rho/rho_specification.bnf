@@ -51,7 +51,7 @@ import := 'import' id
 moduleNode := 'module' id
             | eps
 
-program := declList
+file := declList
 
 declList := declList decl
         | decl

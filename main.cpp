@@ -61,9 +61,6 @@ int main(int argc, const char** argv) {
 		return 1;
 	}
 
-  str::string test = str::new_string("module main;");
-  auto m = str::substr(test, 7, 11);
-  cout << m << endl;
 	str::string path = str::new_string(argv[1]);
 	sys::File* file = sys::File::read_file(path);
 	scanner::Scanner scanner(file);

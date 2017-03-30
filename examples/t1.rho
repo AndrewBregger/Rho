@@ -1,6 +1,5 @@
-module main;
-import test;
-import test2;
+#load "test.rho"
+#load "test2.rho"
 
 a: i16;
 b: i32;
@@ -14,11 +13,16 @@ a: byte = expr;
 
 c := 5;
 
-foo :: (x: &f32) -> f32 {
+foo :: (x: *f32) -> f32 {
+	if x == 1
+		return x - 1;
+	else if x == 2
+		return x - 5;
+	else
     return x;
 }
 
-foo2 :: (x: f32, y: f32) -> f32, f32 {
+foo2 :: (x: f32*, y: f32) -> f32, f32 {
     return x, y;
 }
 

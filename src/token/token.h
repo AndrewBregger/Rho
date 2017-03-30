@@ -114,6 +114,7 @@ namespace token {
 		TKN_UNION,
 		TKN_ENUM,
 		TKN_ASM,
+		TKN_LOAD,
 		end_keyword,
 
 		begin_types,
@@ -159,7 +160,8 @@ namespace token {
 		PrimativeType,
 		Constant,
 		Identifier,
-		Special
+		Special,
+		Directive
 	};
 
 	/// @brief Constant Values.
