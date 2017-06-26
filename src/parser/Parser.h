@@ -77,7 +77,7 @@ namespace parse {
 
 			ast::AstNode* parse_primary_expr();
 
-			ast::AstNode* parser_selector_expr();
+			ast::AstNode* parse_selector_expr();
 
 			ast::AstNode* parse_hash_directive();
 

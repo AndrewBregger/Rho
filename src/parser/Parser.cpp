@@ -303,7 +303,7 @@ namespace parse {
 	ast::AstNode*
 	Parser::
 	parse_selector_expr() {
-		
+		return nullptr;	
 	}
 
 	ast::AstNode*

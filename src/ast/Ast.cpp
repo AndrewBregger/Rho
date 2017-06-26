@@ -159,7 +159,7 @@ AstNode* ast_deref_expr(Token token, AstNode* expr) {
 
 AstNode* ast_selector_expr(Token token, AstNode* elems) {
   AstNode* node = ast_node(Ast_SelectorExpr);
-  node->SelectorExpr.begin = begin;
+  node->SelectorExpr.token = token;
   node->SelectorExpr.elems = elems;
   return node;
 }

@@ -30,8 +30,8 @@ namespace scanner {
 		m_ch = m_source[m_index];
 	}
 
-	Scanner::
-	~Scanner() {}
+	// Scanner::
+	// ~Scanner() {}
 	
 	Token
 	Scanner::
@@ -533,24 +533,24 @@ namespace scanner {
 		va_list l;
 		printf(_fmt, l);
 	}
-
-	ScannerState
-	Scanner::
-	save_state() {
-		ScannerState state;
-		state.m_index = m_index;
-		state.m_loc 	= m_loc;
-		state.m_next 	= m_next;
-		state.m_file 	= m_file;
-		return state;
-	}
-
-	void
-	Scanner::
-	restore_state(const ScannerState& _state) {
-		m_index = _state.m_index;
-		m_loc 	= _state.m_loc;
-		m_next 	= _state.m_next;
-		m_file 	= _state.m_file;
-	}
 }
+	// ScannerState
+	// Scanner::
+	// save_state() {
+	// 	ScannerState state;
+	// 	state.m_index = m_index;
+	// 	state.m_loc 	= m_loc;
+	// 	state.m_next 	= m_next;
+	// 	state.m_file 	= m_file;
+	// 	return state;
+	// }
+
+// 	void
+// 	Scanner::
+// 	restore_state(const ScannerState& _state) {
+// 		m_index = _state.m_index;
+// 		m_loc 	= _state.m_loc;
+// 		m_next 	= _state.m_next;
+// 		m_file 	= _state.m_file;
+// 	}
+// }
