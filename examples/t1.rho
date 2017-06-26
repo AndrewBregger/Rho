@@ -1,18 +1,44 @@
-#load "test.rho"
-#load "test2.rho"
+// conditional imports will be added later
+#load "fmt.rho"
+// renames the import identifer to t and only imports fun1 and fun2
+#load "test.rho": t {
+	fun1,
+	fun2
+}
+// gets everything from the file and puts it into this file scope.
+#load "test2.rho": *
 
-a: i16;
-b: i32;
 
-h := "Hello, World";
+/*
+// current thoughts on how to syntactically represent conditional imports
+#load "io_win.rho": io {read, write} if __PLATFORM__ == WIN32
 
-c: f32 :: 0.0;
-g := 'd';
+var a: i16;
+var b: i32;
 
-a: byte = expr;
+let a = 14;
+a :: (a: int, b: int) -> int {
 
-c := 5;
+}
 
+a :: struct {
+
+}
+
+a :: class {
+
+}
+
+var h = "Hello, World";
+
+let PI = 3.14159; // later this will be expanded to allow for constant expressions.
+var g = 'd';
+
+var a: byte = expr;
+
+var c = 5;
+
+/*
 foo :: (x: *f32) -> f32 {
 	if x == 1
 		return x - 1;
@@ -30,3 +56,47 @@ foo3 :: (x: f32, y: f32) -> a: f32,b: f32 {
     a = x;
     b = y;
 }
+
+TriangleMesh :: class {
+	vertices: [..]f32; // [..]Type is a dynamic array
+	normals: [..]f32;
+	indices: [..]u32;
+	vbo: u32;
+	vao: u32;
+	pub id: i32;
+}
+
+
+// a member function that modifies the reciever, *TriangleMesh.
+loadMesh :: *TriangleMesh (file: string) {
+
+}
+
+init_buffers :: *TriangleMesh () -> bool {
+
+}
+
+// a constant member function that doesnt modify the reciever.
+draw :: TriangleMesh () {
+
+}
+
+impl TriangleMesh {
+	loadMesh :: (file: string) {
+
+	}
+
+	init_buffers :: () -> bool {
+
+	}
+}
+
+Point :: struct {
+	x, y, z: f32;
+}
+
+Point :: struct {
+	x, y, z : f32 = 0;
+}
+*/
+*/
