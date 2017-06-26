@@ -5,7 +5,10 @@
 #include <sstream>
 #include <utility>
 
+#include <iostream>
 using namespace token;
+
+
 
 bool is_letter(char _ch) {
   return isalpha(_ch) || _ch == '_';
@@ -22,16 +25,20 @@ namespace scanner {
 		m_end = _file->content().m_size;
 		m_caching = _cache;
 		m_file = _file;
-		m_source = str::new_string(m_file->content().m_content);
+		m_next = token::Token(TKN_EMPTY, Special, m_loc);
+		m_source = std::string(m_file->buffer());
 		m_ch = m_source[m_index];
 	}
+
+	Scanner::
+	~Scanner() {}
 	
-	Token*
+	Token
 	Scanner::
 	scan() {
-		if(m_next) {
+		if(m_next.token() != TKN_EMPTY) {
 			auto temp = m_next;
-			m_next = nullptr;
+			m_next.m_tokenType = TKN_EMPTY;
 			return temp;
 		}
 		// ignore whitespace
@@ -40,25 +47,26 @@ namespace scanner {
 		curr = m_loc;
 		char ch = m_ch;
 		Token_Type token = token::TKN_ERROR;
-		if(ch == -1)
-			return new Token(token::TKN_EOF, Special, diff(curr, m_loc));
+		if(ch == -1) {
+			return Token(token::TKN_EOF, Special, diff(curr, m_loc));
+		}
 		if(is_letter(ch)) {
-			str::string lit = scan_id();
-			token = Token::get_enum(str::to_string(lit));
+			std::string lit = scan_id();
+			token = token::token_enum(lit.c_str());
 			if(token == token::TKN_ERROR)
-				return new Token(TKN_IDENTIFIER, Identifier, diff(curr, m_loc), lit);
+				return  Token(TKN_IDENTIFIER, Identifier, diff(curr, m_loc), lit.c_str());
 			else {
 				if(is_type(token))
-					return new Token(token, PrimativeType, diff(curr, m_loc));
+					return  Token(token, PrimativeType, diff(curr, m_loc));
 				else {
 					if(token == TKN_ELSE) {
-						Token* n = peak();
-						if(n->token() == TKN_IF) {
-							m_next = nullptr;
-							return new Token(TKN_ELIF, Keyword, diff(curr, n->location()));
+						Token n = peak();
+						if(n.token() == TKN_IF) {
+							m_next.m_tokenType = TKN_EMPTY;
+							return Token(TKN_ELIF, Keyword, diff(curr, n.location()));
 						}
 					}
-					return new Token(token, Keyword, diff(curr, m_loc));
+					return Token(token, Keyword, diff(curr, m_loc));
 				}
 			}
 		}
@@ -97,8 +105,7 @@ namespace scanner {
 							token = TKN_ELS;
 						}
 						else {
-              // @todo(Andrew): error handling
-							token 	= TKN_ERROR;
+							token = TKN_DPER;
 						}
 					}
 					else {
@@ -113,7 +120,7 @@ namespace scanner {
 					} break;
 					case ':': {
 						if(m_ch == ':') {
-							token = TKN_CDECL;
+							token = TKN_DCOL;
 							next();
 						}
 						else if(m_ch == '=') {
@@ -249,11 +256,7 @@ namespace scanner {
 	          token = TKN_AT;
 					} break;
 					case '#': {
-						str::string lit = scan_id();
-						if(str::str_eq(lit, str::new_string("load"))) {
-							return new token::Token(TKN_LOAD, Directive, diff(curr, m_loc), lit);
-						}
-						return new token::Token(TKN_ERROR, Special, diff(curr, m_loc));
+						token = TKN_HASH;
 					} break;
 					case '$': {
 	          token = TKN_DOLLAR;
@@ -306,21 +309,20 @@ namespace scanner {
 	          token = TKN_QEST;
 					} break;
 					default:
-						report_error(curr, "Invalid character '%c'", ch);
+						report_error(curr, "Invalid character '%c'\n", ch);
 			}
 		}
 		if(is_operator(token))
-			return new Token(token, Operator, diff(curr, m_loc));
+			return Token(token, Operator, diff(curr, m_loc));
 		else {
-			printf("Token: %s\n", Token::get_str(token));
-			return new Token(TKN_ERROR, Special, diff(curr, m_loc));
+			return Token(TKN_ERROR, Special, diff(curr, m_loc));
 		}
 	}
 
-	Token*
+	Token
 	Scanner::
 	peak() {
-		if(m_next){
+		if(m_next.token() != TKN_EMPTY){
 			return m_next;
 		}
 		else {
@@ -330,11 +332,11 @@ namespace scanner {
 	}
 
 	
-	const std::vector<Token*>&
-	Scanner::
-	get_comments() {
-		return m_comments;
-	}
+	// const std::vector<Token>&
+	// Scanner::
+	// get_comments() {
+	// 	return m_comments;
+	// }
 
 	char
 	Scanner::
@@ -357,22 +359,22 @@ namespace scanner {
       m_ch = -1;
 	}
 
-	Token*
+	Token
 	Scanner::
 	scan_string() {
 		Token_Type token = TKN_LSTRING;
 		size_t start = m_index - 1;
 		while(m_ch != '"') {
       if(m_ch == -1) {
-      	report_error(m_loc, "String not ended before end of file");
+      	report_error(m_loc, "String not ended before end of file\n");
       	token = TKN_ERROR;
         break;
       }
       next();
     }
     next();
-    str::string lit = str::substr(m_source, start, m_index);
-    return new Token(token, Constant, diff(curr, m_loc), lit);
+    auto lit = m_source.substr(start + 1, m_index - start - 2);
+    return  Token(token, Constant, diff(curr, m_loc), lit.c_str());
 	}
 
 	double
@@ -382,9 +384,8 @@ namespace scanner {
     while(is_number(m_ch)) {
       next();
     }
-    auto str = str::substr(m_source, _start, m_index);
-    double d = strtod(str::to_str(str), NULL);
-    str::dest_string(&str);
+    auto str = m_source.substr(_start, m_index - _start);
+    double d = strtod(str.c_str(), NULL);
     return d;
 	}
 
@@ -395,12 +396,11 @@ namespace scanner {
     while(isxdigit(m_ch)) {
       next();
     }
-    auto str = str::substr(m_source, _start, m_index);
+    auto str = m_source.substr(_start, m_index - _start);
     std::stringstream ss;
-    ss << std::hex << str::to_string(str);
+    ss << std::hex << str;
     int t;
     ss >> t;
-    str::dest_string(&str);
     return t;
 	}
 
@@ -420,16 +420,15 @@ namespace scanner {
     while(is_number(m_ch)) {
         next();
     }
-    auto str = str::substr(m_source, _start, m_index);
+    auto str = m_source.substr(_start, m_index - _start);
     std::stringstream ss;
-    ss << std::scientific << str::to_string(str);
+    ss << std::scientific << str;
     double t;
     ss >> t;
-    str::dest_string(&str);
     return t;
 	}
 
-	Token*
+	Token
 	Scanner::
 	scan_number() {
 		size_t start = m_index;
@@ -445,27 +444,27 @@ namespace scanner {
       if(m_ch == '.') {
         f = scan_double(start);
         token = TKN_LDOUBLE;
-		  	return new Token(token, Constant, diff(curr, m_loc), f);
+		  	return  Token(token, Constant, diff(curr, m_loc), f);
       }
       else if(m_ch == 'e'|| m_ch == 'E') {
         f = scan_scientific(start);
         token = TKN_LDOUBLE;
-		  	return new Token(token, Constant, diff(curr, m_loc), f);
+		  	return  Token(token, Constant, diff(curr, m_loc), f);
       }
       else if(m_ch == 'x' || m_ch == 'X') {
         d = scan_hex(start);
-	    	return new Token(token, Constant, diff(curr, m_loc), d);
+	    	return  Token(token, Constant, diff(curr, m_loc), d);
       }
       else if(m_ch == 'b' || m_ch == 'B') {
         d = scan_binary(start);
-	    	return new Token(token, Constant, diff(curr, m_loc), d);
+	    	return  Token(token, Constant, diff(curr, m_loc), d);
       }
       next();
     }
-    auto lit = str::substr(m_source, start, m_index);
+    auto lit = m_source.substr(start, m_index);
 
-    d = atoi(to_str(lit));
-  	return new Token(token, Constant, diff(curr, m_loc), d);
+    d = atoi(lit.c_str());
+  	return  Token(token, Constant, diff(curr, m_loc), d);
   }	
 
 	void
@@ -476,15 +475,18 @@ namespace scanner {
 		}
 		else if(m_ch == '*') {
 			next();
-			while(m_ch != -1) {
-				if(m_ch == '*') {
+			int comments = 1;
+			while(comments) {
+				if(m_ch == '/' && peak(1) == '*') {
 					next();
-					if(m_ch == '/')
-						break;
+					++comments;
+				}
+				if(m_ch == '*' && peak(1) == '/') {
+					next();
+					--comments;
 				}
 				next();
 			}
-			next();
 		}
 	}
 
@@ -494,7 +496,7 @@ namespace scanner {
 		while(isspace(m_ch)) next();
 	}
 
-	Token*
+	Token
 	Scanner::
 	scan_char() {
 		size_t start = m_index - 1;
@@ -502,33 +504,53 @@ namespace scanner {
 		while(m_ch == '\'') next();
 
 		if(m_index - start != 3) {
-			report_error(curr, "multi-character characters are not allowed");
-			return new Token(TKN_ERROR, Constant, diff(curr, m_loc)) ;
+			report_error(curr, "multi-character characters are not allowed\n");
+			return  Token(TKN_ERROR, Constant, diff(curr, m_loc)) ;
 		}
-		str::string lit = str::substr(m_source, start, m_index);
-		return new Token(TKN_LCHAR, Constant, diff(curr, m_loc), lit) ;
+		auto lit = m_source.substr(start, m_index - start);
+		return  Token(TKN_LCHAR, Constant, diff(curr, m_loc), lit.c_str()) ;
 	}
 
-	str::string
+	std::string
 	Scanner::
 	scan_id() {
 		size_t start = m_index;
 		auto t = [](char _c) {return is_letter(_c) || is_number(_c);};
 		while(t(m_ch)) next();
-		return str::substr(m_source, start, m_index);
+		return m_source.substr(start, m_index - start);
 	}
 
-	void
-	Scanner::
-	cache(Token* _token) {
-		m_comments.push_back(_token);
-	}
+	// void
+	// Scanner::
+	// cache(Token* _token) {
+	// 	m_comments.push_back(_token);
+	// }
 
 	void
 	Scanner::
 	report_error(const Location& _loc, const char* _fmt, ...) {
-		printf("Error: %s|%zu:%zu: ", m_file->GetPath(), _loc.m_line, _loc.m_column);
+		printf("Error: %s|%zu:%zu: ", m_file->GetPath().c_str(), _loc.m_line, _loc.m_column);
 		va_list l;
 		printf(_fmt, l);
+	}
+
+	ScannerState
+	Scanner::
+	save_state() {
+		ScannerState state;
+		state.m_index = m_index;
+		state.m_loc 	= m_loc;
+		state.m_next 	= m_next;
+		state.m_file 	= m_file;
+		return state;
+	}
+
+	void
+	Scanner::
+	restore_state(const ScannerState& _state) {
+		m_index = _state.m_index;
+		m_loc 	= _state.m_loc;
+		m_next 	= _state.m_next;
+		m_file 	= _state.m_file;
 	}
 }

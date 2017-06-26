@@ -45,11 +45,7 @@ compilationheader := moduleNode importList
 importList := importList import
             | import
 
-import := 'import' id
-            | eps
 
-moduleNode := 'module' id
-            | eps
 
 file := declList
 

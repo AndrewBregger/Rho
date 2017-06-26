@@ -5,16 +5,27 @@
 #include <sstream>
 #include <string>
 #include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
 
 namespace sys {
 	File* File::m_current = nullptr;
 	
 	File::
-	File(const str::string& _path, FileMode _mode, const Content& _content) {
+	File(const std::string& _path, FileMode _mode, const Content& _content, FileError _error) {
 		m_content = _content;	
 		m_path = _path;
 		m_mode = _mode;
+		if(_error != File_InvalidFile)
+			m_fullPath = File::FullPath(_path);
+		m_error = _error;
 		SplitIntoLines();
+	}
+
+	File::
+	~File() {
+		delete[] m_content.m_content;
 	}
 
 	const File::Content&
@@ -25,21 +36,42 @@ namespace sys {
 
 	File*
 	File::
-	read_file(const str::string& _path) {
-		const char* path = to_str(_path);
-		std::ifstream f(path);
-		if(f) {
-			std::string c;
-			std::stringstream ss;
-			ss << f.rdbuf();
-			c = ss.str();	
-			return new File(_path, Read, Content{strdup(c.c_str()), c.size()});
+	read_file(const std::string& _path) {
+		FILE* file = fopen(_path.c_str(), "r");
+		FileError err = File_None;
+		File* f;
+		if(file) {
+			fseek(file, 0, SEEK_END);
+			size_t size = ftell(file);
+			rewind(file);
+			char* buffer = new char[size];
+			size = fread(buffer, sizeof(char), size, file);
+			size_t index = _path.find_last_of(".");
+			std::string ext = _path.substr(index + 1);
+			if(size == 0)
+				err = File_Empty;
+			if(ext != "rho")
+				err = File_WrongExtension;
+			f = new File(_path, Read, Content{buffer, size}, err);
 		}
-		else
-			return nullptr;
+		else {
+
+			// check errors
+			switch(errno) {
+				case EACCES:
+					err = File_Permissions;
+					break;
+				case ENOENT:
+					err = File_InvalidFile;
+					break;
+			}
+			f = new File(_path, Read, Content{0,0}, err);
+		}
+		fclose(file);
+		return f;
 	}
 
-	str::string
+	std::string
 	File::
 	GetLine(size_t _size) {
 		assert(_size >= 1);
@@ -55,8 +87,7 @@ namespace sys {
 				std::string temp;
 				for(size_t j = start; j <= i; ++j)
 					temp += m_content.m_content[j];
-
-				m_lineCache.push_back(str::new_string(temp.c_str()));
+				m_lineCache.push_back(temp);
 				start = i + 1;
 			}
 		}	
@@ -66,5 +97,24 @@ namespace sys {
 	File::
 	SetFile(File* _file) {
 		m_current = _file;
+	}
+
+	std::string
+	File::
+	GetExtension() {
+		size_t index = m_path.find_last_of(".");
+		return m_path.substr(index + 1);
+	}
+
+	std::string
+	File::
+	FullPath(const std::string& _filename) {
+	#ifdef WIN32
+		#error Windows not implemented
+	#else
+		char str[1024];
+		realpath(_filename.c_str(), str);
+		 return std::string(str);
+	#endif
 	}
 }

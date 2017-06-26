@@ -9,6 +9,10 @@
 
 namespace str {
 
+struct string;
+
+bool str_eq(const string& _l, const string& _r);
+
 struct string {
   char* m_str;    ///< character array
   size_t m_size;  ///< size of the string content
@@ -17,6 +21,14 @@ struct string {
   char& operator[] (size_t _index) {
   	return m_str[_index];
   }
+
+  const char& operator[] (size_t _index) const {
+    return m_str[_index];
+  }
+
+  bool operator== (const str::string& _r) const {
+    return str::str_eq(*this, _r);
+  }
   
   static size_t mpos;
 };
@@ -24,9 +36,9 @@ struct string {
 ///////////////////////////////////////////////////////////////////////////////
 /// @brief String equality function
 /// @param _str Inputed c-string.
-string new_string(const char* _str);
+str::string new_string(const char* _str);
 
-void dest_string(string* _str);
+void dest_string(str::string* _str);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @brief String equality function
@@ -40,7 +52,7 @@ bool str_eq(const string& _l, const string& _r);
 /// @brief Convert string to std::string
 /// @param _str String being converted.
 /// @return std::string
-std::string to_string(const string& _str);
+std::string to_string(const str::string& _str);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @brief Converrt String to c-string.

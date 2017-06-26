@@ -9,6 +9,7 @@ namespace str
     string temp;
     temp.m_size = strlen(_str);
     temp.m_str = new char[temp.m_size];
+    temp.m_cap = temp.m_size;
     memcpy(temp.m_str, _str, temp.m_size);
     return temp;
   }
@@ -35,9 +36,8 @@ namespace str
   }
 
   char* to_str(const string &_str) {
-    char* data = _str.m_str;
     char* temp = new char[_str.m_size + 1];
-    memcpy(temp, data, _str.m_size);
+    memcpy(temp, _str.m_str, _str.m_size);
     temp[_str.m_size] = '\0';
     return temp;
   }
@@ -149,11 +149,13 @@ namespace str
 
   // }
   
-  // size_t find_last(const string& _str, char _ch) {
-  //   for(size_t i = _str.m_size; i <= 0; --i)
-  //     if(_str.m_str[i] == _ch)
-  //       return i;
-  // }
+  size_t find_last(const string& _str, char _ch) {
+    for(int i = _str.m_size; i >= 0; --i)
+      if(_str[i] == _ch) 
+        return i;
+
+    return str::string::mpos;
+  }
   
   // std::vector<size_t> find_all(const string& _str, const string& _s) {
   //   return std::vector<size_t>();
@@ -177,7 +179,9 @@ namespace str
 
 
   std::ostream& operator<< (std::ostream& _out, const string& _str) {
-    _out << _str.m_str;
+    char* temp = to_str(_str);
+    _out << temp;
+    delete[] temp;
     return _out;
   }
 }

@@ -1,6 +1,7 @@
 #include "Scope.h"
 #include "Parser.h"
 
+/*
 namespace parse {
 	SymbolTable::
 	SymbolTable(ast::AstNode* _node) {
@@ -25,7 +26,7 @@ namespace parse {
 
 	Scope::
 	Scope(parse::Parser* _parser, ScopeKind _kind, ast::AstNode* _node) {
-		m_parent = _parser->get_scope();
+		// m_parent = _parser->get_scope();
 		m_depth = m_parent->GetDepth() + 1;	
 		m_node = _node;
 		m_kind = _kind;
@@ -53,3 +54,4 @@ namespace parse {
 		return m_table->Find(_name);
 	}
 } // parse
+*/

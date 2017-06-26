@@ -3,6 +3,24 @@
 
 namespace ast {
 
+
+//--------------------------------- Helper Functions --------------------------
+bool ast_is_decl(AstNode* node) {
+  return Ast__BeginDecl < node->kind && node->kind < Ast__EndDecl;
+}
+
+bool ast_is_expr(AstNode* node) {
+  return Ast__BeginExpr < node->kind && node->kind < Ast__EndExpr;
+}
+
+bool ast_is_stmt(AstNode* node) {
+  return Ast__BeginStmt < node->kind && node->kind < Ast__EndStmt;
+}
+
+bool ast_is_type(AstNode* node) {
+  return Ast__BeginType < node->kind && node->kind < Ast__EndType;
+}
+//----------------------------------- Ast Creation -------------------------------
 AstFile* ast_file(sys::File* _file) {
   static size_t ast_file_index = 0;
   AstFile* file = new AstFile;
@@ -113,6 +131,47 @@ AstNode* ast_incdec_expr(Token op, AstNode* expr) {
 	node->IncDecExpr.expr = expr;
 	return node;
 }
+
+AstNode* ast_index_expr(Token begin, Token end, AstNode* index) {
+  AstNode* node = ast_node(Ast_IndexExpr);
+  node->IndexExpr.begin = begin;
+  node->IndexExpr.end = end;
+  node->IndexExpr.index = index;
+  return node;
+}
+
+AstNode* ast_slice_expr(Token begin, Token end, Token inclusion, AstNode* startExp, AstNode* endExp) {
+  AstNode* node = ast_node(Ast_SliceExpr);
+  node->SliceExpr.begin = begin;
+  node->SliceExpr.end = end;
+  node->SliceExpr.inclusion = inclusion;
+  node->SliceExpr.startExp = startExp;
+  node->SliceExpr.endExp = endExp;
+  return node;
+}
+
+AstNode* ast_deref_expr(Token token, AstNode* expr) {
+  AstNode* node = ast_node(Ast_DerefExpr);
+  node->DerefExpr.token = token;
+  node->DerefExpr.expr = expr;
+  return node;
+}
+
+AstNode* ast_selector_expr(Token token, AstNode* elems) {
+  AstNode* node = ast_node(Ast_SelectorExpr);
+  node->SelectorExpr.begin = begin;
+  node->SelectorExpr.elems = elems;
+  return node;
+}
+
+AstNode* ast_cast_expr(Token token, AstNode* type, AstNode* expr) {
+  AstNode* node = ast_node(Ast_CastExpr);
+  node->CastExpr.token = token;
+  node->CastExpr.type = type;
+  node->CastExpr.expr = expr;
+  return node;
+}
+
 AstNode* ast_bad_stmt() {
 	AstNode* node = ast_node(Ast_BadExpr);
 	return node;
@@ -210,15 +269,32 @@ AstNode* ast_import_spec(Token relPath, std::string fullPath, AstNode* name, con
   node->ImportSpec.importNames = importNames;
   return node;
 }
+
+AstNode* ast_field_spec(Token token, AstNode* name, AstNode* type) {
+  AstNode* node = ast_node(Ast_FieldSpec);
+  node->FieldSpec.token = token;
+  node->FieldSpec.name = name;
+  node->FieldSpec.name = type;
+  return node;
+}
+
 AstNode* ast_bad_type() {
   AstNode* node = ast_node(Ast_BadType);
   return node;
 }
+
 AstNode* ast_helper_type(AstNode* type) {
   AstNode* node = ast_node(Ast_HelperType);
   node->HelperType.type = type;
   return node;
 }
+
+AstNode* ast_primative_type(Token token) {
+  AstNode* node = ast_node(Ast_HelperType);
+  node->PrimativeType = token;
+  return node;
+}
+
 AstNode* ast_method_type(Token token, AstNode* name, const AstNodeList& params, const AstNodeList& returns) {
   AstNode* node = ast_node(Ast_MethodType);
   node->MethodType.token = token;

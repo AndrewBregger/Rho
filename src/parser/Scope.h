@@ -5,11 +5,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef SCOPE_H_
 #define SCOPE_H_
-#include "ast/AstNode.h"
-#include "ast/AstIdent.h"
-#include "ast/AstDecl.h"
 #include <map>
 
+/*
 namespace parse {
 	class Parser;
 
@@ -53,5 +51,5 @@ namespace parse {
 
 } // parse
 
-
+*/
 #endif // SCOPE_H_

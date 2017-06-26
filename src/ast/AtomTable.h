@@ -1,7 +1,10 @@
 #ifndef ATOM_TABLE_H_
 #define ATOM_TABLE_H_
+
 #include "Atom.h"
-#include <map>
+#include "utils/string.h"
+#include <functional>
+#include <unordered_map>
 
 using ast::Atom;
 
@@ -16,7 +19,7 @@ namespace ast {
 			size_t size();	
 
 		private:
-			std::map<std::string, Atom*> m_table;
+			std::unordered_map<std::string, Atom*> m_table;
 	};
 
 } // ast

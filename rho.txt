@@ -24,23 +24,26 @@
 */
 
 // this is also a single line comment
+#load "stdio.rho" {println, printf};
 
-import test; // import statement
-
-// this signifies a mutable function binding
-add := (_x: i32, _y: i32) -> i32 {
-	return _x + _y;
+Animal :: class {
+	age: u32;
+	bread: string;
+	name: string;
 }
 
+getName :: Animal () -> string {
+	return t
+}
+
+// this signifies a mutable function binding
+add :: (_x: i32, _y: i32) -> i32 {
+	return _x + _y;
+}
+ 
 multiply :: (_x: i32, _y: i32) -> i32 {
 	return _x * _y;
 }
-
-// meaning, this is valid
-new_add := add;
-
-// this will give you an error
-new_multiply := multiply;
 
 main :: () {
 	alpha: string; // alpha is a string

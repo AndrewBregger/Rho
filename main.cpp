@@ -7,66 +7,79 @@
 #include "utils/File.h"
 #include "utils/string.h"
 
+#include "parser/Parser.h"
 #include "parser/RhoContext.h"
 
+bool debug = false;
 
+#include <unistd.h>
 
 using str::string;
 using namespace std;
 using namespace token;
 
-void print_token(Token* _token) {
+void print_token(const Token& _token) {
  	printf("\t");
-  if(_token->token() == TKN_ERROR)
+  if(_token.token() == TKN_ERROR)
     return;
-  auto loc = _token->location();
-  printf("%-8s\tat %3zu|%3zu  -%3zu ", Token::get_str(_token->token()), 
+  auto loc = _token.location();
+  printf("%-8s\tat %3zu|%3zu  -%3zu ", token_string(_token.token()).c_str(), 
     loc.m_line, loc.m_column, loc.m_ecolumn);
-  switch(_token->token()) {
+  switch(_token.token()) {
     case TKN_LSTRING:
-      printf("(%s)\n", to_str(_token->get_string()));
+      printf("(%s)\n", _token.get_string());
       break;
     case TKN_LINT:
-      printf("(%d)\n", _token->get_int());
+      printf("(%d)\n", _token.get_int());
       break;
     case TKN_LCHAR:
-      printf("(%c)\n", _token->get_char());
+      printf("(%c)\n", _token.get_char());
       break;
     case TKN_LDOUBLE:
-      printf("(%lf)\n", _token->get_float());
+      printf("(%lf)\n", _token.get_float());
       break;
     case TKN_IDENTIFIER:
-      printf("(%s)\n", to_str(_token->get_string()));
+      printf("(%s)\n", _token.get_string());
       break;
     case TKN_LBOOL:
-      cout << "(" << _token->get_boolean() << ")\n";
+      cout << "(" << _token.get_boolean() << ")\n";
       break;
     case TKN_ERROR:
       cout << "Error" << endl;
       break;
-     /*
-    case TKN_DIRECTIVE:
-      cout << "(" << _token.m_values.directiveString << ")\n";
-      break;
-      */
     default:
       putchar('\n');
   }
 }
 
-int main(int argc, const char** argv) {
-	if(argc < 2) {
-		cout << "Error: Usage ./rhoc {file}" << endl;
-    cout << *argv << endl;
-		return 1;
-	}
+int main(int argc, char* const* argv) {
 
-	str::string path = str::new_string(argv[1]);
-	sys::File* file = sys::File::read_file(path);
-	scanner::Scanner scanner(file);
-	Token* t;
-	while( (t = scanner.scan())->token() != TKN_EOF) {
-		print_token(t);
-	}
+  std::string fileName;
+
+  int c;
+  while((c = getopt(argc, argv, "f:d")) != -1) {
+    switch(c) {
+      case 'f':
+        fileName = std::string(optarg);
+        break;
+      case 'd':
+        debug = true;
+
+    }
+  }
+
+  std::cout << fileName << std::endl;
+	sys::File* file = sys::File::read_file(fileName);
+
+  // scanner::Scanner scanner(file);
+  // Token t;
+  // while((t = scanner.scan()).token() != TKN_EOF) {
+  //   print_token(t);
+  // }
+
+  parse::Parser parser(file);
+  parser.parse_files();
+	// ast::AstFile* ast = parser.parse_file();
+  // ast->print(0);
 	return 0;
 }

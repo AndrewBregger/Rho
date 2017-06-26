@@ -1,6 +1,6 @@
-`CXX=g++
-CFLAGS=-pedantic -Wall -Werror -Wextra -I./src
-debug=0
+CXX=g++
+CFLAGS=-pedantic -Wall -Werror -I./src
+debug=1
 
 SOURCE = $(shell find . -path "*.cpp")
 OBJECTS = $(SOURCE:.cpp=.o)
@@ -21,5 +21,6 @@ $(EXECUTABLE) : $(OBJECTS)
 
 
 clean:
-	rm $(OBJECTS)
-	rm $(EXECUTABLE)
+	@echo "Cleaning Objects and" $(EXECUTABLE)
+	@rm $(OBJECTS)
+	@rm $(EXECUTABLE)
