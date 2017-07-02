@@ -18,7 +18,6 @@ extern bool debug;
 
 // macros for getting the  token
 
-
 namespace parse {
 
 
@@ -62,9 +61,9 @@ namespace parse {
 
 		m_ast->m_currToken = m_ast->m_tokens[m_ast->m_tokenIndex];
 
-		for(Token& t : m_ast->m_tokens) {
-			t.print();
-		}
+		// for(Token& t : m_ast->m_tokens) {
+		// 	t.print();
+		// }
 		return err;
 	}
 
@@ -118,7 +117,8 @@ namespace parse {
 	next_token() {
 		if(++m_ast->m_tokenIndex >= m_ast->m_tokens.size()) {
 			// report error
-			std::cout << "Shouldnt happend\n";
+			// handle better
+			// std::cout << "Shouldnt happend\n";
 			exit(1);
 		}
 		m_ast->m_prevToken = m_ast->m_currToken;
@@ -137,23 +137,30 @@ namespace parse {
 	check_token(token::Token_Type _type) {
 		return m_ast->m_currToken.token() == _type;
 	}
+	
 	bool
 	Parser::
 	allow_token(token::Token_Type _type) {
+		debug_print("Allow Token: Checking for: %s ; got: %s - ",
+			token_string(_type), token_string(m_ast->m_currToken.token()));
 		if(m_ast->m_currToken.token() == _type) {
+			debug_print("Token Found, Moving to next token\n");
 			next_token();
 			return true;
 		}
-		else
+		else {
+			debug_print("Token not found, continuing\n");
 			return false;
+		}
 	}
 
 
 	token::Token
 	Parser::
 	expect_token(token::Token_Type _type) {
-		// std::cout << "Expected: " << token_string(_type) << " "
-		          // << "Got: " << token_string(m_ast->m_currToken.token()) << std::endl;
+		debug_print("Expected: '%s'; Got: '%s'\n", token_string(_type).c_str(),
+			token_string(m_ast->m_currToken.token()).c_str());
+
 		Token prev = m_ast->m_currToken;
 		if(prev.token() != _type) {
 			// report error
@@ -170,7 +177,9 @@ namespace parse {
 		debug_print("parse stmt list\n");
 		AstNodeList stmts;
 		while(m_ast->m_currToken.token() != TKN_EOF) {
-			ast::add_node(stmts, parse_stmt());
+			auto st = parse_stmt();
+			ast::ast_print(st, 0);
+			ast::add_node(stmts, st);
 		}
 		return stmts;
 	}
@@ -191,7 +200,7 @@ namespace parse {
 				if(t.token() == TKN_DCOL)
 					stmt = parse_decl_expr();
 				else
-					stmt = parse_expr();
+					stmt = parse_expr(true);
 				} break;
 			case TKN_HASH:
 				stmt = parse_hash_directive();
@@ -219,33 +228,34 @@ namespace parse {
 		if(curr.token() == TKN_STRUCT || curr.token() == TKN_CLASS)
 			return parse_type_decl();
 
-
-
 		return nullptr;
 	}
 
 	ast::AstNode*
 	Parser::
 	parse_variable_decl() {
+		Token token = m_ast->m_prevToken;
 		AstNodeList ids = parse_identifier_list();
 		AstNodeList values;
 		AstNode* type = nullptr;
 
-
-
+		m_ast->m_currToken.print();
 		if(allow_token(TKN_COL)) {
+			debug_print("Attempting to parse Type\n");
 			type = parse_type_or_ident();
 		}
 		if(allow_token(TKN_ASN)) {
-			return parse_primary_expr();
+			values = parse_rhs_expr_list();
 		}
-		else {
+
+		if(!type && values.empty()) {
 			// go to next stmt
 			report_error(m_ast, "type must be specified or initialized\n");
+			return ast_bad_decl();
 		}
 
-
-		return ast_variable_spec(ids, values, type);
+		expect_token(TKN_SEM);
+		return ast_variable_spec(token, ids, values, type);
 	}
 
 	ast::AstNode*
@@ -263,17 +273,81 @@ namespace parse {
 	ast::AstNode*
 	Parser::
 	parse_type_or_ident() {
-		if(m_ast->m_currToken.type() == PrimativeType)
-			return ast_primative_type(m_ast->m_currToken);
+		if(m_ast->m_currToken.type() == PrimativeType) {
+			Token temp = m_ast->m_currToken;
+			next_token();
+			return ast_primative_type(temp);
+		}
 		switch(m_ast->m_currToken.token()) {
-			case TKN_IDENTIFIER:
-				return parse_selector_expr();
+			case TKN_IDENTIFIER: {
+				// same as selector; however, i only want identifiers
+				// no other expressions.
+
+				AstNode* s = parse_identifier();
+				while(allow_token(TKN_PER)) {
+					AstNode* expr = parse_identifier();
+					s = ast_selector_expr(ast_token(s), s, nullptr, expr);
+				}
+
+				// re-order expr
+				AstNode* prev = s;
+				s = s->SelectorExpr.expr;
+				while(s && s->kind == Ast_SelectorExpr) {
+					s->SelectorExpr.next = prev;
+					prev = s;
+					s = s->SelectorExpr.expr;
+				}
+
+				return ast_helper_type(s);
+			}
 			case TKN_MULT:
-			case TKN_LBRACE:
+				return ast_pointer_type(m_ast->m_currToken, parse_type_or_ident());
+			case TKN_LBRACE: {
+				// parse arrays and map types
+				// [][] | [..] arrays
+				// [Type, Type] maps
+				Token begin = expect_token(TKN_LBRACE);
+				if(allow_token(TKN_DPER)) {
+					expect_token(TKN_RBRACE);
+					AstNode* type = parse_type_or_ident();
+					return ast_dynamic_array_type(begin, type);
+				}
+				else if(allow_token(TKN_IDENTIFIER)) {
+					// TODO(Andrew): Find a better way to parse maps, this is bad!!!!
+					Token curr = m_ast->m_currToken;
+					bool isMap = false;
+					int counter = 1;
+					while(curr.token() != TKN_RBRACE) {
+						if(curr.token() == TKN_COM) {
+							isMap = true;
+							break;
+						}
+						curr = peak_token(counter++);
+					}
+					if(isMap) {
+						// parse map
+						AstNode* key,* value;
+
+						key = parse_type_or_ident();
+						expect_token(TKN_COM);
+						value = parse_type_or_ident();
+
+						Token end = expect_token(TKN_RBRACE);
+						return ast_map_type(begin, end, key, value);
+					}
+					else {
+						// parse array
+						AstNode* expr = parse_primary_expr();
+						expect_token(TKN_RBRACE);
+						AstNode* type = parse_type_or_ident();
+
+						return ast_array_type(begin, expr, type);
+					}
+				}
+			}
 			default:
 				break;
 		}
-
 		// no valid type found
 		return nullptr;
 	}
@@ -289,9 +363,45 @@ namespace parse {
 
 	ast::AstNode*
 	Parser::
-	parse_expr() {
+	parse_operand(bool _lhs) {
+		AstNode* operand;
+		if(!_lhs)
+			operand = parse_unary_expr();
+
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_expr(bool _lhs) {
 		debug_print("parse expr\n");
-		return nullptr;
+		if(_lhs)
+			return parse_lhs_expr();
+		else
+			return parse_rhs_expr();
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_lhs_expr() {
+
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_rhs_expr() {
+
+	}
+
+	ast::AstNodeList
+	Parser::
+	parse_lhs_expr_list() {
+
+	}
+
+	ast::AstNodeList
+	Parser::
+	parse_rhs_expr_list() {
+
 	}
 
 	ast::AstNode*
@@ -302,8 +412,70 @@ namespace parse {
 
 	ast::AstNode*
 	Parser::
-	parse_selector_expr() {
-		return nullptr;	
+	parse_binary_expr() {
+
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_unary_expr() {
+		Token token = m_ast->m_currToken;
+		switch(token.token()) {
+			case TKN_NOT:
+			case TKN_SUB:
+			case TKN_BNOT:
+				return ast_unary_expr(token, parse_unary_expr());
+				break;
+			default:
+				break;
+		}
+
+		return parse_primary_expr();
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_selector_expr(bool _lhs) {
+		AstNode* s = parse_expr(_lhs);
+		while(allow_token(TKN_PER)) {
+			AstNode* expr = parse_expr(_lhs);
+
+			// the nullptr will be filled in later
+			s = ast_selector_expr(ast_token(s), s, nullptr, expr);
+		}
+		// re-order expr
+		AstNode* prev = s;
+		s = s->SelectorExpr.expr;
+		while(s && s->kind == Ast_SelectorExpr) {
+			s->SelectorExpr.next = prev;
+			prev = s;
+			s = s->SelectorExpr.expr;
+		}
+		return ast_consolidate_selector(s);
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_index_expr(AstNode* operand) {
+		// TODO(Andrew | Jonathan): handle slices
+		Token begin = expect_token(TKN_LBRACE);
+		AstNode* expr = parse_expr(false);
+		Token end = expect_token(TKN_RBRACE);
+		return ast_index_expr(begin, end, expr);
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_call_expr(AstNode* operand) {
+		// opening of the parens
+		expect_token(TKN_LPAREN);
+		AstNodeList actuals;
+		// custom expr list parser
+		Token close_paren = expect_token(TKN_RPAREN);
+
+		// I dont know the type yet
+		// I guess I could get it.
+		return ast_func_call(ast_token(operand), close_paren, operand, nullptr, actuals);
 	}
 
 	ast::AstNode*
@@ -350,7 +522,7 @@ namespace parse {
 		else {
 			// handle getting the name of file
 			std::string name = std::string(token.get_string());
-		
+
 			size_t indexp = name.find_last_of('.');
 			size_t  indexs = name.find_last_of('/');
 			if(indexs == std::string::npos)
@@ -368,7 +540,7 @@ namespace parse {
 			ids = parse_identifier_list();
 			expect_token(TKN_RBRACK);
 		}
-		
+
 		if(allow_token(TKN_IF)) {
 			// not implementing at the moment
 			report_error(m_ast, "conditional import are not implemented\n");
@@ -385,7 +557,7 @@ namespace parse {
 		Token token = expect_token(TKN_IDENTIFIER);
 		const std::string& str = token.get_string();
 		ast::Atom* atom;
-		
+
 		// check if it is the ignore id
 		if(str.size() == 1 && str[0] == '_')
 			atom = nullptr;
@@ -415,14 +587,14 @@ namespace parse {
 		printf("Error: ");
 		va_list va;
 		va_start(va, _msg);
-		printf(_msg, va);
+		vprintf(_msg, va);
 		++_file->m_errorCount;
 	}
 
 	void report_file_error(AstFile* _file, const char* _msg, ...) {
 		va_list va;
 		va_start(va, _msg);
-		printf(_msg, va);
+		vprintf(_msg, va);
 	}
 
 	void report_warning(AstFile* _file, const char* _msg, ...) {
@@ -431,7 +603,7 @@ namespace parse {
 		printf("Warning: ");
 		va_list va;
 		va_start(va, _msg);
-		printf(_msg, va);
+		vprintf(_msg, va);
 		++_file->m_warningCount;
 	}
 
@@ -439,7 +611,8 @@ namespace parse {
 		if(debug) {
 			va_list va;
 			va_start(va, _msg);
-			printf(_msg, va);
+			vprintf(_msg, va);
+			va_end(va);
 		}
 	}
 } // parse

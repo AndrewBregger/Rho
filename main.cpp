@@ -23,7 +23,7 @@ void print_token(const Token& _token) {
   if(_token.token() == TKN_ERROR)
     return;
   auto loc = _token.location();
-  printf("%-8s\tat %3zu|%3zu  -%3zu ", token_string(_token.token()).c_str(), 
+  printf("%-8s\tat %3zu|%3zu  -%3zu ", token_string(_token.token()).c_str(),
     loc.m_line, loc.m_column, loc.m_ecolumn);
   switch(_token.token()) {
     case TKN_LSTRING:

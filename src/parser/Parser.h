@@ -39,7 +39,7 @@ namespace parse {
 			ast::AstFile* parse_files();
 		private:
 			ParseFileError init();
-	
+
 			/// @name Parsing utilities
 			/// @{
 
@@ -73,11 +73,29 @@ namespace parse {
 
 			ast::AstNode* parse_field();
 
-			ast::AstNode* parse_expr();
+			ast::AstNode* parse_operand(bool _lhs);
+
+			ast::AstNode* parse_expr(bool _lhs);
+
+			ast::AstNode* parse_lhs_expr();
+
+			ast::AstNode* parse_rhs_expr();
+
+			ast::AstNodeList parse_lhs_expr_list();
+
+			ast::AstNodeList parse_rhs_expr_list();
 
 			ast::AstNode* parse_primary_expr();
 
-			ast::AstNode* parse_selector_expr();
+			ast::AstNode* parse_binary_expr();
+
+			ast::AstNode* parse_unary_expr();
+
+			ast::AstNode* parse_index_expr(ast::AstNode* operand);
+
+			ast::AstNode* parse_call_expr(ast::AstNode* operand);
+
+			ast::AstNode* parse_selector_expr(bool _lhs);
 
 			ast::AstNode* parse_hash_directive();
 
@@ -96,7 +114,7 @@ namespace parse {
 		 	size_t m_errorCount{0}, m_warnCount{0};
 			sys::File* m_file{nullptr};
 			ast::AtomTable* m_atomTable{nullptr}; // @note(Andrew): Maybe this should
-																						// be for the entire program no per file.	
+																						// be for the entire program no per file.
 	};
 }
 

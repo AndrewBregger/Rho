@@ -8,17 +8,32 @@
 // gets everything from the file and puts it into this file scope.
 #load "test2.rho": *
 
+var a: i16;
+var b: i32;
+var b: Vector3f;
 
 /*
 // current thoughts on how to syntactically represent conditional imports
 #load "io_win.rho": io {read, write} if __PLATFORM__ == WIN32
 
-var a: i16;
-var b: i32;
+
+var b: Vector3f;
+
+// lets are constant
+let two = 2;
+
+// map between primative types
+var map: [i16, string];
+
+// map between primative type and imported structure
+var iomap: [string, fmt.io];
+
+// constant expression being used as array size
+var arr: [two * two];
 
 let a = 14;
 a :: (a: int, b: int) -> int {
-	
+
 }
 
 a :: struct {

@@ -158,8 +158,8 @@ namespace token {
 
 		void
 		Token::
-		print() {
-			std::cout << token::token_string(this->token()) << " ";
+		print(int indent) {
+			std::cout << get_spaces(indent) << token::token_string(this->token()) << " ";
 			printf("%lu : %lu - %lu: ", m_location.m_line, m_location.m_column, m_location.m_ecolumn);
 			switch(m_type) {
 				case Keyword:

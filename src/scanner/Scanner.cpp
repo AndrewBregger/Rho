@@ -308,6 +308,9 @@ namespace scanner {
 					case '?': {
 	          token = TKN_QEST;
 					} break;
+					case '~': {
+						token = TKN_BNOT;
+					}
 					default:
 						report_error(curr, "Invalid character '%c'\n", ch);
 			}

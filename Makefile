@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=-pedantic -Wall -Werror -I./src
+CFLAGS=-pedantic -Wall -I./src
 debug=1
 
 SOURCE = $(shell find . -path "*.cpp")

@@ -42,6 +42,8 @@ struct AstFile {
 	size_t m_errorCount{0}, m_warningCount{0};
 };
 
+// method and function call expr can problably be consolidated into one.
+// What will distinguish it from a function will be the type pointer.
 #define Ast_Node_Kinds \
 	Ast_Node_Kind(Ident, "identifier", struct {Token token; Atom* atom;}) \
 	Ast_Node_Kind(Keyword, "keyword", Token) \
@@ -58,8 +60,9 @@ Ast_Node_Kind(_BeginExpr, "", int) \
 	Ast_Node_Kind(IndexExpr, "index expression", struct { Token begin, end; AstNode* index;}) \
 	Ast_Node_Kind(SliceExpr, "slice expression", struct { Token begin, end, inclusion; AstNode* startExp, *endExp;}) \
 	Ast_Node_Kind(DerefExpr, "dereference expression", struct {Token token; AstNode* expr; }) \
-	Ast_Node_Kind(SelectorExpr, "selector expression", struct {Token token; AstNode* elems; }) \
+	Ast_Node_Kind(SelectorExpr, "selector expression", struct {Token token; AstNode* expr,* next,* elems; }) \
 	Ast_Node_Kind(CastExpr, "cast expression", struct {Token token; AstNode* type,* expr; }) \
+	Ast_Node_Kind(AddressExpr, "address expression", struct {Token token; AstNode* expr; }) \
 	Ast_Node_Kind(IncDecExpr, "increment decrement expression", struct { Token op; AstNode* expr; }) \
 Ast_Node_Kind(_EndExpr, "", int) \
 Ast_Node_Kind(_BeginStmt, "", int) \
@@ -78,9 +81,9 @@ Ast_Node_Kind(_BeginStmt, "", int) \
 Ast_Node_Kind(_EndStmt, "", int) \
 Ast_Node_Kind(_BeginDecl, "", int) \
 	Ast_Node_Kind(BadDecl, "bad declaration", int) \
-	Ast_Node_Kind(VariableSpec, "varialble specificaiton", struct { AstNodeList names, values; AstNode* type; }) \
+	Ast_Node_Kind(VariableSpec, "varialble specificaiton", struct { Token token; AstNodeList names, values; AstNode* type; }) \
 	Ast_Node_Kind(TypeSpec, "type specificaiton", struct { AstNode* type; }) \
-	Ast_Node_Kind(FunctMethodDecl, "function method declaration", struct { Token token; AstNode* name, *type, *body; }) \
+	Ast_Node_Kind(FunctMethodDecl, "function method declaration", struct { Token token; AstNode* name, *type, *body; }) /*maybe the name isnt needed here*/ \
 	Ast_Node_Kind(ImportSpec, "import specificaiton", struct {Token relPath; std::string fullPath; AstNode* name; AstNodeList importNames;}) \
 	Ast_Node_Kind(MethodDeclBlock, "method declaration block", struct {Token token; AstNode* type; AstNodeList methods; }) /*temorary construct for parsing methods*/ \
 	Ast_Node_Kind(FieldSpec, "field spec", struct { Token token; AstNode* name; AstNode* type; }) \
@@ -92,7 +95,8 @@ Ast_Node_Kind(_BeginType, "", int) \
 	Ast_Node_Kind(MethodType, "method type", struct { Token token; AstNode* name; AstNodeList params, returns; }) \
 	Ast_Node_Kind(PointerType, "pointer type", struct { Token token; AstNode* type; }) \
 	Ast_Node_Kind(ArrayType, "array type", struct { Token token; AstNode* size, *type; }) \
-	Ast_Node_Kind(DynamicArrayType, "dyanmic array type", struct { Token token; AstNode* type; }) \
+	Ast_Node_Kind(DynamicArrayType, "dynamic array type", struct { Token token; AstNode* type; }) \
+	Ast_Node_Kind(MapType, "map type", struct { Token begin, end; AstNode* key, *value; }) \
 	Ast_Node_Kind(EnumType, "enum type", struct { Token token; AstNode* name; AstNodeList members; }) \
 	Ast_Node_Kind(UnionType, "union type", struct { Token token; AstNode* name; AstNodeList members; }) \
 	Ast_Node_Kind(ClassType, "class type", struct { Token token; AstNode* name; AstNodeList extends, members, methods; }) /*add alignment and packing later*/ \
@@ -122,6 +126,17 @@ struct AstNode {
 
 const char* ast_string(AstNodeKind _kind);
 
+Token ast_token(AstNode* node);
+
+void ast_print(AstNode* node, int indent);
+
+// will begin parsed, anything that looks like a function call
+// will be parsed as so. Therefore, if the function call is actually a
+// method it needs to be changed to reflect that.
+// Also, if there is only one node, then it will
+// be taken out of the selector node.
+AstNode* ast_consolidate_selector(AstNode* node);
+
 bool ast_is_decl(AstNode* node);
 bool ast_is_expr(AstNode* node);
 bool ast_is_stmt(AstNode* node);
@@ -130,7 +145,6 @@ bool ast_is_type(AstNode* node);
 AstFile* ast_file(sys::File* _file);
 
 AstNode* ast_node(AstNodeKind _kind);
-
 AstNode* ast_ident(Token token, Atom* atom);
 AstNode* ast_keyword(Token token);
 AstNode* ast_basic_lit(Token token);
@@ -146,7 +160,8 @@ AstNode* ast_incdec_expr(Token op, AstNode* expr);
 AstNode* ast_index_expr(Token begin, Token end, AstNode* index);
 AstNode* ast_slice_expr(Token begin, Token end, Token inclusion, AstNode* startExp, AstNode* endExp);
 AstNode* ast_deref_expr(Token token, AstNode* expr);
-AstNode* ast_selector_expr(Token token, AstNode* elems);
+AstNode* ast_selector_expr(Token token, AstNode* expr, AstNode* next, AstNode* elem);
+AstNode* ast_address_expr(Token token, AstNode* expr);
 AstNode* ast_cast_expr(Token token, AstNode* type, AstNode* expr); 
 AstNode* ast_bad_stmt();
 AstNode* ast_expr_stmt(AstNode* expr);
@@ -159,7 +174,7 @@ AstNode* ast_while_stmt(Token token, AstNode* cond, AstNode* body);
 AstNode* ast_return_stmt(Token token, AstNodeList expr);
 AstNode* ast_defer_stmt(Token token, AstNode* name);
 AstNode* ast_bad_decl();
-AstNode* ast_variable_spec(const AstNodeList& names, const AstNodeList& values, AstNode* type);
+AstNode* ast_variable_spec(Token token, const AstNodeList& names, const AstNodeList& values, AstNode* type);
 AstNode* ast_type_spec(AstNode* type);
 AstNode* ast_funct_method_decl(Token token, AstNode* name, AstNode* type, AstNode* body);
 AstNode* ast_import_spec(Token relPath, std::string fullPath, AstNode* name, const AstNodeList& importNames);
@@ -171,6 +186,7 @@ AstNode* ast_method_type(Token token, AstNode* name, const AstNodeList& params, 
 AstNode* ast_pointer_type(Token token, AstNode* type);
 AstNode* ast_array_type(Token token, AstNode* size, AstNode* type);
 AstNode* ast_dynamic_array_type(Token token, AstNode* type);
+AstNode* ast_map_type(Token begin, Token end, AstNode* key, AstNode* value);
 AstNode* ast_enum_type(Token token, AstNode* name, const AstNodeList& members);
 AstNode* ast_union_type(Token token, AstNode* name, const AstNodeList& members);
 AstNode* ast_class_type(Token token, AstNode* name, const AstNodeList& extends, const AstNodeList& members, const AstNodeList& methods);
