@@ -1,0 +1,73 @@
+Assume the class Vector3f is already declared.
+
+option 1:
+
+This is a constant function. It will not change the object data.
+This is denoted by the Reciever type (Vector3f).
+
+mag :: Vector3f () -> f32{
+  return math.sqrt(x ** 2 + y ** 2 + z ** 2);
+}
+
+This is a method that will modify the object that calls it. This is denoted by the *Vector3f.
+It can be thought of as, this method is getting a pointer to the stucture while the other method
+is getting a copy.
+
+toUnit :: *Vector3f () {
+  // make a this vector a unit vector
+}
+
+// this is a no-const method that takes a parameter
+// there will be some idea of this, self, or super but I havent decided how I want to do it yet.
+setX :: *Vector3f (_x: f32) {
+  x = _x;
+}
+
+option 2:
+
+using impl blocks, same as Rust, to define a method on an object.
+
+This is a constant method.
+
+impl Vector3f {
+  mag :: const () -> f32 {
+    return math.sqrt(x ** 2 + y ** 2 + z ** 2);
+  }
+}
+
+or
+
+impl const Vector3f {
+  mag :: () -> f32 {
+    return math.sqrt(x ** 2 + y ** 2 + z ** 2);
+  }
+}
+
+Non-constant method.
+
+impl Vector3f {
+  toUnit :: () {
+    // make a this vector a unit vector
+  }
+}
+
+option 3:
+
+The recieving object is a parameter in the function.
+
+mag :: (Vector3f) -> f32 {
+  return math.sqrt(x ** 2 + y ** 2 + z ** 2);
+}
+
+toUnit :: (*Vector3f) {
+  // make a this vector a unit vector
+}
+
+setX :: (*Vector3f, _x: f32) {
+  x = _x;
+}
+
+option 4:
+
+
+option 5:
