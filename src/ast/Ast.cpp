@@ -256,9 +256,12 @@ void ast_print(AstNode* node, int indent) {
     } break;
     case Ast_SelectorExpr: {
       auto data = node->SelectorExpr;
-      ast_print(data.expr, indent + 1);
-      ast_print(data.elems, indent + 1);
-      ast_print(data.next, indent + 1);
+      std::cout << token::get_spaces(indent + 1) << "Epxr:\n";
+      if(data.expr) ast_print(data.expr, indent + 1);
+      std::cout << token::get_spaces(indent + 1) << "Elems:\n";
+      if(data.elems) ast_print(data.elems, indent + 1);
+      std::cout << token::get_spaces(indent + 1) << "Next:\n";
+      if(data.next) ast_print(data.next, indent + 1);
     } break;
     case Ast_CastExpr: {
       auto data = node->CastExpr;

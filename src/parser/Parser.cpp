@@ -16,8 +16,6 @@ using namespace token;
 
 extern bool debug;
 
-// macros for getting the  token
-
 namespace parse {
 
 
@@ -169,6 +167,21 @@ namespace parse {
 		}
 		next_token();
 		return prev;
+	}
+
+	bool 
+	Parser::
+	expect_operator() {
+		if(is_operator(m_ast->m_currToken.token())) {
+			next_token();
+			return true;
+		}
+		else {
+			report_error(m_ast, "Expecting operator, found '%s'\n",
+				token_string(m_ast->m_currToken.token()).c_str());
+			// resolve error and continue parsing
+			return false;
+		}
 	}
 
 	ast::AstNodeList
@@ -337,7 +350,7 @@ namespace parse {
 					}
 					else {
 						// parse array
-						AstNode* expr = parse_primary_expr();
+						AstNode* expr = parse_primary_expr(false);
 						expect_token(TKN_RBRACE);
 						AstNode* type = parse_type_or_ident();
 
@@ -364,10 +377,27 @@ namespace parse {
 	ast::AstNode*
 	Parser::
 	parse_operand(bool _lhs) {
-		AstNode* operand;
-		if(!_lhs)
-			operand = parse_unary_expr();
+		// AstNode* operand = nullptr;
+		Token token = m_ast->m_currToken;
+		if(token.token() == TKN_IDENTIFIER)
+			return parse_identifier();
+		else if(is_literal(token.token())) {
+			next_token();
+			return ast_basic_lit(token);
+		}
+		else if(token.token() == TKN_LPAREN) {
+			Token begin = expect_token(TKN_LPAREN);
+			AstNode* expr = parse_expr(false);
+			Token end = expect_token(TKN_RPAREN);
+			return ast_paren_expr(begin, end, expr);
+		}
+		else if(token.token() == TKN_MULT) {
+			Token op = expect_token(TKN_MULT);
+			AstNode* epxr = parse_operand(_lhs);
+			return ast_deref_expr(op, epxr);
+		}
 
+		return nullptr;
 	}
 
 	ast::AstNode*
@@ -383,13 +413,13 @@ namespace parse {
 	ast::AstNode*
 	Parser::
 	parse_lhs_expr() {
-
+		return parse_binary_expr(true, 1);
 	}
 
 	ast::AstNode*
 	Parser::
 	parse_rhs_expr() {
-
+  	return parse_binary_expr(false, 1);
 	}
 
 	ast::AstNodeList
@@ -406,31 +436,138 @@ namespace parse {
 
 	ast::AstNode*
 	Parser::
-	parse_primary_expr() {
-		return nullptr;
+	parse_primary_expr(bool _lhs) {
+		AstNode* operand = parse_operand(_lhs);
+		
+		bool loop = true;
+		while(loop) {
+			Token token = m_ast->m_currToken;
+			switch(token.token()) {
+				case TKN_LPAREN:
+					// function;
+					operand = parse_call_expr(operand);
+					break;
+				case TKN_LBRACE:
+					// index
+					operand = parse_index_expr(operand);
+					break;
+				case TKN_LBRACK:
+					// initializer list
+					return nullptr;
+					break;
+				case TKN_PER:
+					// selector expr
+					next_token();
+					operand = ast_selector_expr(token, operand, nullptr, parse_primary_expr(_lhs));
+					break;
+				default:
+					loop = false;
+					break;
+			}
+		}
+
+		// bool loop = true;
+		// while(loop) {
+		// 	Token token = m_ast->m_currToken;
+		// 	switch(token.token()) {
+
+		// 		default:
+		// 		loop = false;
+		// 	}
+		// }
+
+		return operand;
+	}
+  
+  int operator_precedence(Token_Type _type) {
+    switch(_type) {
+    	case TKN_DIV:
+      case TKN_REM:
+      case TKN_POW:
+      case TKN_MULT:
+      	return 11;
+      case TKN_ADD:
+      case TKN_SUB:
+      	return 10;
+      case TKN_SHTL:
+      case TKN_SHTR:
+     		return 9;
+      case TKN_LESS:
+      case TKN_GRET:
+      case TKN_LEQ:
+      case TKN_GEQ:
+      	return 8;
+      case TKN_EQ:
+      case TKN_NEQ:
+      	return 7;
+      case TKN_AND:
+      	return 6;
+      case TKN_XOR:
+      	return 5;
+      case TKN_OR:
+      	return 4;
+      case TKN_LITAND:
+      	return 3;
+      case TKN_LITOR:
+      	return 2;
+      case TKN_QEST:
+      case TKN_ASN:
+			case TKN_DECL:
+			case TKN_ADDASN:
+			case TKN_SUBASN:
+			case TKN_MULTASN:
+			case TKN_DIVASN:
+			case TKN_REMASN:
+			case TKN_XORASN:
+			case TKN_ANDASN:
+			case TKN_ORASN:
+			case TKN_SHTLASN:
+			case TKN_SHTRASN:
+			case TKN_ELS:
+			case TKN_DPER:
+				return 1;
+			default:
+				return 0;
+    }
+  }
+
+	ast::AstNode*
+	Parser::
+	parse_binary_expr(bool _lhs, int _prec_in) {
+  	AstNode* expr = parse_unary_expr(_lhs);
+  	for(int prec = operator_precedence(m_ast->m_currToken.token()); prec >= _prec_in; --prec) {
+  		for(;;) {
+  			Token op = m_ast->m_currToken;
+  			int op_prec = operator_precedence(op.token());
+  			if(op_prec != prec)
+  				break;
+  			if(expect_operator()) {
+  				AstNode* rhs = parse_binary_expr(false, prec + 1);
+  				expr = ast_binary_expr(op, expr, rhs);
+  			}
+  			else
+  				return ast_bad_expr(op, op);
+  		}
+  	}
+  	return expr;
 	}
 
 	ast::AstNode*
 	Parser::
-	parse_binary_expr() {
-
-	}
-
-	ast::AstNode*
-	Parser::
-	parse_unary_expr() {
+	parse_unary_expr(bool _lhs) {
 		Token token = m_ast->m_currToken;
 		switch(token.token()) {
 			case TKN_NOT:
 			case TKN_SUB:
 			case TKN_BNOT:
-				return ast_unary_expr(token, parse_unary_expr());
+				next_token();
+				return ast_unary_expr(token, parse_unary_expr(_lhs));
 				break;
 			default:
 				break;
 		}
 
-		return parse_primary_expr();
+		return parse_primary_expr(_lhs);
 	}
 
 	ast::AstNode*

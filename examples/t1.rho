@@ -1,4 +1,5 @@
 // conditional imports will be added later
+/*
 #load "fmt.rho"
 // renames the import identifer to t and only imports fun1 and fun2
 #load "test.rho": t {
@@ -11,6 +12,9 @@
 var a: i16;
 var b: i32;
 var b: Vector3f;
+*/
+
+-1.0 + x.y.z * *a
 
 /*
 // current thoughts on how to syntactically represent conditional imports

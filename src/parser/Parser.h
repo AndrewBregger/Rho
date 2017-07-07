@@ -37,7 +37,7 @@ namespace parse {
 			Parser(sys::File* _file);
 
 			ast::AstFile* parse_files();
-		private:
+		//private:
 			ParseFileError init();
 
 			/// @name Parsing utilities
@@ -50,6 +50,8 @@ namespace parse {
 
 			bool check_token(token::Token_Type _type);
 			bool allow_token(token::Token_Type _type);
+
+			bool expect_operator();
 
 			/// @}
 
@@ -85,11 +87,11 @@ namespace parse {
 
 			ast::AstNodeList parse_rhs_expr_list();
 
-			ast::AstNode* parse_primary_expr();
+			ast::AstNode* parse_primary_expr(bool _lhs);
 
-			ast::AstNode* parse_binary_expr();
+			ast::AstNode* parse_binary_expr(bool _lhs, int _prec_in);
 
-			ast::AstNode* parse_unary_expr();
+			ast::AstNode* parse_unary_expr(bool _lhs);
 
 			ast::AstNode* parse_index_expr(ast::AstNode* operand);
 
