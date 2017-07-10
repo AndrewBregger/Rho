@@ -22,7 +22,12 @@ namespace parse {
 	void report_error(AstFile* _file, const char* _msg, ...);
 	void report_file_error(AstFile* _file, const char* _msg, ...);
 	void report_warning(AstFile* _file, const char* _msg, ...);
-	void debug_print(const char* msg, ...);
+	void __debug_print__(const char* file, int line, const char* msg, ...);
+
+ #define debug_print(msg, ...) __debug_print__(__FUNCTION__, __LINE__, msg, ##__VA_ARGS__)
+
+#define check_token(type) __check_token(__FUNCTION__, __LINE__, type)
+#define allow_token(type) __check_token(__FUNCTION__, __LINE__, type)
 
 	Parser::
 	Parser(sys::File* _file) {
@@ -57,6 +62,9 @@ namespace parse {
 		}
 		m_ast->m_tokens.push_back(t);
 
+
+		if(m_ast->m_tokens.empty())
+			return ParseFile_Empty;
 		m_ast->m_currToken = m_ast->m_tokens[m_ast->m_tokenIndex];
 
 		// for(Token& t : m_ast->m_tokens) {
@@ -132,15 +140,21 @@ namespace parse {
 
 	bool
 	Parser::
-	check_token(token::Token_Type _type) {
+	__check_token(const char* where, int line, token::Token_Type _type) {
+		__debug_print__(where, line, "Checking Token: Checking for: %s ; got: %s - returning %s\n",
+      token_string(_type).c_str(), 
+      token_string(m_ast->m_currToken.token()).c_str(),
+      (m_ast->m_currToken.token() == _type ? "true" : "false"));
 		return m_ast->m_currToken.token() == _type;
 	}
-	
+
 	bool
 	Parser::
-	allow_token(token::Token_Type _type) {
-		debug_print("Allow Token: Checking for: %s ; got: %s - ",
-			token_string(_type), token_string(m_ast->m_currToken.token()));
+	__allow_token(const char* where, int line, token::Token_Type _type) {
+		__debug_print__(where, line, "Allow Token: Checking for: %s ; got: %s - ",
+			token_string(_type).c_str(), 
+      token_string(m_ast->m_currToken.token()).c_str());
+ 
 		if(m_ast->m_currToken.token() == _type) {
 			debug_print("Token Found, Moving to next token\n");
 			next_token();
@@ -169,7 +183,7 @@ namespace parse {
 		return prev;
 	}
 
-	bool 
+	bool
 	Parser::
 	expect_operator() {
 		if(is_operator(m_ast->m_currToken.token())) {
@@ -184,15 +198,27 @@ namespace parse {
 		}
 	}
 
+	bool
+	Parser::
+	expect_semicolon(const char* _where) {
+		if(m_ast->m_currToken.token() != TKN_SEM) {
+			report_error(m_ast, "Expecting ';' after %s\n", _where);
+			return false;
+		}
+		next_token();
+		return true;
+	}
+
 	ast::AstNodeList
 	Parser::
 	parse_stmt_list() {
 		debug_print("parse stmt list\n");
 		AstNodeList stmts;
-		while(m_ast->m_currToken.token() != TKN_EOF) {
+		while(m_ast->m_currToken.token() != TKN_RBRACK
+			 && m_ast->m_currToken.token() != TKN_EOF) {
 			auto st = parse_stmt();
-			ast::ast_print(st, 0);
-			ast::add_node(stmts, st);
+			if(st)
+				add_node(stmts, st);
 		}
 		return stmts;
 	}
@@ -202,85 +228,343 @@ namespace parse {
 	parse_stmt() {
 		debug_print("parse stmt\n");
 		Token token = m_ast->m_currToken;
-		next_token();
-		ast::AstNode* stmt = nullptr;
 		switch(token.token()) {
 			case TKN_LET:
 			case TKN_VAR:
-				stmt = parse_decl_expr();
-			case TKN_IDENTIFIER: {
-				Token t = peak_token();
-				if(t.token() == TKN_DCOL)
-					stmt = parse_decl_expr();
-				else
-					stmt = parse_expr(true);
-				} break;
-			case TKN_HASH:
-				stmt = parse_hash_directive();
-				break;
+			case TKN_IDENTIFIER:
+			case TKN_LSTRING:
+			case TKN_LCHAR:
+			case TKN_LINT:
+			case TKN_LDOUBLE:
+			case TKN_LBOOL:
+				return parse_simple_stmt();
+			case TKN_IF: return parse_if_stmt();
+			case TKN_WHILE: return parse_while_stmt();
+			case TKN_FOR: return parse_for_stmt();
+			case TKN_MATCH: return parse_match_stmt();
+			case TKN_DEFER: return parse_defer_stmt();
+			case TKN_HASH: return parse_hash_directive();
 			default:
-				return nullptr;
+				break;
 		}
-		return stmt;
+		return nullptr;
 	}
 
 	ast::AstNode*
 	Parser::
-	parse_decl_expr() {
+	parse_if_stmt() {
+		return nullptr;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_while_stmt() {
+		return nullptr;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_for_stmt() {
+		return nullptr;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_match_stmt() {
+		return nullptr;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_defer_stmt() {
+		return nullptr;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_decl() {
 		debug_print("parse decl expr\n");
-		Token prev = m_ast->m_prevToken;
-		if(prev.token() == TKN_LET || prev.token() == TKN_VAR)
-				return parse_variable_decl();
+		AstNode* decl;
+		switch(m_ast->m_currToken.token()) {
+			case TKN_LET:
+			case TKN_VAR:
+				decl = parse_variable_decl();
+				expect_semicolon("variable declaration");
+				break;
+			case TKN_IDENTIFIER: {
+				AstNode* id = parse_identifier();
+				expect_token(TKN_DCOL);
+				switch(m_ast->m_currToken.token()) {
+					case TKN_STRUCT:
+					case TKN_CLASS:
+						decl = parse_type_decl(id);
+						break;
+					default: {
+						decl = parse_function_decl(id);
+						if(!decl) {
+							report_error(m_ast, "Expecting struct, class, or function/method declaration\n");
+							return ast_bad_decl();
+						}
+					}
+				}
+			} break;
+			default:
+				report_error(m_ast, "Unexpected token in declaration\n");
+				return ast_bad_decl();
+		}
+		if(decl)
+			m_ast->m_decls.push_back(decl);
+		return decl;
+	}
 
-		// this is the :: for a function of type definition
-		// we do not care about the token itself so i am not getting it.
-		expect_token(TKN_DCOL);
+	ast::AstNode*
+	Parser::
+	parse_simple_stmt() {
+		Token t = m_ast->m_currToken;
+		switch(t.token()) {
+			case TKN_VAR:
+			case TKN_LET:
+				return parse_decl();
+			default:
+				break;
+		}
+		if(t.token() == TKN_IDENTIFIER)
+				if(peak_token().token() == TKN_DCOL)
+					return parse_decl();
 
-		Token curr = m_ast->m_currToken;
-
-		if(curr.token() == TKN_STRUCT || curr.token() == TKN_CLASS)
-			return parse_type_decl();
-
+		AstNodeList lhs = parse_lhs_expr_list();
+		t = m_ast->m_currToken;
+		next_token();
+		switch( t.token()) {
+			case TKN_ASN:
+			case TKN_DECL:
+			case TKN_ADDASN:
+			case TKN_SUBASN:
+			case TKN_MULTASN:
+			case TKN_DIVASN:
+			case TKN_REMASN:
+			case TKN_XORASN:
+			case TKN_ANDASN:
+			case TKN_ORASN:
+			case TKN_SHTLASN:
+			case TKN_SHTRASN: {
+				if(m_ast->currParent == nullptr) {
+					report_error(m_ast, "explain error\n");
+					return ast_bad_stmt();
+				}
+				else {
+					AstNodeList rhs = parse_rhs_expr_list();
+					if(rhs.size() == 0) {
+						report_error(m_ast, "expecting expression on right side of equal expression\n");
+						return ast_bad_stmt();
+					}
+					if(expect_semicolon("assignment statement")) {
+						return ast_assign_stmt(t, lhs, rhs);
+					}
+					return ast_bad_stmt();
+				}
+			} break;
+			default:
+				report_error(m_ast, "Unexpected token '%s'\n", token::token_string(m_ast->m_currToken.token()).c_str());
+				return ast_bad_stmt();
+		}
 		return nullptr;
 	}
 
 	ast::AstNode*
 	Parser::
 	parse_variable_decl() {
-		Token token = m_ast->m_prevToken;
+		Token token = m_ast->m_currToken;
+		token.print(0);
+		next_token();
 		AstNodeList ids = parse_identifier_list();
 		AstNodeList values;
 		AstNode* type = nullptr;
 
-		m_ast->m_currToken.print();
 		if(allow_token(TKN_COL)) {
-			debug_print("Attempting to parse Type\n");
 			type = parse_type_or_ident();
 		}
 		if(allow_token(TKN_ASN)) {
 			values = parse_rhs_expr_list();
 		}
-
 		if(!type && values.empty()) {
 			// go to next stmt
 			report_error(m_ast, "type must be specified or initialized\n");
 			return ast_bad_decl();
 		}
 
-		expect_token(TKN_SEM);
-		return ast_variable_spec(token, ids, values, type);
+		AstNode* var = ast_variable_spec(token, ids, values, type);
+		for(auto id : ids){
+			if(!id->Ident.atom) {
+				var->VariableSpec.flags |= VarHasIgnore;
+				break;
+			}
+		}
+		if(token.token() == TKN_LET) {
+			var->VariableSpec.flags |= VarConst;
+			if(values.empty()) {
+				report_error(m_ast, "constant variables must initialized when declared\n");
+				return ast_bad_decl();
+			}
+		}
+
+		return var;
 	}
 
 	ast::AstNode*
 	Parser::
-	parse_type_decl() {
-		return nullptr;
+	parse_body() {
+		return parse_block_stmt();
 	}
 
 	ast::AstNode*
 	Parser::
-	parser_function_spec() {
-		return nullptr;
+	parse_block_stmt() {
+		Token begin = expect_token(TKN_LBRACK);
+		AstNodeList stmts = parse_stmt_list();
+		Token end = expect_token(TKN_RBRACK);
+    std::cout << "Num Stmts: " << stmts.size() << std::endl;
+		return ast_block_stmt(begin, end, stmts);
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_type_decl(AstNode* id) {
+		Token token = m_ast->m_currToken;
+		AstNode* decl;
+		next_token();
+		switch(token.token()) {
+			case TKN_CLASS:
+			case TKN_STRUCT: {
+				AstNodeList extends;
+				bool oldClassDecl = m_ast->inClassDecl;
+				if(token.token() == TKN_CLASS) {
+					// parse inheritend types
+
+					m_ast->inClassDecl = true;
+				}
+				expect_token(TKN_LBRACK);
+				AstNodeList members;
+				while(m_ast->m_currToken.token() != TKN_RBRACK) {
+					AstNode* field = parse_field();
+					field = parse_field_tags(field);
+					if(!expect_semicolon("member variable declaration"))
+						return ast_bad_decl();
+					add_node(members, field);
+				}
+				expect_token(TKN_RBRACK);
+				if(token.token() == TKN_CLASS)
+					decl = ast_class_type(token, id, extends, members, AstNodeList());
+				else
+					decl = ast_struct_type(token, id, members);
+
+				m_ast->inClassDecl = oldClassDecl;
+			} break;
+			case TKN_ENUM:
+			case TKN_UNION:
+			default:
+				report_error(m_ast, "Unexpected declaration token: '%s'\n", token_string(token.token()).c_str());
+		}
+
+		return decl;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_function_decl(AstNode* id) {
+		bool isConst;
+		AstNode* reciever = parse_function_reciever(isConst);
+		AstNode* type = parse_function_type(id, reciever, isConst);
+		if(!type) return nullptr;
+
+		AstNode* body;
+		AstNode* funct = ast_funct_method_decl(ast_token(type), type, nullptr);
+		AstNode* oldParent = m_ast->currParent;
+		m_ast->currParent = funct;
+    m_ast->m_currToken.print(0);
+		if(check_token(TKN_LBRACK)) {
+			body = parse_body(); // parse_block_stmt();
+		}
+
+		if(!body) {
+			report_error(m_ast, "a function body must be declared when declaring a function\n");
+		}
+    ast_print(body, 0);
+		funct->FunctMethodDecl.body = body;
+		m_ast->currParent = oldParent;
+		return funct;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+		AstNodeList returns;
+		AstNodeList params;
+		expect_token(TKN_LPAREN);
+		if(!check_token(TKN_RPAREN))
+			params = parse_field_list();
+		expect_token(TKN_RPAREN);
+    debug_print("Function Type: num params: %d\n", params.size());
+		if(check_token(TKN_RARR))
+			returns = parse_function_return();
+    
+    debug_print("Function Type: num returns: %d\n", params.size());
+
+		AstNode* decl;
+
+		if(reciever)
+			decl = ast_method_type(ast_token(id), id, reciever, params, returns);
+		else
+			decl = ast_function_type(ast_token(id), id, params, returns);
+		if(isConst) {
+			if(reciever)
+				decl->MethodType.flags |= FunctConst;
+		}
+		return parse_function_tags(decl);
+	}
+
+	ast::AstNodeList
+	Parser::
+	parse_function_return() {
+		AstNodeList list;
+		expect_token(TKN_RARR);
+		bool expectRParen{false};
+		if(allow_token(TKN_LPAREN))
+			expectRParen = true;
+    m_ast->m_currToken.print(1);
+		if(check_token(TKN_IDENTIFIER) ||
+			 m_ast->m_currToken.type() == PrimativeType) {
+			if(peak_token().token() == TKN_COL || peak_token().token() == TKN_COM) {
+				// named return type
+        debug_print("Parsing named types\n");
+				list = parse_field_list();
+			}
+			else if(check_token(TKN_COM)) {
+				// only return type
+				do {
+					add_node(list, parse_type_or_ident());
+				} while(allow_token(TKN_COM));
+			}
+		}
+		else {
+			report_error(m_ast, "error parsing return types\n");
+		}
+
+		if(expectRParen)
+			expect_token(TKN_RPAREN);
+
+		return list;
+	}
+
+	ast::AstNode*
+	Parser::
+	parse_function_reciever(bool& isConst) {
+		if(allow_token(TKN_MULT))
+			isConst = true;
+		if(check_token(TKN_IDENTIFIER))
+			return parse_identifier();
+		else
+			return nullptr;
 	}
 
 	ast::AstNode*
@@ -301,16 +585,6 @@ namespace parse {
 					AstNode* expr = parse_identifier();
 					s = ast_selector_expr(ast_token(s), s, nullptr, expr);
 				}
-
-				// re-order expr
-				AstNode* prev = s;
-				s = s->SelectorExpr.expr;
-				while(s && s->kind == Ast_SelectorExpr) {
-					s->SelectorExpr.next = prev;
-					prev = s;
-					s = s->SelectorExpr.expr;
-				}
-
 				return ast_helper_type(s);
 			}
 			case TKN_MULT:
@@ -325,7 +599,7 @@ namespace parse {
 					AstNode* type = parse_type_or_ident();
 					return ast_dynamic_array_type(begin, type);
 				}
-				else if(allow_token(TKN_IDENTIFIER)) {
+				else {
 					// TODO(Andrew): Find a better way to parse maps, this is bad!!!!
 					Token curr = m_ast->m_currToken;
 					bool isMap = false;
@@ -337,6 +611,7 @@ namespace parse {
 						}
 						curr = peak_token(counter++);
 					}
+					debug_print("Is Map: %s counter: %d\n", (isMap?"true":"false"), counter);
 					if(isMap) {
 						// parse map
 						AstNode* key,* value;
@@ -350,14 +625,16 @@ namespace parse {
 					}
 					else {
 						// parse array
-						AstNode* expr = parse_primary_expr(false);
+						AstNode* expr = parse_expr(false);
 						expect_token(TKN_RBRACE);
 						AstNode* type = parse_type_or_ident();
-
 						return ast_array_type(begin, expr, type);
 					}
 				}
 			}
+			// function type parsed here should only be pure functions, not methods.
+			case TKN_LPAREN:
+				return parse_function_type(nullptr, nullptr, false);
 			default:
 				break;
 		}
@@ -368,10 +645,24 @@ namespace parse {
 	ast::AstNode*
 	Parser::
 	parse_field() {
-		AstNode* name = parse_identifier();
+		AstNodeList name = parse_identifier_list();
 		expect_token(TKN_COL);
 		AstNode* type = parse_type_or_ident();
-		return ast_field_spec(name->Ident.token, name, type);
+
+		AstNode* field = ast_field_spec(name.front()->Ident.token, name, type);
+		field = parse_field_tags(field);
+		return field;
+	}
+
+	ast::AstNodeList
+	Parser::
+	parse_field_list() {
+		AstNodeList list;
+		do {
+			AstNode* e = parse_field();
+			add_node(list, e);
+		} while(allow_token(TKN_COM));
+		return list;
 	}
 
 	ast::AstNode*
@@ -379,31 +670,39 @@ namespace parse {
 	parse_operand(bool _lhs) {
 		// AstNode* operand = nullptr;
 		Token token = m_ast->m_currToken;
-		if(token.token() == TKN_IDENTIFIER)
-			return parse_identifier();
-		else if(is_literal(token.token())) {
+		if(is_literal(token.token())) {
 			next_token();
 			return ast_basic_lit(token);
 		}
-		else if(token.token() == TKN_LPAREN) {
-			Token begin = expect_token(TKN_LPAREN);
-			AstNode* expr = parse_expr(false);
-			Token end = expect_token(TKN_RPAREN);
-			return ast_paren_expr(begin, end, expr);
+    switch(token.token()) {
+      case TKN_IDENTIFIER:
+			  return parse_identifier();
+		  case TKN_LPAREN: {
+        Token begin = expect_token(TKN_LPAREN);
+        AstNode* expr = parse_expr(false);
+        Token end = expect_token(TKN_RPAREN);
+        return ast_paren_expr(begin, end, expr);
+      }
+      case TKN_MULT: {
+        Token op = expect_token(TKN_MULT);
+        // paybe this should be 'parse_expr(_lhs)'
+        AstNode* epxr = parse_operand(_lhs);
+        return ast_deref_expr(op, epxr);
+      }
+      case TKN_AND: {
+        Token op = expect_token(TKN_AND);
+        AstNode* epxr = parse_operand(_lhs);
+        return ast_address_expr(op, epxr);
+      }
+      default:
+        break;
 		}
-		else if(token.token() == TKN_MULT) {
-			Token op = expect_token(TKN_MULT);
-			AstNode* epxr = parse_operand(_lhs);
-			return ast_deref_expr(op, epxr);
-		}
-
 		return nullptr;
 	}
 
 	ast::AstNode*
 	Parser::
 	parse_expr(bool _lhs) {
-		debug_print("parse expr\n");
 		if(_lhs)
 			return parse_lhs_expr();
 		else
@@ -425,20 +724,36 @@ namespace parse {
 	ast::AstNodeList
 	Parser::
 	parse_lhs_expr_list() {
+		AstNodeList list;
+		do {
+			// this check is probably unnessesary
+			auto e = parse_lhs_expr();
+			if(e)
+				add_node(list, e);
+		} while(allow_token(TKN_COM));
 
+		return list;
 	}
 
 	ast::AstNodeList
 	Parser::
 	parse_rhs_expr_list() {
+		AstNodeList list;
+		do {
+			// this check is probably unnessesary
+			auto e = parse_rhs_expr();
+			if(e)
+				add_node(list, e);
+		} while(allow_token(TKN_COM));
 
+		return list;
 	}
 
 	ast::AstNode*
 	Parser::
 	parse_primary_expr(bool _lhs) {
 		AstNode* operand = parse_operand(_lhs);
-		
+
 		bool loop = true;
 		while(loop) {
 			Token token = m_ast->m_currToken;
@@ -465,20 +780,9 @@ namespace parse {
 					break;
 			}
 		}
-
-		// bool loop = true;
-		// while(loop) {
-		// 	Token token = m_ast->m_currToken;
-		// 	switch(token.token()) {
-
-		// 		default:
-		// 		loop = false;
-		// 	}
-		// }
-
 		return operand;
 	}
-  
+
   int operator_precedence(Token_Type _type) {
     switch(_type) {
     	case TKN_DIV:
@@ -511,7 +815,10 @@ namespace parse {
       case TKN_LITOR:
       	return 2;
       case TKN_QEST:
-      case TKN_ASN:
+			case TKN_ELS:
+			case TKN_DPER:
+				return 1;
+			case TKN_ASN:
 			case TKN_DECL:
 			case TKN_ADDASN:
 			case TKN_SUBASN:
@@ -523,9 +830,7 @@ namespace parse {
 			case TKN_ORASN:
 			case TKN_SHTLASN:
 			case TKN_SHTRASN:
-			case TKN_ELS:
-			case TKN_DPER:
-				return 1;
+				return 0;
 			default:
 				return 0;
     }
@@ -562,7 +867,6 @@ namespace parse {
 			case TKN_BNOT:
 				next_token();
 				return ast_unary_expr(token, parse_unary_expr(_lhs));
-				break;
 			default:
 				break;
 		}
@@ -572,33 +876,12 @@ namespace parse {
 
 	ast::AstNode*
 	Parser::
-	parse_selector_expr(bool _lhs) {
-		AstNode* s = parse_expr(_lhs);
-		while(allow_token(TKN_PER)) {
-			AstNode* expr = parse_expr(_lhs);
-
-			// the nullptr will be filled in later
-			s = ast_selector_expr(ast_token(s), s, nullptr, expr);
-		}
-		// re-order expr
-		AstNode* prev = s;
-		s = s->SelectorExpr.expr;
-		while(s && s->kind == Ast_SelectorExpr) {
-			s->SelectorExpr.next = prev;
-			prev = s;
-			s = s->SelectorExpr.expr;
-		}
-		return ast_consolidate_selector(s);
-	}
-
-	ast::AstNode*
-	Parser::
 	parse_index_expr(AstNode* operand) {
 		// TODO(Andrew | Jonathan): handle slices
 		Token begin = expect_token(TKN_LBRACE);
 		AstNode* expr = parse_expr(false);
 		Token end = expect_token(TKN_RBRACE);
-		return ast_index_expr(begin, end, expr);
+		return ast_index_expr(begin, end, operand, expr);
 	}
 
 	ast::AstNode*
@@ -606,7 +889,7 @@ namespace parse {
 	parse_call_expr(AstNode* operand) {
 		// opening of the parens
 		expect_token(TKN_LPAREN);
-		AstNodeList actuals;
+		AstNodeList actuals = parse_rhs_expr_list();
 		// custom expr list parser
 		Token close_paren = expect_token(TKN_RPAREN);
 
@@ -619,6 +902,7 @@ namespace parse {
 	Parser::
 	parse_hash_directive() {
 		debug_print("parse hash directive\n");
+		expect_token(TKN_HASH);
 		Token token = expect_token(TKN_IDENTIFIER);
 		std::string dir(token.get_string());
 		// if(dir == "load")
@@ -686,6 +970,7 @@ namespace parse {
 		return ast_import_spec(token, sys::File::FullPath(std::string(token.get_string())), id, ids);
 	}
 
+/*--------------------------- Identifier Parsing -------------------------------*/
 
 	ast::AstNode*
 	Parser::
@@ -694,7 +979,6 @@ namespace parse {
 		Token token = expect_token(TKN_IDENTIFIER);
 		const std::string& str = token.get_string();
 		ast::Atom* atom;
-
 		// check if it is the ignore id
 		if(str.size() == 1 && str[0] == '_')
 			atom = nullptr;
@@ -715,6 +999,27 @@ namespace parse {
 		return list;
 	}
 
+/*--------------------------- Tag Parsing -------------------------------*/
+
+ast::AstNode*
+Parser::
+parse_field_tags(ast::AstNode* field) {
+	if(!m_ast->inClassDecl && m_ast->m_currToken.token() != TKN_COM)
+		report_error(m_ast, "function parameters are not permmited to have tags\n");
+	return field;
+}
+
+ast::AstNode*
+Parser::
+parse_function_tags(ast::AstNode* funct) {
+	return funct;
+}
+
+ast::AstNode*
+Parser::
+parse_variable_tags(ast::AstNode* var) {
+	return var;
+}
 
 /*--------------------------- Error Reporting -------------------------------*/
 
@@ -743,9 +1048,11 @@ namespace parse {
 		vprintf(_msg, va);
 		++_file->m_warningCount;
 	}
+  
 
-	void debug_print(const char* _msg, ...) {
+	void __debug_print__(const char* file, int line, const char* _msg, ...) {
 		if(debug) {
+      printf("%s: %d| ", file, line);
 			va_list va;
 			va_start(va, _msg);
 			vprintf(_msg, va);
