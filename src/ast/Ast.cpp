@@ -65,9 +65,6 @@ Token ast_token(AstNode* node) {
     case Ast_FuncCall:
       token = node->FuncCall.begin;
       break;
-    case Ast_MethodCall:
-      token = node->MethodCall.begin;
-      break;
     case Ast_UnaryExpr:
       token = node->UnaryExpr.op;
       break;
@@ -217,14 +214,6 @@ void ast_print(AstNode* node, int indent) {
       for(const auto& e : data.actuals)
         ast_print(e, indent + 1);
     } break;
-    case Ast_MethodCall: {
-       auto data = node->FuncCall;
-      ast_print(data.name, indent + 1);
-      if(data.type)
-        ast_print(data.type, indent + 1);
-      for(const auto& e : data.actuals)
-        ast_print(e, indent + 1);
-    } break;
     case Ast_UnaryExpr: {
       auto data = node->UnaryExpr;
       data.op.print(indent + 1);
@@ -242,6 +231,7 @@ void ast_print(AstNode* node, int indent) {
     } break;
     case Ast_IndexExpr: {
       auto data = node->IndexExpr;
+      ast_print(data.operand, indent + 1);
       ast_print(data.index, indent + 1);
     } break;
     case Ast_SliceExpr: {
@@ -340,7 +330,6 @@ void ast_print(AstNode* node, int indent) {
     } break;
     case Ast_FunctMethodDecl: {
       auto data = node->FunctMethodDecl;
-      ast_print(data.name, indent + 1);
       // this should have the type.
       // it is constructed when being parsed
       ast_print(data.type, indent + 1);
@@ -360,7 +349,8 @@ void ast_print(AstNode* node, int indent) {
     } break;
     case Ast_FieldSpec: {
       auto data = node->FieldSpec;
-      ast_print(data.name, indent + 1);
+      for(const auto& e : data.name)
+        ast_print(e, indent + 1);
       ast_print(data.type, indent + 1);
     } break;
     case Ast_BadType:
@@ -374,53 +364,77 @@ void ast_print(AstNode* node, int indent) {
       data.print(indent + 1);
     } break;
     case Ast_MethodType: {
-      auto data = node->MethodType.token;
-
+      auto data = node->MethodType;
+			ast_print(data.name, indent + 1);
+			std::cout << token::get_spaces(indent + 1) << "Member:" << std::endl;
+			ast_print(data.classOf, indent + 1);
+			std::cout << token::get_spaces(indent + 1) << "Params:" << std::endl;
+			for(const auto& e : data.params)
+				ast_print(e, indent + 1);
+			std::cout << token::get_spaces(indent + 1) << "Returns:" << std::endl;			
+			if(data.returns.empty())
+				std::cout << token::get_spaces(indent + 2) << "void" << std::endl;
+			else
+				for(const auto& e : data.returns)
+					ast_print(e, indent + 1);
+			std::cout << token::get_spaces(indent + 1) << "Flags: " << data.flags << std::endl;
+    } break;
+    case Ast_FunctionType: {
+      auto data = node->FunctionType;
+			ast_print(data.name, indent + 1);
+			std::cout << token::get_spaces(indent + 1) << "Params:" << std::endl;
+			for(const auto& e : data.params)
+				ast_print(e, indent + 1);
+			std::cout << token::get_spaces(indent + 1) << "Return:" << std::endl;
+			if(data.returns.empty())
+				std::cout << token::get_spaces(indent + 2) << "void" << std::endl;
+			else
+				for(const auto& e : data.returns)
+					ast_print(e, indent + 1);
+			std::cout << token::get_spaces(indent + 1) << "Flags: " << data.flags << std::endl;
     } break;
     case Ast_PointerType: {
-      auto data = node->PointerType.token;
+      auto data = node->PointerType;
+			ast_print(data.type, indent + 1);
     } break;
     case Ast_ArrayType: {
-      auto data = node->ArrayType.token;
+      auto data = node->ArrayType;
+			ast_print(data.size, indent + 1);
+			ast_print(data.type, indent + 1);
     } break;
     case Ast_DynamicArrayType: {
-      auto data = node->DynamicArrayType.token;
+      auto data = node->DynamicArrayType;
+			ast_print(data.type, indent + 1);
     } break;
     case Ast_EnumType: {
-      auto data = node->EnumType.token;
+      auto data = node->EnumType;
+			// ast_print(data., indent + 1);
+		// 	ast_print(data., indent + 1);
+		//		ast_print(data., indent + 1);
     } break;
     case Ast_UnionType: {
-      auto data = node->UnionType.token;
+      auto data = node->UnionType;
+			// ast_print(data., indent + 1);
+// 			ast_print(data., indent + 1);
+// 			ast_print(data., indent + 1);
     } break;
     case Ast_ClassType: {
-      auto data = node->ClassType.token;
+      auto data = node->ClassType;
+			// ast_print(data., );
+// 			ast_print(data., );
+// 			ast_print(data., );
     } break;
     case Ast_StructType: {
-      auto data = node->StructType.token;
+      auto data = node->StructType;
+			// ast_print(data., );
+// 			ast_print(data., );
+// 			ast_print(data., );
     } break;
     default:
       break;
   }
 }
 
-AstNode* ast_consolidate_selector(AstNode* node) {
-  // ignore if not selector expr
-  if(node->kind != Ast_SelectorExpr)
-    return node;
-
-  // if there is only one expression in the selector
-  // return the expr
-  if(node->SelectorExpr.next == nullptr)
-    return node->SelectorExpr.expr;
-
-  AstNode* curr = node->SelectorExpr.next;
-  while(curr) {
-    if(curr->kind == Ast_FuncCall)
-      curr->kind = Ast_MethodCall;
-  }
-
-  return node;
-}
 
 AstNode* ast_node(AstNodeKind _kind) {
 	AstNode* node = new AstNode; // not efficient, maybe a pool allocator
@@ -468,24 +482,16 @@ AstNode* ast_bad_expr(Token begin, Token end) {
 	node->BadExpr.end = end;
 	return node;
 }
-AstNode* ast_func_call(Token begin, Token end, AstNode* name, AstNode* type, const AstNodeList& actuals) {
+AstNode* ast_func_call(Token begin, Token end, AstNode* name, const AstNodeList& actuals) {
 	AstNode* node = ast_node(Ast_FuncCall);
 	node->FuncCall.begin = begin;
 	node->FuncCall.end = end;
 	node->FuncCall.name = name;
-	node->FuncCall.type = type;
+	// node->FuncCall.type = type;
 	node->FuncCall.actuals = actuals;
 	return node;
 }
-AstNode* ast_method_call(Token begin, Token end, AstNode* name, AstNode* type, const AstNodeList& actuals) {
-	AstNode* node = ast_node(Ast_MethodCall);
-	node->MethodCall.begin = begin;
-	node->MethodCall.end = end;
-	node->MethodCall.name = name;
-	node->MethodCall.type = type;
-	node->MethodCall.actuals = actuals;
-	return node;
-}
+
 AstNode* ast_unary_expr(Token op, AstNode* expr) {
 	AstNode* node = ast_node(Ast_UnaryExpr);
 	node->UnaryExpr.op = op;
@@ -513,10 +519,11 @@ AstNode* ast_incdec_expr(Token op, AstNode* expr) {
 	return node;
 }
 
-AstNode* ast_index_expr(Token begin, Token end, AstNode* index) {
+AstNode* ast_index_expr(Token begin, Token end, AstNode* operand, AstNode* index) {
   AstNode* node = ast_node(Ast_IndexExpr);
   node->IndexExpr.begin = begin;
   node->IndexExpr.end = end;
+  node->IndexExpr.operand = operand;
   node->IndexExpr.index = index;
   return node;
 }
@@ -627,7 +634,6 @@ AstNode* ast_defer_stmt(Token token, AstNode* name) {
   return node;
 }
 AstNode* ast_bad_decl() {
-  std::cout <<  "Bad Decl" << std::endl;
   AstNode* node = ast_node(Ast_BadDecl);
   return node;
 }
@@ -644,10 +650,9 @@ AstNode* ast_type_spec(AstNode* type) {
   node->TypeSpec.type = type;
   return node;
 }
-AstNode* ast_funct_method_decl(Token token, AstNode* name, AstNode* type, AstNode* body) {
+AstNode* ast_funct_method_decl(Token token, AstNode* type, AstNode* body) {
   AstNode* node = ast_node(Ast_FunctMethodDecl);
   node->FunctMethodDecl.token = token;
-  node->FunctMethodDecl.name = name;
   node->FunctMethodDecl.type = type;
   node->FunctMethodDecl.body = body;
   return node;
@@ -661,11 +666,11 @@ AstNode* ast_import_spec(Token relPath, std::string fullPath, AstNode* name, con
   return node;
 }
 
-AstNode* ast_field_spec(Token token, AstNode* name, AstNode* type) {
+AstNode* ast_field_spec(Token token, const AstNodeList& name, AstNode* type) {
   AstNode* node = ast_node(Ast_FieldSpec);
   node->FieldSpec.token = token;
   node->FieldSpec.name = name;
-  node->FieldSpec.name = type;
+  node->FieldSpec.type= type;
   return node;
 }
 
@@ -686,10 +691,21 @@ AstNode* ast_primative_type(Token token) {
   return node;
 }
 
-AstNode* ast_method_type(Token token, AstNode* name, const AstNodeList& params, const AstNodeList& returns) {
+AstNode* ast_function_type(Token token, AstNode* name, const AstNodeList& params, const AstNodeList& returns) {
+  AstNode* node = ast_node(Ast_FunctionType);
+  node->FunctionType.token = token;
+  node->FunctionType.name = name;
+  node->FunctionType.params = params;
+  node->FunctionType.returns = returns;
+  return node;
+}
+
+AstNode* ast_method_type(Token token, AstNode* name, AstNode* classOf,
+    const AstNodeList& params, const AstNodeList& returns) {
   AstNode* node = ast_node(Ast_MethodType);
   node->MethodType.token = token;
   node->MethodType.name = name;
+  node->MethodType.classOf = classOf;
   node->MethodType.params = params;
   node->MethodType.returns = returns;
   return node;

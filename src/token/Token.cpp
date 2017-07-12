@@ -164,6 +164,7 @@ namespace token {
 			switch(m_type) {
 				case Keyword:
 				case Operator:
+				case PrimativeType:
 					break;
 				case Identifier:
 					std::cout << get_string();

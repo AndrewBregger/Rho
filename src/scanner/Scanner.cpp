@@ -102,10 +102,12 @@ namespace scanner {
 					if(m_ch == '.') {
 						if(peak(1) == '.') {
 							next();
+							next();
 							token = TKN_ELS;
 						}
 						else {
 							token = TKN_DPER;
+							next();
 						}
 					}
 					else {

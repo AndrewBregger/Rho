@@ -79,7 +79,7 @@ int main(int argc, char* const* argv) {
 
   parse::Parser parser(file);
   parser.init();
-  ast::AstNode* expr = parser.parse_expr(false);
+  ast::AstNode* expr = parser.parse_stmt();
   // parser.parse_files();
   ast::ast_print(expr, 0);
 	// ast::AstFile* ast = parser.parse_file();

@@ -1,3 +1,7 @@
+Have better error reporting. Refactor the error outputs to be more robust and have better handling of how errors are created and outputted to terminal.
+
+
+
 Assume the class Vector3f is already declared.
 
 option 1:

@@ -83,6 +83,7 @@ Token_Type(TKN_CONST, "const") \
 Token_Type(TKN_MUT, "mut") \
 Token_Type(TKN_IF, "if") \
 Token_Type(TKN_FOR, "for") \
+Token_Type(TKN_WHILE, "while")\
 Token_Type(TKN_ELSE, "else") \
 Token_Type(TKN_ELIF, "else if") \
 Token_Type(TKN_LOOP, "loop") \
@@ -91,7 +92,7 @@ Token_Type(TKN_STRUCT, "struct") \
 Token_Type(TKN_USING, "using") \
 Token_Type(TKN_NAMESPACE, "namespace") \
 Token_Type(TKN_RETURN, "return") \
-Token_Type(TKN_SWTICH, "switch") \
+Token_Type(TKN_MATCH, "match") \
 Token_Type(TKN_DEFER, "defer") \
 Token_Type(TKN_WORKSPACE, "workspace") \
 Token_Type(TKN_NEW, "new") \

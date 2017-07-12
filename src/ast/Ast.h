@@ -22,6 +22,27 @@ inline void add_node(std::vector<T>& _list, const T& _node) {
 	_list.push_back(_node);
 }
 
+typedef int FunctionFlags;
+#define FunctConst 1 << 0
+#define FunctMember 1 << 1
+#define FunctInline 1 << 2
+#define FunctNotInline 1 << 3
+#define FunctForiegn 1 << 4
+#define FunctStatic 1 << 10
+#define FunctPublic 1 << 11
+#define FunctPrivate 1 << 12
+#define FunctGeneric 1 << 13
+
+typedef int VariableFlags;
+#define VarConst 1 << 0
+#define VarHasIgnore 1 << 1
+#define VarPublic 1 << 10
+#define VarPrivate 1 << 11
+#define VarStatic 1 << 12
+#define VarGenaric 1 << 13
+
+//typedef int FieldFlags;
+
 struct AstFile {
 	// file info
 	size_t m_id;
@@ -32,7 +53,8 @@ struct AstFile {
 	Token m_prevToken;
 	size_t m_tokenIndex{0};
 	size_t m_scopeLevel{0};
-
+  
+  bool inClassDecl;
 	std::vector<Token> m_tokens;
 	std::vector<AstNode*> m_decls;
 	AstNode* currParent{nullptr}; // null if in global scope
@@ -53,11 +75,10 @@ struct AstFile {
 Ast_Node_Kind(_BeginExpr, "", int) \
 	Ast_Node_Kind(BadExpr, "bad expression", struct { Token begin, end; }) \
 	Ast_Node_Kind(FuncCall, "function call", struct { AstNode* name,* type; AstNodeList actuals; Token begin, end;}) \
-	Ast_Node_Kind(MethodCall, "method call", struct { AstNode* name,* type; AstNodeList actuals; Token begin, end;}) \
 	Ast_Node_Kind(UnaryExpr, "unary expression", struct {Token op; AstNode* expr; }) \
 	Ast_Node_Kind(BinaryExpr, "binary expression", struct {Token op; AstNode* lhs,* rhs; }) \
 	Ast_Node_Kind(ParenExpr, "parenthesis expression", struct { AstNode* expr; Token begin, end; }) \
-	Ast_Node_Kind(IndexExpr, "index expression", struct { Token begin, end; AstNode* index;}) \
+	Ast_Node_Kind(IndexExpr, "index expression", struct { Token begin, end; AstNode* operand,* index;}) \
 	Ast_Node_Kind(SliceExpr, "slice expression", struct { Token begin, end, inclusion; AstNode* startExp, *endExp;}) \
 	Ast_Node_Kind(DerefExpr, "dereference expression", struct {Token token; AstNode* expr; }) \
 	Ast_Node_Kind(SelectorExpr, "selector expression", struct {Token token; AstNode* expr,* next,* elems; }) \
@@ -81,18 +102,19 @@ Ast_Node_Kind(_BeginStmt, "", int) \
 Ast_Node_Kind(_EndStmt, "", int) \
 Ast_Node_Kind(_BeginDecl, "", int) \
 	Ast_Node_Kind(BadDecl, "bad declaration", int) \
-	Ast_Node_Kind(VariableSpec, "varialble specificaiton", struct { Token token; AstNodeList names, values; AstNode* type; }) \
+	Ast_Node_Kind(VariableSpec, "varialble specificaiton", struct { Token token; AstNodeList names, values; AstNode* type; VariableFlags flags; }) \
 	Ast_Node_Kind(TypeSpec, "type specificaiton", struct { AstNode* type; }) \
-	Ast_Node_Kind(FunctMethodDecl, "function method declaration", struct { Token token; AstNode* name, *type, *body; }) /*maybe the name isnt needed here*/ \
+	Ast_Node_Kind(FunctMethodDecl, "function method declaration", struct { Token token; AstNode* type, *body; }) /*maybe the name isnt needed here*/ \
 	Ast_Node_Kind(ImportSpec, "import specificaiton", struct {Token relPath; std::string fullPath; AstNode* name; AstNodeList importNames;}) \
 	Ast_Node_Kind(MethodDeclBlock, "method declaration block", struct {Token token; AstNode* type; AstNodeList methods; }) /*temorary construct for parsing methods*/ \
-	Ast_Node_Kind(FieldSpec, "field spec", struct { Token token; AstNode* name; AstNode* type; }) \
+	Ast_Node_Kind(FieldSpec, "field spec", struct { Token token; AstNodeList name; AstNode* type; VariableFlags flags;}) \
 Ast_Node_Kind(_EndDecl, "", int) \
 Ast_Node_Kind(_BeginType, "", int) \
 	Ast_Node_Kind(BadType, "", int) \
 	Ast_Node_Kind(HelperType, "helper type", struct { AstNode* type; }) \
 	Ast_Node_Kind(PrimativeType, "primative type", Token) \
-	Ast_Node_Kind(MethodType, "method type", struct { Token token; AstNode* name; AstNodeList params, returns; }) \
+	Ast_Node_Kind(MethodType, "method type", struct { Token token; AstNode* name; AstNode* classOf; AstNodeList params, returns; FunctionFlags flags;}) \
+	Ast_Node_Kind(FunctionType, "function type", struct { Token token; AstNode* name; AstNodeList params, returns; FunctionFlags flags;}) \
 	Ast_Node_Kind(PointerType, "pointer type", struct { Token token; AstNode* type; }) \
 	Ast_Node_Kind(ArrayType, "array type", struct { Token token; AstNode* size, *type; }) \
 	Ast_Node_Kind(DynamicArrayType, "dynamic array type", struct { Token token; AstNode* type; }) \
@@ -130,13 +152,6 @@ Token ast_token(AstNode* node);
 
 void ast_print(AstNode* node, int indent);
 
-// will begin parsed, anything that looks like a function call
-// will be parsed as so. Therefore, if the function call is actually a
-// method it needs to be changed to reflect that.
-// Also, if there is only one node, then it will
-// be taken out of the selector node.
-AstNode* ast_consolidate_selector(AstNode* node);
-
 bool ast_is_decl(AstNode* node);
 bool ast_is_expr(AstNode* node);
 bool ast_is_stmt(AstNode* node);
@@ -151,13 +166,13 @@ AstNode* ast_basic_lit(Token token);
 AstNode* ast_basic_directive(Token token, const std::string& name);
 AstNode* ast_compound_literal(Token begin, Token end, AstNode* type, const AstNodeList& literals);
 AstNode* ast_bad_expr(Token begin, Token end);
-AstNode* ast_func_call(Token begin, Token end, AstNode* name, AstNode* type, const AstNodeList& actuals);
+AstNode* ast_func_call(Token begin, Token end, AstNode* type, const AstNodeList& actuals);
 AstNode* ast_method_call(Token begin, Token end, AstNode* name, AstNode* type, const AstNodeList& actuals);
 AstNode* ast_unary_expr(Token op, AstNode* expr);
 AstNode* ast_binary_expr(Token op, AstNode* lhs, AstNode* rhs);
 AstNode* ast_paren_expr(Token begin, Token end, AstNode* expr);
 AstNode* ast_incdec_expr(Token op, AstNode* expr);
-AstNode* ast_index_expr(Token begin, Token end, AstNode* index);
+AstNode* ast_index_expr(Token begin, Token end, AstNode* operand,AstNode* index);
 AstNode* ast_slice_expr(Token begin, Token end, Token inclusion, AstNode* startExp, AstNode* endExp);
 AstNode* ast_deref_expr(Token token, AstNode* expr);
 AstNode* ast_selector_expr(Token token, AstNode* expr, AstNode* next, AstNode* elem);
@@ -176,13 +191,14 @@ AstNode* ast_defer_stmt(Token token, AstNode* name);
 AstNode* ast_bad_decl();
 AstNode* ast_variable_spec(Token token, const AstNodeList& names, const AstNodeList& values, AstNode* type);
 AstNode* ast_type_spec(AstNode* type);
-AstNode* ast_funct_method_decl(Token token, AstNode* name, AstNode* type, AstNode* body);
+AstNode* ast_funct_method_decl(Token token, ast::AstNode* type, ast::AstNode* body);
 AstNode* ast_import_spec(Token relPath, std::string fullPath, AstNode* name, const AstNodeList& importNames);
-AstNode* ast_field_spec(Token token, AstNode* name, AstNode* type);
+AstNode* ast_field_spec(Token token, const AstNodeList& name, AstNode* type);
 AstNode* ast_bad_type();
 AstNode* ast_helper_type(AstNode* type);
 AstNode* ast_primative_type(Token token);
-AstNode* ast_method_type(Token token, AstNode* name, const AstNodeList& params, const AstNodeList& returns);
+AstNode* ast_function_type(Token token, AstNode* name, const AstNodeList& params, const AstNodeList& returns);
+AstNode* ast_method_type(Token token, AstNode* name, AstNode* classOf, const AstNodeList& params, const AstNodeList& returns);
 AstNode* ast_pointer_type(Token token, AstNode* type);
 AstNode* ast_array_type(Token token, AstNode* size, AstNode* type);
 AstNode* ast_dynamic_array_type(Token token, AstNode* type);

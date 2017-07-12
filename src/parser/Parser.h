@@ -48,10 +48,12 @@ namespace parse {
 			token::Token expect_token(token::Token_Type _type);
 
 
-			bool check_token(token::Token_Type _type);
-			bool allow_token(token::Token_Type _type);
+			bool __check_token(const char* where, int line, token::Token_Type _type);
+			bool __allow_token(const char* where, int line, token::Token_Type _type);
 
 			bool expect_operator();
+
+      bool expect_semicolon(const char* where);
 
 			/// @}
 
@@ -61,19 +63,44 @@ namespace parse {
 
 			ast::AstNode* parse_stmt();
 
+      ast::AstNode* parse_simple_stmt();
+
+      ast::AstNode* parse_while_stmt();
+
+      ast::AstNode* parse_for_stmt();
+
+      ast::AstNode* parse_if_stmt();
+
+      ast::AstNode* parse_match_stmt();
+
+      ast::AstNode* parse_defer_stmt();
+
 			ast::AstNode* parse_import_stmt();
 
-			ast::AstNode* parse_decl_expr();
+			ast::AstNode* parse_decl();
 
 			ast::AstNode* parse_variable_decl();
 
-			ast::AstNode* parse_type_decl();
+			ast::AstNode* parse_type_decl(ast::AstNode* id);
 
-			ast::AstNode* parser_function_spec();
+			ast::AstNode* parse_function_decl(ast::AstNode* id);
+
+			ast::AstNode* parse_function_type(ast::AstNode* id,
+          ast::AstNode* reciever, bool isConst);
+
+      ast::AstNode* parse_function_reciever(bool& isConst);
+
+      ast::AstNodeList parse_function_return();
 
 			ast::AstNode* parse_type_or_ident();
 
 			ast::AstNode* parse_field();
+
+      ast::AstNodeList parse_field_list();
+
+      ast::AstNode* parse_body();
+
+      ast::AstNode* parse_block_stmt();
 
 			ast::AstNode* parse_operand(bool _lhs);
 
@@ -107,6 +134,11 @@ namespace parse {
 
 			ast::AstNode* parse_type();
 
+      ast::AstNode* parse_field_tags(ast::AstNode* field);
+
+      ast::AstNode* parse_function_tags(ast::AstNode* funct);
+
+      ast::AstNode* parse_variable_tags(ast::AstNode* var);
 
 		private:
 

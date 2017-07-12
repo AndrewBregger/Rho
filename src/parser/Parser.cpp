@@ -27,7 +27,7 @@ namespace parse {
  #define debug_print(msg, ...) __debug_print__(__FUNCTION__, __LINE__, msg, ##__VA_ARGS__)
 
 #define check_token(type) __check_token(__FUNCTION__, __LINE__, type)
-#define allow_token(type) __check_token(__FUNCTION__, __LINE__, type)
+#define allow_token(type) __allow_token(__FUNCTION__, __LINE__, type)
 
 	Parser::
 	Parser(sys::File* _file) {
@@ -129,6 +129,7 @@ namespace parse {
 		}
 		m_ast->m_prevToken = m_ast->m_currToken;
 		m_ast->m_currToken = m_ast->m_tokens.at(m_ast->m_tokenIndex);
+		// debug_print("Next Token: %s\n", token::token_string(m_ast->m_currToken.token()).c_str());
 	}
 
 	Token
@@ -178,6 +179,7 @@ namespace parse {
 			// report error
 			report_error(m_ast, "Expecting token '%s', found '%s'\n",
 			 token_string(_type).c_str(), token_string(prev.token()).c_str());
+			 return Token(TKN_INVALID, Special, prev.location());
 		}
 		next_token();
 		return prev;
@@ -447,7 +449,7 @@ namespace parse {
 				AstNodeList members;
 				while(m_ast->m_currToken.token() != TKN_RBRACK) {
 					AstNode* field = parse_field();
-					field = parse_field_tags(field);
+					field = parse_variable_tags(field);
 					if(!expect_semicolon("member variable declaration"))
 						return ast_bad_decl();
 					add_node(members, field);
@@ -475,13 +477,13 @@ namespace parse {
 		bool isConst;
 		AstNode* reciever = parse_function_reciever(isConst);
 		AstNode* type = parse_function_type(id, reciever, isConst);
+		
 		if(!type) return nullptr;
-
 		AstNode* body;
 		AstNode* funct = ast_funct_method_decl(ast_token(type), type, nullptr);
 		AstNode* oldParent = m_ast->currParent;
 		m_ast->currParent = funct;
-    m_ast->m_currToken.print(0);
+ 
 		if(check_token(TKN_LBRACK)) {
 			body = parse_body(); // parse_block_stmt();
 		}
@@ -492,7 +494,7 @@ namespace parse {
     ast_print(body, 0);
 		funct->FunctMethodDecl.body = body;
 		m_ast->currParent = oldParent;
-		return funct;
+		return parse_function_tags(funct);
 	}
 
 	ast::AstNode*
@@ -501,26 +503,28 @@ namespace parse {
 		AstNodeList returns;
 		AstNodeList params;
 		expect_token(TKN_LPAREN);
-		if(!check_token(TKN_RPAREN))
+		if(check_token(TKN_IDENTIFIER))
 			params = parse_field_list();
 		expect_token(TKN_RPAREN);
-    debug_print("Function Type: num params: %d\n", params.size());
-		if(check_token(TKN_RARR))
-			returns = parse_function_return();
-    
-    debug_print("Function Type: num returns: %d\n", params.size());
+    // debug_print("Function Type: num params: %d\n", params.size());
+
 
 		AstNode* decl;
-
+		if(check_token(TKN_RARR))
+			returns = parse_function_return();
+		// debug_print("Function Type: num returns: %d\n", returns.size());
 		if(reciever)
 			decl = ast_method_type(ast_token(id), id, reciever, params, returns);
 		else
 			decl = ast_function_type(ast_token(id), id, params, returns);
-		if(isConst) {
-			if(reciever)
+		if(reciever) {
+			decl->MethodType.flags |= FunctMember;
+			if(isConst)
 				decl->MethodType.flags |= FunctConst;
 		}
-		return parse_function_tags(decl);
+		decl = parse_function_tags(decl);
+	
+		return decl;
 	}
 
 	ast::AstNodeList
@@ -531,18 +535,27 @@ namespace parse {
 		bool expectRParen{false};
 		if(allow_token(TKN_LPAREN))
 			expectRParen = true;
-    m_ast->m_currToken.print(1);
-		if(check_token(TKN_IDENTIFIER) ||
-			 m_ast->m_currToken.type() == PrimativeType) {
-			if(peak_token().token() == TKN_COL || peak_token().token() == TKN_COM) {
-				// named return type
-        debug_print("Parsing named types\n");
+		if(check_token(TKN_IDENTIFIER) || m_ast->m_currToken.type() == PrimativeType) {
+			int counter = 1;
+			bool foundCol = false;
+			Token t;
+			// NOTE(Andrew): this is temporary
+			// TODO(Andrew): Fix this
+			while((t = peak_token(counter)).token() != TKN_LBRACK) {
+				if(t.token() == TKN_COL)
+					foundCol = true;
+				counter++;
+			}
+			if(foundCol) {
+				// named returns
+				// debug_print("Parsing return field list\n");
 				list = parse_field_list();
 			}
-			else if(check_token(TKN_COM)) {
-				// only return type
+			else {
+				// not named returns
+				// debug_print("Parsing return type list\n");
 				do {
-					add_node(list, parse_type_or_ident());
+					add_node(list, parse_type());
 				} while(allow_token(TKN_COM));
 			}
 		}
@@ -559,8 +572,9 @@ namespace parse {
 	ast::AstNode*
 	Parser::
 	parse_function_reciever(bool& isConst) {
-		if(allow_token(TKN_MULT))
+		if(!allow_token(TKN_MULT))
 			isConst = true;
+
 		if(check_token(TKN_IDENTIFIER))
 			return parse_identifier();
 		else
@@ -639,7 +653,14 @@ namespace parse {
 				break;
 		}
 		// no valid type found
+		debug_print("return nullptr\n");
 		return nullptr;
+	}
+	
+	ast::AstNode*
+	Parser::
+	parse_type() {
+		return parse_type_or_ident();
 	}
 
 	ast::AstNode*
@@ -650,7 +671,7 @@ namespace parse {
 		AstNode* type = parse_type_or_ident();
 
 		AstNode* field = ast_field_spec(name.front()->Ident.token, name, type);
-		field = parse_field_tags(field);
+		field = parse_variable_tags(field);
 		return field;
 	}
 
@@ -892,10 +913,7 @@ namespace parse {
 		AstNodeList actuals = parse_rhs_expr_list();
 		// custom expr list parser
 		Token close_paren = expect_token(TKN_RPAREN);
-
-		// I dont know the type yet
-		// I guess I could get it.
-		return ast_func_call(ast_token(operand), close_paren, operand, nullptr, actuals);
+		return ast_func_call(ast_token(operand), close_paren, operand, actuals);
 	}
 
 	ast::AstNode*
@@ -977,6 +995,9 @@ namespace parse {
 	parse_identifier() {
 		debug_print("parse id\n");
 		Token token = expect_token(TKN_IDENTIFIER);
+		// if(token.token() == TKN_INVALID) {
+// 			return nullptr;
+// 		}
 		const std::string& str = token.get_string();
 		ast::Atom* atom;
 		// check if it is the ignore id
@@ -1001,6 +1022,7 @@ namespace parse {
 
 /*--------------------------- Tag Parsing -------------------------------*/
 
+/*
 ast::AstNode*
 Parser::
 parse_field_tags(ast::AstNode* field) {
@@ -1008,6 +1030,7 @@ parse_field_tags(ast::AstNode* field) {
 		report_error(m_ast, "function parameters are not permmited to have tags\n");
 	return field;
 }
+*/
 
 ast::AstNode*
 Parser::
@@ -1022,7 +1045,14 @@ parse_variable_tags(ast::AstNode* var) {
 }
 
 /*--------------------------- Error Reporting -------------------------------*/
-
+	
+void print_spaces(int spaces) {
+	std::string temp;
+	while(--spaces)
+		temp += ' ';
+	std::cout << temp;
+}
+	
 	void report_error(AstFile* _file, const char* _msg, ...) {
 		Location loc = _file->m_currToken.location();
 		printf("%s\t%lu|%lu-%lu: ", _file->m_file->GetPath().c_str(), loc.m_line, loc.m_column, loc.m_ecolumn);
@@ -1030,6 +1060,10 @@ parse_variable_tags(ast::AstNode* var) {
 		va_list va;
 		va_start(va, _msg);
 		vprintf(_msg, va);
+		printf("%zu\t%s", loc.m_line, _file->m_file->GetLine(loc.m_line).c_str());
+		printf("\t");
+		print_spaces(loc.m_column);
+		printf("^\n");
 		++_file->m_errorCount;
 	}
 
