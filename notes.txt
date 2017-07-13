@@ -1,4 +1,22 @@
-Have better error reporting. Refactor the error outputs to be more robust and have better handling of how errors are created and outputted to terminal.
+Have better error reporting. Refactor the error outputs to be more robust and have better 
+handling of how errors are created and outputted to terminal.
+
+atomic block of code:
+Allow code writen within an atomic block will be run sequentially without
+stopping.
+
+Maybe add some tags to it that give more information about how to treat this atomic.
+These tags will be more for multithreaded programs to telit whether it can execute other
+threads that do not touch the data that is being touched by this atomic block or if any
+other thread can run just, the thread this execution is on can not be blocked.
+
+atomic {
+  stmt list
+}
+
+Consider optional variables. IE:
+  x: ?i32 = null;
+  x: ?i32 = 10;
 
 
 
