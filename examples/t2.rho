@@ -1,0 +1,3 @@
+Vector3f :: struct {
+  x, y, z: f32;
+}

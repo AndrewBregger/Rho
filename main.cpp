@@ -52,6 +52,13 @@ void print_token(const Token& _token) {
   }
 }
 
+void print_files(ast::AstFile* _file) {
+  std::cout << "File: " << _file->m_file->GetPath() << std::endl;
+  std::cout << "ID: " << _file->m_id << std::endl;
+  for(auto i : _file->m_decls)
+    ast::ast_print(i, 0);
+}
+
 int main(int argc, char* const* argv) {
 
   std::string fileName;
@@ -67,8 +74,6 @@ int main(int argc, char* const* argv) {
 
     }
   }
-
-  std::cout << fileName << std::endl;
 	sys::File* file = sys::File::read_file(fileName);
 
   // scanner::Scanner scanner(file);
@@ -77,11 +82,13 @@ int main(int argc, char* const* argv) {
   //   print_token(t);
   // }
 
-  parse::Parser parser(file);
-  parser.init();
-  ast::AstNode* expr = parser.parse_stmt();
-  // parser.parse_files();
-  ast::ast_print(expr, 0);
+  parse::Parser parser;
+  // ast::AstFile* ast = parser.parse_files();
+  auto asts = parser.parse_files(file);
+  for(const auto a : asts)
+    print_files(a);
+  // for(const auto& decl : ast->m_decls)
+  //   ast::ast_print(decl, 0);
 	// ast::AstFile* ast = parser.parse_file();
   // ast->print(0);
 	return 0;

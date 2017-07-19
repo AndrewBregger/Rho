@@ -33,7 +33,7 @@ namespace scanner {
 			std::vector<Token*> m_comments;
 			sys::File* m_file{nullptr};
 			std::string m_source;
-			
+
 		private:
 			char peak(size_t _index);
 			void next();

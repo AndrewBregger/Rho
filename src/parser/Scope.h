@@ -28,7 +28,7 @@ namespace parse {
 		UnionBody,
 		StuctBody,
 		ClassBody,
-		ForParam,		
+		ForParam,
 		Bracket, // covers if, while, loop, and for bodies
 	};
 

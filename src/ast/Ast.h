@@ -47,19 +47,21 @@ struct AstFile {
 	// file info
 	size_t m_id;
 	sys::File* m_file;
-		
+
 	// parser info
 	Token m_currToken;
 	Token m_prevToken;
 	size_t m_tokenIndex{0};
 	size_t m_scopeLevel{0};
-  
+
   bool inClassDecl;
 	std::vector<Token> m_tokens;
 	std::vector<AstNode*> m_decls;
+	std::vector<ast::AstNode*> m_imports;
 	AstNode* currParent{nullptr}; // null if in global scope
 	Scope* scope{nullptr};
 
+	std::string baseDir;
 	// error counting
 	size_t m_errorCount{0}, m_warningCount{0};
 };
@@ -70,6 +72,7 @@ struct AstFile {
 	Ast_Node_Kind(Ident, "identifier", struct {Token token; Atom* atom;}) \
 	Ast_Node_Kind(Keyword, "keyword", Token) \
 	Ast_Node_Kind(BasicLit, "basic literal", Token) \
+	Ast_Node_Kind(NullLit, "null literal", Token) \
 	Ast_Node_Kind(BasicDirective, "basic directive", struct { Token token; std::string name; }) \
 	Ast_Node_Kind(CompoundLiteral, "compound literal", struct { Token begin, end; AstNode* type; AstNodeList literals; }) \
 Ast_Node_Kind(_BeginExpr, "", int) \
@@ -85,11 +88,15 @@ Ast_Node_Kind(_BeginExpr, "", int) \
 	Ast_Node_Kind(CastExpr, "cast expression", struct {Token token; AstNode* type,* expr; }) \
 	Ast_Node_Kind(AddressExpr, "address expression", struct {Token token; AstNode* expr; }) \
 	Ast_Node_Kind(IncDecExpr, "increment decrement expression", struct { Token op; AstNode* expr; }) \
+	Ast_Node_Kind(NewExpr, "new expression", struct { Token token; AstNode* type; AstNodeList initExpr; /*for now im having constructors*/}) \
+	Ast_Node_Kind(DeleteExpr, "delete expression", struct { Token token; AstNode* name; }) \
 Ast_Node_Kind(_EndExpr, "", int) \
 Ast_Node_Kind(_BeginStmt, "", int) \
 	Ast_Node_Kind(BadStmt, "bad statement", int) \
 	Ast_Node_Kind(ExprStmt, "expression statement", struct { AstNode* expr; }) \
 	Ast_Node_Kind(EmptyStmt, "empty statement", Token) \
+	Ast_Node_Kind(BreakStmt, "break statement", Token) \
+	Ast_Node_Kind(ContinueStmt, "continue statement", Token) \
 	Ast_Node_Kind(AssignStmt, "assignment statement", struct { AstNodeList names, expr; Token op; }) \
 	Ast_Node_Kind(_BeginComplexStmt, "", int) \
 		Ast_Node_Kind(BlockStmt, "block statement", struct { AstNodeList stmts; Token begin, end; }) \
@@ -102,10 +109,11 @@ Ast_Node_Kind(_BeginStmt, "", int) \
 Ast_Node_Kind(_EndStmt, "", int) \
 Ast_Node_Kind(_BeginDecl, "", int) \
 	Ast_Node_Kind(BadDecl, "bad declaration", int) \
+	Ast_Node_Kind(TypeAliasSpec, "type alias specificaiton", struct { Token token; AstNode* type, *alias; }) \
 	Ast_Node_Kind(VariableSpec, "varialble specificaiton", struct { Token token; AstNodeList names, values; AstNode* type; VariableFlags flags; }) \
 	Ast_Node_Kind(TypeSpec, "type specificaiton", struct { AstNode* type; }) \
 	Ast_Node_Kind(FunctMethodDecl, "function method declaration", struct { Token token; AstNode* type, *body; }) /*maybe the name isnt needed here*/ \
-	Ast_Node_Kind(ImportSpec, "import specificaiton", struct {Token relPath; std::string fullPath; AstNode* name; AstNodeList importNames;}) \
+	Ast_Node_Kind(ImportSpec, "import specificaiton", struct {Token relPath; std::string fullPath; AstNode* name; AstNodeList importNames; size_t m_ast;}) \
 	Ast_Node_Kind(MethodDeclBlock, "method declaration block", struct {Token token; AstNode* type; AstNodeList methods; }) /*temorary construct for parsing methods*/ \
 	Ast_Node_Kind(FieldSpec, "field spec", struct { Token token; AstNodeList name; AstNode* type; VariableFlags flags;}) \
 Ast_Node_Kind(_EndDecl, "", int) \
@@ -152,6 +160,8 @@ Token ast_token(AstNode* node);
 
 void ast_print(AstNode* node, int indent);
 
+void ast_destroy(AstNode* node);
+
 bool ast_is_decl(AstNode* node);
 bool ast_is_expr(AstNode* node);
 bool ast_is_stmt(AstNode* node);
@@ -163,6 +173,7 @@ AstNode* ast_node(AstNodeKind _kind);
 AstNode* ast_ident(Token token, Atom* atom);
 AstNode* ast_keyword(Token token);
 AstNode* ast_basic_lit(Token token);
+AstNode* ast_null_lit(Token toke);
 AstNode* ast_basic_directive(Token token, const std::string& name);
 AstNode* ast_compound_literal(Token begin, Token end, AstNode* type, const AstNodeList& literals);
 AstNode* ast_bad_expr(Token begin, Token end);
@@ -177,10 +188,14 @@ AstNode* ast_slice_expr(Token begin, Token end, Token inclusion, AstNode* startE
 AstNode* ast_deref_expr(Token token, AstNode* expr);
 AstNode* ast_selector_expr(Token token, AstNode* expr, AstNode* next, AstNode* elem);
 AstNode* ast_address_expr(Token token, AstNode* expr);
-AstNode* ast_cast_expr(Token token, AstNode* type, AstNode* expr); 
+AstNode* ast_cast_expr(Token token, AstNode* type, AstNode* expr);
+AstNode* ast_new_expr(Token token, AstNode* type, const AstNodeList& initExpr);
+AstNode* ast_delete_expr(Token token, AstNode* name);
 AstNode* ast_bad_stmt();
 AstNode* ast_expr_stmt(AstNode* expr);
 AstNode* ast_empty_stmt(Token token);
+AstNode* ast_break_stmt(Token token);
+AstNode* ast_continue_stmt(Token token);
 AstNode* ast_assign_stmt(Token op, const AstNodeList& names, const AstNodeList& expr);
 AstNode* ast_block_stmt(Token begin, Token end, const AstNodeList& stmts);
 AstNode* ast_if_stmt(Token token, AstNode* cond, AstNode* body, AstNode* if_else);
@@ -194,6 +209,7 @@ AstNode* ast_type_spec(AstNode* type);
 AstNode* ast_funct_method_decl(Token token, ast::AstNode* type, ast::AstNode* body);
 AstNode* ast_import_spec(Token relPath, std::string fullPath, AstNode* name, const AstNodeList& importNames);
 AstNode* ast_field_spec(Token token, const AstNodeList& name, AstNode* type);
+AstNode* ast_type_alias_spec(Token token, AstNode* type, AstNode* alias);
 AstNode* ast_bad_type();
 AstNode* ast_helper_type(AstNode* type);
 AstNode* ast_primative_type(Token token);

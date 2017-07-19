@@ -1,26 +1,47 @@
+// #load "test.rho"
 // conditional imports will be added later
+#load "fmt.rho"
+
+type a = struct {
+};
+
+var x: struct {
+};
+
 /*
 #load "fmt.rho"
+#load "fmt.rho"
+
 // renames the import identifer to t and only imports fun1 and fun2
 #load "test.rho": t {
 	fun1,
 	fun2
 }
+
 // gets everything from the file and puts it into this file scope.
 #load "test2.rho": *
+*/
+
+// type vec3 = Vector3f;
+
+// type BinFunct = (a, b: int) -> int;
+
+/*
+foo :: (x: *f32) -> f32 {
+	if x == 1
+		return x - 1;
+	else if x == 2
+		return x - 5;
+	else
+    return x;
+}
 
 var a: i16;
 var b: i32;
 var b: Vector3f;
-*/
 
-x :: *Vector3f (c b: [..]f32) {
-	
-}
-
-/*
 // current thoughts on how to syntactically represent conditional imports
-#load "io_win.rho": io {read, write} if __PLATFORM__ == WIN32
+//#load "io_win.rho": io {read, write} if __PLATFORM__ == WIN32
 
 
 var b: Vector3f;
@@ -35,56 +56,40 @@ var map: [i16, string];
 var iomap: [string, fmt.io];
 
 // constant expression being used as array size
-var arr: [two * two];
+var arr: [two * two]int;
+var darr: [..]int;
 
 let a = 14;
-a :: (a: int, b: int) -> int {
-
-}
-
-a :: struct {
-
-}
-
-a :: class {
-
-}
-
+var a: byte;
 var h = "Hello, World";
-
-let PI = 3.14159; // later this will be expanded to allow for constant expressions.
 var g = 'd';
+var c, d, e, f: string;
 
-var a: byte = expr;
-
-var c = 5;
-
-/*
 foo :: (x: *f32) -> f32 {
 	if x == 1
-		return x - 1;
-	else if x == 2
-		return x - 5;
+		return *x - 1;
+	else if *x == 2
+		return *x - 5;
 	else
-    return x;
+    return *x;
 }
 
-foo2 :: (x: f32*, y: f32) -> f32, f32 {
+foo2 :: (x: f32, y: f32) -> f32, f32 {
     return x, y;
 }
 
-foo3 :: (x: f32, y: f32) -> a: f32,b: f32 {
+foo3 :: (x: f32, y: f32) -> a: f32, b: f32 {
     a = x;
     b = y;
 }
 
 TriangleMesh :: class {
-	vertices: [..]f32; // [..]Type is a dynamic array
+	vertices: [..]f32; //[..]Type is a dynamic array
 	normals: [..]f32;
 	indices: [..]u32;
 	vbo: u32;
 	vao: u32;
-	pub id: i32;
+	id: i32 pub static;
 }
 
 
@@ -102,22 +107,13 @@ draw :: TriangleMesh () {
 
 }
 
-impl TriangleMesh {
-	loadMesh :: (file: string) {
-
-	}
-
-	init_buffers :: () -> bool {
-
-	}
-}
-
 Point :: struct {
 	x, y, z: f32;
 }
 
 Point :: struct {
-	x, y, z : f32 = 0;
+	// a it cant hand default values yet
+	// x, y, z : f32 = 0;
+	x, y, z : f32;
 }
-*/
 */

@@ -9,6 +9,10 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
+
+#include <thread>
+#include <mutex>
+
 #include <stack>
 #include "ast/Ast.h"
 #include "token/Location.h"
@@ -32,13 +36,14 @@ namespace parse {
 	class Parser {
 		public:
 			/// @brief Parser Constructor
+			Parser();
+
+			/// @brief will parse all files needed by root file
 			/// @param _file the root file to be parsed
 			/// 			 (should contain main, if compiling executable)
-			Parser(sys::File* _file);
-
-			ast::AstFile* parse_files();
-		//private:
-			ParseFileError init();
+			std::vector<ast::AstFile*> parse_files(sys::File* _file);
+		private:
+			ParseFileError init(sys::File* _file);
 
 			/// @name Parsing utilities
 			/// @{
@@ -57,25 +62,50 @@ namespace parse {
 
 			/// @}
 
+			/// @name error correction
+			/// @{
+      void synchronize();
+      /// @}
+
+      enum StmtFlags : unsigned char {
+      	StmtNoSemi = 0,
+      	StmtExpectSemi = 1 << 0,
+  			StmtDefault = StmtExpectSemi
+      };
+
+      enum FieldFlags : unsigned char {
+      	FieldNoDefault = 0,
+      	FieldAllowDefault = 1 << 0, // allows default initialization of the field
+      	FieldAllowView = 1 << 2, // allows the field to have a view, pub keyword
+      	FieldDefault = FieldAllowDefault
+      };
+
 			ast::AstFile* parse_file();
+
+			bool setup_decls();
+
+			void parse_imports_files();
 
 			ast::AstNodeList parse_stmt_list();
 
-			ast::AstNode* parse_stmt();
+			ast::AstNode* parse_stmt(StmtFlags flags = StmtDefault);
 
-      ast::AstNode* parse_simple_stmt();
+      ast::AstNode* parse_simple_stmt(StmtFlags flags);
 
       ast::AstNode* parse_while_stmt();
 
       ast::AstNode* parse_for_stmt();
 
-      ast::AstNode* parse_if_stmt();
+			// this parameter is to handle else if cases
+      ast::AstNode* parse_if_stmt(token::Token_Type expected);
 
       ast::AstNode* parse_match_stmt();
 
       ast::AstNode* parse_defer_stmt();
 
 			ast::AstNode* parse_import_stmt();
+
+			ast::AstNode* parse_return_stmt();
 
 			ast::AstNode* parse_decl();
 
@@ -94,9 +124,9 @@ namespace parse {
 
 			ast::AstNode* parse_type_or_ident();
 
-			ast::AstNode* parse_field();
+			ast::AstNode* parse_field(FieldFlags flags = FieldDefault);
 
-      ast::AstNodeList parse_field_list();
+      ast::AstNodeList parse_field_list(FieldFlags flags = FieldDefault);
 
       ast::AstNode* parse_body();
 
@@ -138,17 +168,17 @@ namespace parse {
 
       ast::AstNode* parse_function_tags(ast::AstNode* funct);
 
-      ast::AstNode* parse_variable_tags(ast::AstNode* var);
+      ast::AstNode* parse_variable_tags(ast::AstNode* var, FieldFlags flags);
 
 		private:
 
 			ast::AstFile* m_ast;
 			std::vector<ast::AstNode*> m_specs; // all specs defined in the parsed file.
-			std::vector<ast::AstNode*> m_imports;
 		 	size_t m_errorCount{0}, m_warnCount{0};
 			sys::File* m_file{nullptr};
 			ast::AtomTable* m_atomTable{nullptr}; // @note(Andrew): Maybe this should
 																						// be for the entire program no per file.
+			std::vector<ast::AstFile*> m_asts;
 	};
 }
 

@@ -1,0 +1,5 @@
+#load "t2.rho"
+
+x :: () -> f32 {
+	return 1;
+}

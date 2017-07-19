@@ -19,7 +19,7 @@ bool is_number(char _ch) {
 }
 
 namespace scanner {
-	
+
 	Scanner::
 	Scanner(sys::File* _file, bool _cache) {
 		m_end = _file->content().m_size;
@@ -32,7 +32,7 @@ namespace scanner {
 
 	// Scanner::
 	// ~Scanner() {}
-	
+
 	Token
 	Scanner::
 	scan() {
@@ -336,7 +336,7 @@ namespace scanner {
 		}
 	}
 
-	
+
 	// const std::vector<Token>&
 	// Scanner::
 	// get_comments() {
@@ -470,7 +470,7 @@ namespace scanner {
 
     d = atoi(lit.c_str());
   	return  Token(token, Constant, diff(curr, m_loc), d);
-  }	
+  }
 
 	void
 	Scanner::

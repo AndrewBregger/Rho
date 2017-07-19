@@ -19,6 +19,8 @@ Consider optional variables. IE:
   x: ?i32 = 10;
 
 
+Figure out were initializer lists should go in parsing.
+
 
 Assume the class Vector3f is already declared.
 

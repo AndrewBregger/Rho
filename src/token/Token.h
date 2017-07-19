@@ -80,6 +80,7 @@ Token_Type(TKN_RPAREN, ")") \
 Token_Type(end_operator, "") \
 Token_Type(begin_keyword, "") \
 Token_Type(TKN_CONST, "const") \
+Token_Type(TKN_TYPE, "type") \
 Token_Type(TKN_MUT, "mut") \
 Token_Type(TKN_IF, "if") \
 Token_Type(TKN_FOR, "for") \
@@ -94,8 +95,14 @@ Token_Type(TKN_NAMESPACE, "namespace") \
 Token_Type(TKN_RETURN, "return") \
 Token_Type(TKN_MATCH, "match") \
 Token_Type(TKN_DEFER, "defer") \
+Token_Type(TKN_PUB, "pub") \
+Token_Type(TKN_INLINE, "inline") \
+Token_Type(TKN_STATIC, "static") \
+Token_Type(TKN_BREAK, "break") \
+Token_Type(TKN_CONTINUE, "continue") \
 Token_Type(TKN_WORKSPACE, "workspace") \
 Token_Type(TKN_NEW, "new") \
+Token_Type(TKN_DELETE, "delete") \
 Token_Type(TKN_UNION, "union") \
 Token_Type(TKN_ENUM, "enum") \
 Token_Type(TKN_ASM, "asm") \
@@ -146,7 +153,7 @@ bool is_operator(Token_Type _op);
 bool is_literal(Token_Type _lit);
 
 
-/// @brief Type of token. More of a helper for the 
+/// @brief Type of token. More of a helper for the
 ///  			 parser.
 enum Type {
 	Keyword,
@@ -173,7 +180,7 @@ const std::string& token_string(Token_Type _type);
 
 struct Token {
 	Token() = default;
-	
+
 	/// @brief operator and keyword constructor
 	/// @param _token the the underlying token
 	/// @param _type the type of the token
@@ -217,7 +224,7 @@ struct Token {
 
 	Token_Type token() const;
 	Type type() const;
-	
+
 	const char* get_string() const;
 	const Location& location() const;
 	int get_int() const;
