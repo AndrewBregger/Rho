@@ -11,10 +11,10 @@
 
 namespace sys {
 	File* File::m_current = nullptr;
-	
+
 	File::
 	File(const std::string& _path, FileMode _mode, const Content& _content, FileError _error) {
-		m_content = _content;	
+		m_content = _content;
 		m_path = _path;
 		m_mode = _mode;
 		if(_error != File_InvalidFile)
@@ -53,6 +53,7 @@ namespace sys {
 			if(ext != "rho")
 				err = File_WrongExtension;
 			f = new File(_path, Read, Content{buffer, size}, err);
+
 		}
 		else {
 
@@ -67,7 +68,8 @@ namespace sys {
 			}
 			f = new File(_path, Read, Content{0,0}, err);
 		}
-		fclose(file);
+		if(file)
+			fclose(file);
 		return f;
 	}
 
@@ -90,7 +92,7 @@ namespace sys {
 				m_lineCache.push_back(temp);
 				start = i + 1;
 			}
-		}	
+		}
 	}
 
 	void
@@ -113,8 +115,10 @@ namespace sys {
 		#error Windows not implemented
 	#else
 		char str[1024];
-		realpath(_filename.c_str(), str);
-		 return std::string(str);
+		if(realpath(_filename.c_str(), str))
+			return std::string(str);
+		else
+			return std::string();
 	#endif
 	}
 }

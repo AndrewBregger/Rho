@@ -14,11 +14,25 @@ class Scope;
 
 namespace ast {
 
-struct AstNode;
-typedef std::vector<AstNode*> AstNodeList;
+template <class T>
+using AstList = std::vector<T>;
+
+
+// needed for AstFile
+struct Ast_Node;
+struct Ast_ImportSpec;
+struct Ast_Expr;
+struct Ast_FieldSpec;
+struct Ast_Decl;
+struct Ast_Type;
+struct Ast_Stmt;
+struct Ast_ProcType;
+
+// struct AstNode;
+// typedef std::vector<AstNode*> AstNodeList;
 
 template <class T>
-inline void add_node(std::vector<T>& _list, const T& _node) {
+inline void add_node(ast::AstList<T>& _list, const T& _node) {
 	_list.push_back(_node);
 }
 
@@ -36,6 +50,7 @@ typedef int FunctionFlags;
 typedef int VariableFlags;
 #define VarConst 1 << 0
 #define VarHasIgnore 1 << 1
+#define VarInferType 1 << 4
 #define VarPublic 1 << 10
 #define VarPrivate 1 << 11
 #define VarStatic 1 << 12
@@ -56,9 +71,10 @@ struct AstFile {
 
   bool inClassDecl;
 	std::vector<Token> m_tokens;
-	std::vector<AstNode*> m_decls;
-	std::vector<ast::AstNode*> m_imports;
-	AstNode* currParent{nullptr}; // null if in global scope
+	std::vector<ast::Ast_Stmt*> m_stmts;
+	std::vector<ast::Ast_Decl*> m_decls;
+	std::vector<ast::Ast_ImportSpec*> m_imports;
+	Ast_Node* currParent{nullptr}; // null if in global scope
 	Scope* scope{nullptr};
 
 	std::string baseDir;
@@ -66,164 +82,704 @@ struct AstFile {
 	size_t m_errorCount{0}, m_warningCount{0};
 };
 
+AstFile* ast_file(sys::File* _file);
+
 // method and function call expr can problably be consolidated into one.
 // What will distinguish it from a function will be the type pointer.
 #define Ast_Node_Kinds \
-	Ast_Node_Kind(Ident, "identifier", struct {Token token; Atom* atom;}) \
-	Ast_Node_Kind(Keyword, "keyword", Token) \
-	Ast_Node_Kind(BasicLit, "basic literal", Token) \
-	Ast_Node_Kind(NullLit, "null literal", Token) \
-	Ast_Node_Kind(BasicDirective, "basic directive", struct { Token token; std::string name; }) \
-	Ast_Node_Kind(CompoundLiteral, "compound literal", struct { Token begin, end; AstNode* type; AstNodeList literals; }) \
-Ast_Node_Kind(_BeginExpr, "", int) \
-	Ast_Node_Kind(BadExpr, "bad expression", struct { Token begin, end; }) \
-	Ast_Node_Kind(FuncCall, "function call", struct { AstNode* name,* type; AstNodeList actuals; Token begin, end;}) \
-	Ast_Node_Kind(UnaryExpr, "unary expression", struct {Token op; AstNode* expr; }) \
-	Ast_Node_Kind(BinaryExpr, "binary expression", struct {Token op; AstNode* lhs,* rhs; }) \
-	Ast_Node_Kind(ParenExpr, "parenthesis expression", struct { AstNode* expr; Token begin, end; }) \
-	Ast_Node_Kind(IndexExpr, "index expression", struct { Token begin, end; AstNode* operand,* index;}) \
-	Ast_Node_Kind(SliceExpr, "slice expression", struct { Token begin, end, inclusion; AstNode* startExp, *endExp;}) \
-	Ast_Node_Kind(DerefExpr, "dereference expression", struct {Token token; AstNode* expr; }) \
-	Ast_Node_Kind(SelectorExpr, "selector expression", struct {Token token; AstNode* expr,* next,* elems; }) \
-	Ast_Node_Kind(CastExpr, "cast expression", struct {Token token; AstNode* type,* expr; }) \
-	Ast_Node_Kind(AddressExpr, "address expression", struct {Token token; AstNode* expr; }) \
-	Ast_Node_Kind(IncDecExpr, "increment decrement expression", struct { Token op; AstNode* expr; }) \
-	Ast_Node_Kind(NewExpr, "new expression", struct { Token token; AstNode* type; AstNodeList initExpr; /*for now im having constructors*/}) \
-	Ast_Node_Kind(DeleteExpr, "delete expression", struct { Token token; AstNode* name; }) \
-Ast_Node_Kind(_EndExpr, "", int) \
-Ast_Node_Kind(_BeginStmt, "", int) \
-	Ast_Node_Kind(BadStmt, "bad statement", int) \
-	Ast_Node_Kind(ExprStmt, "expression statement", struct { AstNode* expr; }) \
-	Ast_Node_Kind(EmptyStmt, "empty statement", Token) \
-	Ast_Node_Kind(BreakStmt, "break statement", Token) \
-	Ast_Node_Kind(ContinueStmt, "continue statement", Token) \
-	Ast_Node_Kind(AssignStmt, "assignment statement", struct { AstNodeList names, expr; Token op; }) \
-	Ast_Node_Kind(_BeginComplexStmt, "", int) \
-		Ast_Node_Kind(BlockStmt, "block statement", struct { AstNodeList stmts; Token begin, end; }) \
-		Ast_Node_Kind(IfStmt, "if statement", struct { Token token; AstNode* cond,* body, *if_else_stmt; }) \
-		Ast_Node_Kind(ForStmt, "for statement", struct { Token token; AstNode* init, *cond, *step, *body; }) \
-		Ast_Node_Kind(WhileStmt, "while statement", struct { Token token; AstNode* cond, *body; }) \
-		Ast_Node_Kind(ReturnStmt, "return statement", struct { Token token; AstNodeList expr; }) \
-		Ast_Node_Kind(DeferStmt, "defer statement", struct { Token token; AstNode* name; }) \
-	Ast_Node_Kind(_EndComplexStmt, "", int) \
-Ast_Node_Kind(_EndStmt, "", int) \
-Ast_Node_Kind(_BeginDecl, "", int) \
-	Ast_Node_Kind(BadDecl, "bad declaration", int) \
-	Ast_Node_Kind(TypeAliasSpec, "type alias specificaiton", struct { Token token; AstNode* type, *alias; }) \
-	Ast_Node_Kind(VariableSpec, "varialble specificaiton", struct { Token token; AstNodeList names, values; AstNode* type; VariableFlags flags; }) \
-	Ast_Node_Kind(TypeSpec, "type specificaiton", struct { AstNode* type; }) \
-	Ast_Node_Kind(FunctMethodDecl, "function method declaration", struct { Token token; AstNode* type, *body; }) /*maybe the name isnt needed here*/ \
-	Ast_Node_Kind(ImportSpec, "import specificaiton", struct {Token relPath; std::string fullPath; AstNode* name; AstNodeList importNames; size_t m_ast;}) \
-	Ast_Node_Kind(MethodDeclBlock, "method declaration block", struct {Token token; AstNode* type; AstNodeList methods; }) /*temorary construct for parsing methods*/ \
-	Ast_Node_Kind(FieldSpec, "field spec", struct { Token token; AstNodeList name; AstNode* type; VariableFlags flags;}) \
-Ast_Node_Kind(_EndDecl, "", int) \
-Ast_Node_Kind(_BeginType, "", int) \
-	Ast_Node_Kind(BadType, "", int) \
-	Ast_Node_Kind(HelperType, "helper type", struct { AstNode* type; }) \
-	Ast_Node_Kind(PrimativeType, "primative type", Token) \
-	Ast_Node_Kind(MethodType, "method type", struct { Token token; AstNode* name; AstNode* classOf; AstNodeList params, returns; FunctionFlags flags;}) \
-	Ast_Node_Kind(FunctionType, "function type", struct { Token token; AstNode* name; AstNodeList params, returns; FunctionFlags flags;}) \
-	Ast_Node_Kind(PointerType, "pointer type", struct { Token token; AstNode* type; }) \
-	Ast_Node_Kind(ArrayType, "array type", struct { Token token; AstNode* size, *type; }) \
-	Ast_Node_Kind(DynamicArrayType, "dynamic array type", struct { Token token; AstNode* type; }) \
-	Ast_Node_Kind(MapType, "map type", struct { Token begin, end; AstNode* key, *value; }) \
-	Ast_Node_Kind(EnumType, "enum type", struct { Token token; AstNode* name; AstNodeList members; }) \
-	Ast_Node_Kind(UnionType, "union type", struct { Token token; AstNode* name; AstNodeList members; }) \
-	Ast_Node_Kind(ClassType, "class type", struct { Token token; AstNode* name; AstNodeList extends, members, methods; }) /*add alignment and packing later*/ \
-	Ast_Node_Kind(StructType, "struct type", struct { Token token; AstNode* name; AstNodeList members; }) /*add alignment and packing later*/\
-Ast_Node_Kind(_EndType, "", int)
+	Ast_Node_Kind(Ident, "identifier") \
+	Ast_Node_Kind(BasicLit, "basic literal") \
+	Ast_Node_Kind(NullLit, "null literal") \
+	Ast_Node_Kind(BasicDirective, "basic directive")\
+	Ast_Node_Kind(CompoundLiteral, "compound literal")\
+	Ast_Node_Kind(NamedReturn, "named returns") \
+	Ast_Node_Kind(TypeReturn, "type returns") \
+Ast_Node_Kind(_BeginExpr, "")\
+	Ast_Node_Kind(BadExpr, "bad expression")\
+	Ast_Node_Kind(Operand, "operand")\
+	Ast_Node_Kind(FuncCall, "function call")\
+	Ast_Node_Kind(UnaryExpr, "unary expression")\
+	Ast_Node_Kind(BinaryExpr, "binary expression")\
+	Ast_Node_Kind(ParenExpr, "parenthesis expression")\
+	Ast_Node_Kind(IndexExpr, "index expression")\
+	Ast_Node_Kind(SliceExpr, "slice expression")\
+	Ast_Node_Kind(DerefExpr, "dereference expression")\
+	Ast_Node_Kind(SelectorExpr, "selector expression")\
+	Ast_Node_Kind(CastExpr, "cast expression")\
+	Ast_Node_Kind(AddressExpr, "address expression")\
+	Ast_Node_Kind(IncDecExpr, "increment decrement expression")\
+	Ast_Node_Kind(NewExpr, "new expression")\
+	Ast_Node_Kind(DeleteExpr, "delete expression")\
+Ast_Node_Kind(_EndExpr, "")\
+Ast_Node_Kind(_BeginStmt, "")\
+	Ast_Node_Kind(BadStmt, "bad statement")\
+	Ast_Node_Kind(SpecStmt, "specificaiton statement") \
+	Ast_Node_Kind(ExprStmt, "expression statement")\
+	Ast_Node_Kind(EmptyStmt, "empty statement")\
+	Ast_Node_Kind(BreakStmt, "break statement")\
+	Ast_Node_Kind(ContinueStmt, "continue statement")\
+	Ast_Node_Kind(AssignStmt, "assignment statement")\
+	Ast_Node_Kind(_BeginComplexStmt, "")\
+		Ast_Node_Kind(BlockStmt, "block statement")\
+		Ast_Node_Kind(IfStmt, "if statement")\
+		Ast_Node_Kind(ForStmt, "for statement")\
+		Ast_Node_Kind(WhileStmt, "while statement")\
+		Ast_Node_Kind(ReturnStmt, "return statement")\
+		Ast_Node_Kind(DeferStmt, "defer statement")\
+	Ast_Node_Kind(_EndComplexStmt, "")\
+Ast_Node_Kind(_EndStmt, "")\
+Ast_Node_Kind(_BeginDecl, "")\
+	Ast_Node_Kind(BadDecl, "bad declaration")\
+	Ast_Node_Kind(TypeAliasSpec, "type alias specificaiton")\
+	Ast_Node_Kind(VariableSpec, "variable specificaiton")\
+	Ast_Node_Kind(TypeSpec, "type specificaiton")\
+	Ast_Node_Kind(ProcSpec, "procedure specificaiton")\
+	Ast_Node_Kind(ImportSpec, "import specificaiton")\
+	Ast_Node_Kind(MethodDeclBlock, "method declaration block")\
+	Ast_Node_Kind(FieldSpec, "field spec")\
+Ast_Node_Kind(_EndDecl, "")\
+Ast_Node_Kind(_BeginType, "")\
+	Ast_Node_Kind(BadType, "")\
+	Ast_Node_Kind(NamedType, "named type")\
+	Ast_Node_Kind(PrimativeType, "primative type")\
+	Ast_Node_Kind(MethodType, "method type")\
+	Ast_Node_Kind(FunctionType, "function type")\
+	Ast_Node_Kind(PointerType, "pointer type")\
+	Ast_Node_Kind(ArrayType, "array type")\
+	Ast_Node_Kind(DynamicArrayType, "dynamic array type")\
+	Ast_Node_Kind(MapType, "map type")\
+	Ast_Node_Kind(EnumType, "enum type")\
+	Ast_Node_Kind(UnionType, "union type")\
+	Ast_Node_Kind(ClassType, "class type")\
+	Ast_Node_Kind(StructType, "struct type") \
+Ast_Node_Kind(_EndType, "")
 
 
 enum AstNodeKind {
-#define Ast_Node_Kind(_kind_name, ...) Ast_##_kind_name,
+#define Ast_Node_Kind(_kind_name, ...) Ast##_kind_name,
 	Ast_Node_Kinds
 #undef Ast_Node_Kind
 	Ast_Invalid,
 	Ast_NumNodes
 };
 
-#define Ast_Node_Kind(_kind, name, ...) typedef __VA_ARGS__ Ast##_kind;
-Ast_Node_Kinds
-#undef Ast_Node_Kind
-
-struct AstNode {
+struct Ast_Node {
 	AstNodeKind kind;
-#define Ast_Node_Kind(_kind, ...) Ast##_kind _kind;
-	Ast_Node_Kinds
-#undef Ast_Node_Kind
 
+	Ast_Node(AstNodeKind kind);
+	virtual ~Ast_Node();
+
+	virtual void print(int indent = 0);
+	virtual const token::Token& token() = 0;
 };
 
-const char* ast_string(AstNodeKind _kind);
+struct Ast_BadNode : public Ast_Node {
+	Ast_BadNode(AstNodeKind k);
+	virtual ~Ast_BadNode() {}
+	virtual const token::Token& token();
+};
 
-Token ast_token(AstNode* node);
+struct Ast_Identifier : public Ast_Node {
+	token::Token tok;
+	ast::Atom* name{nullptr};
+	bool ignoreId{false};
 
-void ast_print(AstNode* node, int indent);
+	Ast_Identifier(token::Token token, ast::Atom* a);
+	virtual ~Ast_Identifier();
 
-void ast_destroy(AstNode* node);
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
 
-bool ast_is_decl(AstNode* node);
-bool ast_is_expr(AstNode* node);
-bool ast_is_stmt(AstNode* node);
-bool ast_is_type(AstNode* node);
 
-AstFile* ast_file(sys::File* _file);
+struct Ast_Decl : public Ast_Node {
+	// Ast_Identifier* name;
 
-AstNode* ast_node(AstNodeKind _kind);
-AstNode* ast_ident(Token token, Atom* atom);
-AstNode* ast_keyword(Token token);
-AstNode* ast_basic_lit(Token token);
-AstNode* ast_null_lit(Token toke);
-AstNode* ast_basic_directive(Token token, const std::string& name);
-AstNode* ast_compound_literal(Token begin, Token end, AstNode* type, const AstNodeList& literals);
-AstNode* ast_bad_expr(Token begin, Token end);
-AstNode* ast_func_call(Token begin, Token end, AstNode* type, const AstNodeList& actuals);
-AstNode* ast_method_call(Token begin, Token end, AstNode* name, AstNode* type, const AstNodeList& actuals);
-AstNode* ast_unary_expr(Token op, AstNode* expr);
-AstNode* ast_binary_expr(Token op, AstNode* lhs, AstNode* rhs);
-AstNode* ast_paren_expr(Token begin, Token end, AstNode* expr);
-AstNode* ast_incdec_expr(Token op, AstNode* expr);
-AstNode* ast_index_expr(Token begin, Token end, AstNode* operand,AstNode* index);
-AstNode* ast_slice_expr(Token begin, Token end, Token inclusion, AstNode* startExp, AstNode* endExp);
-AstNode* ast_deref_expr(Token token, AstNode* expr);
-AstNode* ast_selector_expr(Token token, AstNode* expr, AstNode* next, AstNode* elem);
-AstNode* ast_address_expr(Token token, AstNode* expr);
-AstNode* ast_cast_expr(Token token, AstNode* type, AstNode* expr);
-AstNode* ast_new_expr(Token token, AstNode* type, const AstNodeList& initExpr);
-AstNode* ast_delete_expr(Token token, AstNode* name);
-AstNode* ast_bad_stmt();
-AstNode* ast_expr_stmt(AstNode* expr);
-AstNode* ast_empty_stmt(Token token);
-AstNode* ast_break_stmt(Token token);
-AstNode* ast_continue_stmt(Token token);
-AstNode* ast_assign_stmt(Token op, const AstNodeList& names, const AstNodeList& expr);
-AstNode* ast_block_stmt(Token begin, Token end, const AstNodeList& stmts);
-AstNode* ast_if_stmt(Token token, AstNode* cond, AstNode* body, AstNode* if_else);
-AstNode* ast_for_stmt(Token token, AstNode* init, AstNode* cond, AstNode* step, AstNode* body);
-AstNode* ast_while_stmt(Token token, AstNode* cond, AstNode* body);
-AstNode* ast_return_stmt(Token token, AstNodeList expr);
-AstNode* ast_defer_stmt(Token token, AstNode* name);
-AstNode* ast_bad_decl();
-AstNode* ast_variable_spec(Token token, const AstNodeList& names, const AstNodeList& values, AstNode* type);
-AstNode* ast_type_spec(AstNode* type);
-AstNode* ast_funct_method_decl(Token token, ast::AstNode* type, ast::AstNode* body);
-AstNode* ast_import_spec(Token relPath, std::string fullPath, AstNode* name, const AstNodeList& importNames);
-AstNode* ast_field_spec(Token token, const AstNodeList& name, AstNode* type);
-AstNode* ast_type_alias_spec(Token token, AstNode* type, AstNode* alias);
-AstNode* ast_bad_type();
-AstNode* ast_helper_type(AstNode* type);
-AstNode* ast_primative_type(Token token);
-AstNode* ast_function_type(Token token, AstNode* name, const AstNodeList& params, const AstNodeList& returns);
-AstNode* ast_method_type(Token token, AstNode* name, AstNode* classOf, const AstNodeList& params, const AstNodeList& returns);
-AstNode* ast_pointer_type(Token token, AstNode* type);
-AstNode* ast_array_type(Token token, AstNode* size, AstNode* type);
-AstNode* ast_dynamic_array_type(Token token, AstNode* type);
-AstNode* ast_map_type(Token begin, Token end, AstNode* key, AstNode* value);
-AstNode* ast_enum_type(Token token, AstNode* name, const AstNodeList& members);
-AstNode* ast_union_type(Token token, AstNode* name, const AstNodeList& members);
-AstNode* ast_class_type(Token token, AstNode* name, const AstNodeList& extends, const AstNodeList& members, const AstNodeList& methods);
-AstNode* ast_struct_type(Token token, AstNode* name, const AstNodeList& members);
+	Ast_Decl(AstNodeKind k);
+	virtual ~Ast_Decl();
 
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_TypeAlias : public Ast_Decl {
+	token::Token tok;
+	Ast_Identifier* alias;
+	Ast_Type* type;
+
+	Ast_TypeAlias(Ast_Identifier* a, Ast_Type* t);
+
+	virtual ~Ast_TypeAlias();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_VariableSpec : public Ast_Decl {
+	token::Token tok;
+	AstList<Ast_Identifier*> names;
+	AstList<Ast_Expr*> values;
+	Ast_Type* type;
+	VariableFlags flags;
+
+	Ast_VariableSpec(token::Token t, AstList<Ast_Identifier*> n,
+		AstList<Ast_Expr*> v, Ast_Type* ty, VariableFlags f = 0);
+
+	virtual ~Ast_VariableSpec();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_TypeSpec : public Ast_Decl {
+	Ast_Type* type;
+
+	Ast_TypeSpec(Ast_Type* t);
+	~Ast_TypeSpec();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ProcSpec : public Ast_Decl {
+	token::Token tok;
+	Ast_ProcType* type;
+	// maybe this should be Ast_BlockStmt
+	// that is the only stmt that is allowed
+	// as the body of a function.
+	Ast_Stmt* body;
+
+	Ast_ProcSpec(token::Token t, Ast_ProcType* ty, Ast_Stmt* b);
+	virtual ~Ast_ProcSpec();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ImportSpec : public Ast_Decl {
+	token::Token relPath;
+	std::string fullPath;
+	Ast_Identifier* name;
+	AstList<Ast_Identifier*> imports;
+	bool valid{false};
+
+	Ast_ImportSpec(token::Token p, const std::string& fp, Ast_Identifier* n,
+		const AstList<Ast_Identifier*>& i);
+	virtual ~Ast_ImportSpec();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_FieldSpec : public Ast_Decl {
+	token::Token tok;
+	AstList<Ast_Identifier*> names;
+	Ast_Type* type;
+	VariableFlags flags;
+
+	Ast_FieldSpec(token::Token t, const AstList<Ast_Identifier*>& n, Ast_Type* ty, VariableFlags f = 0);
+	virtual ~Ast_FieldSpec();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_Expr : public Ast_Node {
+	Ast_Expr(AstNodeKind k);
+	virtual void print(int indent = 0) override {}
+	virtual const token::Token& token() {}
+};
+
+struct Ast_BasicLiteral : public Ast_Expr {
+	token::Token tok;
+
+	Ast_BasicLiteral(Token t);
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_NullLiteral : public Ast_Expr {
+	token::Token tok;
+
+	Ast_NullLiteral(Token t);
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+// to represent an identifier being reference in an expression
+// this is begin done because i do not want to have Ast_Identifier inheriate from Ast_Expr.
+struct Ast_Operand : public Ast_Expr {
+	Ast_Identifier* name;
+
+	Ast_Operand(Ast_Identifier* id);
+	virtual ~Ast_Operand();
+
+	virtual	void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_FuncCall : public Ast_Expr {
+	Ast_Expr* name;
+	Ast_Type* type;
+	AstList<Ast_Expr*> actuals;
+
+	Ast_FuncCall(Ast_Expr* n, Ast_Type* t, const AstList<Ast_Expr*>& a);
+	virtual ~Ast_FuncCall();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_UnaryExpr : public Ast_Expr {
+	token::Token op;
+	Ast_Expr* expr;
+
+	Ast_UnaryExpr(token::Token t, Ast_Expr* e);
+	virtual ~Ast_UnaryExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_BinaryExpr : public Ast_Expr {
+	token::Token op;
+	Ast_Expr* lhs,* rhs;
+
+	Ast_BinaryExpr(token::Token t, Ast_Expr* l, Ast_Expr* r);
+	virtual ~Ast_BinaryExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ParenExpr : public Ast_Expr {
+	token::Token begin, end;
+	Ast_Expr* expr;
+
+	Ast_ParenExpr(token::Token b, token::Token e, Ast_Expr* ex);
+	virtual ~Ast_ParenExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+// this is for array and map indexing
+struct Ast_IndexExpr : public Ast_Expr {
+	token::Token begin, end;
+	Ast_Expr* operand;
+	Ast_Expr* index;
+
+	Ast_IndexExpr(token::Token b, token::Token e, Ast_Expr* op, Ast_Expr* i);
+	virtual ~Ast_IndexExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_SliceExpr : public Ast_Expr {
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_DerefExpr : public Ast_Expr {
+	token::Token tok;
+	Ast_Expr* expr;
+
+	Ast_DerefExpr(token::Token t, Ast_Expr* e);
+	virtual ~Ast_DerefExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_SelectorExpr : public Ast_Expr {
+	Ast_Expr* expr; // this would be Ast_Expr; however,
+									// I need to include Ast_Identifier.
+	Ast_Expr* elem;
+	Ast_SelectorExpr(Ast_Expr* ex, Ast_Expr* el);
+	virtual ~Ast_SelectorExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_CastExpr : public Ast_Expr {
+	Ast_Type* type;
+	Ast_Expr* expr;
+
+	Ast_CastExpr(Ast_Type* t, Ast_Expr* e);
+	virtual ~Ast_CastExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_AddressExpr : public Ast_Expr {
+	token::Token op;
+	Ast_Expr* expr; // same reason as Ast_SelectorExpr
+
+	Ast_AddressExpr(token::Token o, Ast_Expr* e);
+	virtual ~Ast_AddressExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_IncDecExpr : public Ast_Expr {
+	token::Token op;
+	Ast_Expr* expr;
+
+	Ast_IncDecExpr(token::Token o, Ast_Expr* e);
+	virtual ~Ast_IncDecExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_NewExpr : public Ast_Expr {
+	token::Token tok;
+	Ast_Type* type;
+	AstList<Ast_Expr*> initExpr;
+
+	Ast_NewExpr(token::Token t, Ast_Type* ty, const AstList<Ast_Expr*>& i);
+	virtual ~Ast_NewExpr();
+
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_DeleteExpr : public Ast_Expr {
+	token::Token tok;
+  Ast_Expr* expr;
+
+  Ast_DeleteExpr(token::Token t, Ast_Expr* e);
+  virtual ~Ast_DeleteExpr();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_Stmt : public Ast_Expr {
+	Ast_Stmt(AstNodeKind k);
+
+	virtual void print(int indent = 0) {}
+	virtual const token::Token& token() {}
+};
+
+struct Ast_SpecStmt : public Ast_Stmt {
+	Ast_Decl* decl;
+
+	Ast_SpecStmt(Ast_Decl* d);
+	~Ast_SpecStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ExprStmt : public Ast_Stmt {
+	Ast_Expr* expr;
+
+	Ast_ExprStmt(Ast_Expr* e);
+	virtual ~Ast_ExprStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_EmptyStmt : public Ast_Stmt {
+	Token tok;
+
+	Ast_EmptyStmt(token::Token t);
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_BreakStmt : public Ast_Stmt {
+	Token tok;
+
+	Ast_BreakStmt(token::Token t);
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ContinueStmt : public Ast_Stmt {
+	token::Token tok;
+
+	Ast_ContinueStmt(Token t);
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_AssignmentStmt : public Ast_Stmt {
+	token::Token op;
+	AstList<Ast_Expr*> names;
+	AstList<Ast_Expr*> exprs;
+
+	Ast_AssignmentStmt(token::Token o, const AstList<Ast_Expr*>& n,
+		const AstList<Ast_Expr*>& e);
+	virtual ~Ast_AssignmentStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_BlockStmt : public Ast_Stmt {
+	AstList<Ast_Stmt*>	stmts;
+	Ast_BlockStmt(const AstList<Ast_Stmt*>& s);
+	virtual ~Ast_BlockStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_IfStmt : public Ast_Stmt {
+	token::Token tok;
+	Ast_Expr* cond;
+	Ast_Stmt* body;
+	Ast_Stmt* else_if;
+
+	Ast_IfStmt(token::Token t, Ast_Expr* c, Ast_Stmt* b, Ast_Stmt* ef);
+	virtual ~Ast_IfStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ForStmt : public Ast_Stmt {
+	token::Token tok;
+	Ast_Expr* init,* cond,* step;
+	Ast_Stmt* body;
+
+	Ast_ForStmt(token::Token t, Ast_Expr* i, Ast_Expr* c, Ast_Expr* s, Ast_Stmt* b);
+	virtual ~Ast_ForStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_WhileStmt : public Ast_Stmt {
+	token::Token tok;
+	Ast_Expr* cond;
+	Ast_Stmt* body;
+
+	Ast_WhileStmt(token::Token t, Ast_Expr* c, Ast_Stmt* b);
+	virtual ~Ast_WhileStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ReturnStmt : public Ast_Stmt {
+	token::Token tok;
+	AstList<Ast_Expr*> values;
+
+	Ast_ReturnStmt(token::Token t, const AstList<Ast_Expr*> v);
+	virtual ~Ast_ReturnStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_DeferStmt : public Ast_Stmt {
+	token::Token tok;
+	Ast_Expr* expr;
+
+	Ast_DeferStmt(token::Token t, Ast_Expr* e);
+	virtual ~Ast_DeferStmt();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_Type : public Ast_Node {
+	Ast_Type(AstNodeKind k);
+	// virtual void print(int indent = 0) override;
+	// virtual const token::Token& token();
+};
+
+struct Ast_NamedType : public Ast_Type {
+	// this would be Ast_Identifier; however, this is to
+	// express all named types used within a program.
+	// For example, Ast_Identifier would be able to express
+	// t.t1, where t is a file scope and t1 is the type within that file.
+  Ast_Expr* idExpr;
+
+  Ast_NamedType(Ast_Expr* id);
+  virtual ~Ast_NamedType();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_PrimativeType : public Ast_Type {
+  token::Token type;
+
+  Ast_PrimativeType(token::Token t);
+
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ProcReturn : public Ast_Node {
+	Ast_ProcReturn(AstNodeKind kind);
+	virtual ~Ast_ProcReturn() {}
+	virtual void print(int indent = 0) {}
+	virtual const token::Token& token() {}
+};
+
+struct Ast_NamedReturn : public Ast_ProcReturn {
+	Ast_FieldSpec* field;
+
+	Ast_NamedReturn(Ast_FieldSpec* f);
+	virtual ~Ast_NamedReturn();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_TypedReturn : public Ast_ProcReturn {
+	Ast_Type* type;
+
+	Ast_TypedReturn(Ast_Type* t);
+	virtual ~Ast_TypedReturn();
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ProcType : public Ast_Type {
+	token::Token tok;
+  Ast_Identifier* name;
+  AstList<Ast_FieldSpec*> params;
+  AstList<Ast_ProcReturn*> returns;
+  FunctionFlags flags;
+
+	Ast_ProcType(token::Token t, Ast_Identifier* n, AstList<Ast_FieldSpec*> p,
+          AstList<Ast_ProcReturn*> r, FunctionFlags f, AstNodeKind kind);
+	virtual ~Ast_ProcType();
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_FunctionType : public Ast_ProcType {
+  Ast_FunctionType(token::Token t, Ast_Identifier* n, AstList<Ast_FieldSpec*> p,
+          AstList<Ast_ProcReturn*> r, FunctionFlags f);
+};
+
+struct Ast_MethodType : public Ast_ProcType {
+  Ast_Type* classOf;
+
+  Ast_MethodType(token::Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_FieldSpec*> p,
+          AstList<Ast_ProcReturn*> r, FunctionFlags f);
+  virtual ~Ast_MethodType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+
+struct Ast_PointerType : public Ast_Type {
+  token::Token tok;
+  Ast_Type* type;
+
+  Ast_PointerType(token::Token t, Ast_Type* ty);
+  virtual ~Ast_PointerType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ArrayType : public Ast_Type {
+  token::Token tok;
+  Ast_Type* type;
+  Ast_Expr* size;
+
+  Ast_ArrayType(token::Token t, Ast_Type* ty, Ast_Expr* s);
+  virtual ~Ast_ArrayType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_DynamicArrayType : public Ast_Type {
+  token::Token tok;
+  Ast_Type* type;
+
+  Ast_DynamicArrayType(token::Token t, Ast_Type* ty);
+  virtual ~Ast_DynamicArrayType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_MapType : public Ast_Type {
+  token::Token tok;
+  Ast_Type* key, *value;
+
+  Ast_MapType(token::Token t, Ast_Type* k, Ast_Type* v);
+  virtual ~Ast_MapType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_EnumType : public Ast_Type {
+  token::Token tok;
+  Ast_Identifier* name;
+  AstList<Ast_Decl*> members;
+
+  Ast_EnumType(token::Token t, Ast_Identifier* n, const AstList<Ast_Decl*>& m);
+  virtual ~Ast_EnumType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_UnionType : public Ast_Type {
+  token::Token tok;
+  Ast_Identifier* name;
+  AstList<Ast_Decl*> members;
+
+  Ast_UnionType(token::Token t, Ast_Identifier* n, const AstList<Ast_Decl*>& m);
+  virtual ~Ast_UnionType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_ClassType : public Ast_Type {
+  token::Token tok;
+  Ast_Identifier* name;
+  AstList<Ast_FieldSpec*> members;
+  AstList<Ast_Type*> extends;
+  AstList<Ast_ProcSpec*> methods;
+
+  Ast_ClassType(token::Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m,
+      const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p);
+  virtual ~Ast_ClassType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_StructType : public Ast_Type {
+  token::Token tok;
+  Ast_Identifier* name;
+  AstList<Ast_FieldSpec*> members;
+
+  Ast_StructType(token::Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m);
+  virtual ~Ast_StructType();
+
+  virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
 }
 
 #endif

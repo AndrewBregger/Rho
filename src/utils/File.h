@@ -82,7 +82,7 @@ namespace sys {
 			FileMode m_mode; ///< IO mode of the file.
 			std::vector<std::string> m_lineCache; ///< lines of the file.
 
-			// this is problamatic if I want to process multiple files 
+			// this is problamatic if I want to process multiple files
 			// at the same time.
 			static File* m_current; ///< Current file being parsed
 			FileError m_error; ///< Error when reading the file.

@@ -1,15 +1,10 @@
 // #load "test.rho"
 // conditional imports will be added later
+
+#load "t2.rho"
 #load "fmt.rho"
-
-type a = struct {
-};
-
-var x: struct {
-};
 
 /*
-#load "fmt.rho"
 #load "fmt.rho"
 
 // renames the import identifer to t and only imports fun1 and fun2

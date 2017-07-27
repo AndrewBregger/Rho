@@ -1,36 +1,44 @@
 #include "Ast.h"
 #include <iostream>
+#include <cassert>
 
 namespace ast {
 
+#define delete_content(l) for(auto i : l) delete i;
+
+#define print_content(l) for(auto i : l) i->print(indent + 1);
+
+
 
 //--------------------------------- Helper Functions --------------------------
-bool ast_is_decl(AstNode* node) {
-  return Ast__BeginDecl < node->kind && node->kind < Ast__EndDecl;
+bool ast_is_decl(Ast_Node* node) {
+  return Ast_BeginDecl < node->kind && node->kind < Ast_EndDecl;
 }
 
-bool ast_is_expr(AstNode* node) {
-  return Ast__BeginExpr < node->kind && node->kind < Ast__EndExpr;
+bool ast_is_expr(Ast_Node* node) {
+  return Ast_BeginExpr < node->kind && node->kind < Ast_EndExpr;
 }
 
-bool ast_is_stmt(AstNode* node) {
-  return Ast__BeginStmt < node->kind && node->kind < Ast__EndStmt;
+bool ast_is_stmt(Ast_Node* node) {
+  return Ast_BeginStmt < node->kind && node->kind < Ast_EndStmt;
 }
 
-bool ast_is_type(AstNode* node) {
-  return Ast__BeginType < node->kind && node->kind < Ast__EndType;
+bool ast_is_type(Ast_Node* node) {
+  return Ast_BeginType < node->kind && node->kind < Ast_EndType;
 }
 //----------------------------------- Ast Creation -------------------------------
+
+static size_t fileID = 0;
+
 AstFile* ast_file(sys::File* _file) {
-  static size_t ast_file_index = 0;
   AstFile* file = new AstFile;
-  file->m_id = ast_file_index++;
+  file->m_id = fileID++;
   file->m_file = _file;
   return file;
 }
 
 const char* node_strings[Ast_NumNodes] = {
-  #define Ast_Node_Kind(_kind, str, ...) str,
+  #define Ast_Node_Kind(_kind, str) str,
   Ast_Node_Kinds
   #undef Ast_Node_Kind
 };
@@ -41,1064 +49,1334 @@ const char* ast_string(AstNodeKind _kind) {
   return node_strings[_kind];
 }
 
-Token ast_token(AstNode* node) {
-  Token token;
-  switch(node->kind) {
-    case Ast_Ident:
-      token = node->Ident.token;
-      break;
-    case Ast_Keyword:
-      token = node->Keyword;
-      break;
-    case Ast_BasicLit:
-      token = node->BasicLit;
-      break;
-		case Ast_NullLit:
-			token = node->NullLit;
-    case Ast_BasicDirective:
-      token = node->BasicDirective.token;
-      break;
-    case Ast_CompoundLiteral:
-      token = node->CompoundLiteral.begin;
-      break;
-    case Ast_BadExpr:
-      token = node->BadExpr.begin;
-      break;
-    case Ast_FuncCall:
-      token = node->FuncCall.begin;
-      break;
-    case Ast_UnaryExpr:
-      token = node->UnaryExpr.op;
-      break;
-    case Ast_BinaryExpr:
-      token = node->BinaryExpr.op;
-      break;
-    case Ast_ParenExpr:
-      token = node->ParenExpr.begin;
-      break;
-    case Ast_IndexExpr:
-      token = node->IndexExpr.begin;
-      break;
-    case Ast_SliceExpr:
-      token = node->SliceExpr.begin;
-      break;
-    case Ast_DerefExpr:
-      token = node->DerefExpr.token;
-      break;
-    case Ast_SelectorExpr:
-      token = node->SelectorExpr.token;
-      break;
-    case Ast_CastExpr:
-      token = node->CastExpr.token;
-      break;
-    case Ast_IncDecExpr:
-      token = node->IncDecExpr.op;
-      break;
-    // case Ast_BadStmt:
-    //   token = node->BadStmt
-    case Ast_ExprStmt:
-      token = ast_token(node->ExprStmt.expr);
-      break;
-    case Ast_EmptyStmt:
-      token = node->EmptyStmt;
-      break;
-    case Ast_AssignStmt:
-      token = node->AssignStmt.op;
-      break;
-    case Ast_BlockStmt:
-      token = node->BlockStmt.begin;
-      break;
-    case Ast_IfStmt:
-      token = node->IfStmt.token;
-      break;
-    case Ast_ForStmt:
-      token = node->ForStmt.token;
-      break;
-    case Ast_WhileStmt:
-      token = node->WhileStmt.token;
-      break;
-    case Ast_ReturnStmt:
-      token = node->ReturnStmt.token;
-      break;
-    case Ast_DeferStmt:
-      token = node->DeferStmt.token;
-      break;
-    // case Ast_BadDecl:
-    //   token = node->BadDecl
-    case Ast_VariableSpec:
-      token = node->VariableSpec.token;
-      break;
-    case Ast_TypeSpec:
-      token = ast_token(node->TypeSpec.type);
-      break;
-    case Ast_FunctMethodDecl:
-      token = node->FunctMethodDecl.token;
-      break;
-    case Ast_ImportSpec:
-      token = node->ImportSpec.relPath;
-      break;
-    case Ast_MethodDeclBlock:
-      token = node->MethodDeclBlock.token;
-      break;
-    case Ast_FieldSpec:
-      token = node->FieldSpec.token;
-      break;
-    // case Ast_BadType:
-    //   token = node->BadType
-    case Ast_HelperType:
-      token = ast_token(node->HelperType.type);
-      break;
-    case Ast_PrimativeType:
-      token = node->PrimativeType;
-      break;
-    case Ast_MethodType:
-      token = node->MethodType.token;
-      break;
-    case Ast_PointerType:
-      token = node->PointerType.token;
-      break;
-    case Ast_ArrayType:
-      token = node->ArrayType.token;
-      break;
-    case Ast_DynamicArrayType:
-      token = node->DynamicArrayType.token;
-      break;
-    case Ast_EnumType:
-      token = node->EnumType.token;
-      break;
-    case Ast_UnionType:
-      token = node->UnionType.token;
-      break;
-    case Ast_ClassType:
-      token = node->ClassType.token;
-      break;
-    case Ast_StructType:
-      token = node->StructType.token;
-      break;
-    default:
-      break;
-  }
-  return token;
-}
-
-void ast_print(AstNode* node, int indent) {
-  std::cout << token::get_spaces(indent) << ast_string(node->kind) << std::endl;
-  switch(node->kind) {
-    case Ast_Ident: {
-      auto data = node->Ident;
-      std::cout << token::get_spaces(indent + 1) << data.atom->name() << std::endl;
-    } break;
-    case Ast_Keyword: {
-      auto data = node->Keyword;
-      data.print(indent + 1);
-    } break;
-    case Ast_BasicLit: {
-      auto data = node->BasicLit;
-      data.print(indent + 1);
-    } break;
-		case Ast_NullLit: {
-      auto data = node->NullLit;
-      data.print(indent + 1);
-		} break;
-    case Ast_BasicDirective: {
-      auto data = node->BasicDirective;
-      std::cout << token::get_spaces(indent + 1) << data.name << std::endl;
-    } break;
-    case Ast_CompoundLiteral: {
-      auto data = node->CompoundLiteral;
-      ast_print(data.type, indent + 1);
-      for(const auto& e : data.literals)
-        ast_print(e, indent + 1);
-    } break;
-    case Ast_BadExpr: {
-    } break;
-    case Ast_FuncCall: {
-      auto data = node->FuncCall;
-      ast_print(data.name, indent + 1);
-      if(data.type)
-        ast_print(data.type, indent + 1);
-      for(const auto& e : data.actuals)
-        ast_print(e, indent + 1);
-    } break;
-    case Ast_UnaryExpr: {
-      auto data = node->UnaryExpr;
-      data.op.print(indent + 1);
-      ast_print(data.expr, indent + 1);
-    } break;
-    case Ast_BinaryExpr: {
-      auto data = node->BinaryExpr;
-      data.op.print(indent + 1);
-      ast_print(data.lhs, indent + 1);
-      ast_print(data.rhs, indent + 1);
-    } break;
-    case Ast_ParenExpr: {
-      auto data = node->ParenExpr;
-      ast_print(data.expr, indent + 1);
-    } break;
-    case Ast_IndexExpr: {
-      auto data = node->IndexExpr;
-      ast_print(data.operand, indent + 1);
-      ast_print(data.index, indent + 1);
-    } break;
-    case Ast_SliceExpr: {
-      auto data = node->SliceExpr;
-      data.inclusion.print(indent + 1);
-      ast_print(data.startExp, indent + 1);
-      ast_print(data.endExp, indent + 1);
-    } break;
-    case Ast_DerefExpr: {
-      auto data = node->DerefExpr;
-      ast_print(data.expr, indent + 1);
-    } break;
-    case Ast_SelectorExpr: {
-      auto data = node->SelectorExpr;
-      std::cout << token::get_spaces(indent + 1) << "Epxr:\n";
-      if(data.expr) ast_print(data.expr, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Elems:\n";
-      if(data.elems) ast_print(data.elems, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Next:\n";
-      if(data.next) ast_print(data.next, indent + 1);
-    } break;
-    case Ast_CastExpr: {
-      auto data = node->CastExpr;
-      ast_print(data.type, indent + 1);
-      ast_print(data.expr, indent + 1);
-    } break;
-    case Ast_IncDecExpr: {
-      auto data = node->IncDecExpr;
-      data.op.print(indent + 1);
-      ast_print(data.expr, indent + 1);
-    } break;
-    case Ast_NewExpr: {
-      auto data = node->NewExpr;
-      std::cout << token::get_spaces(indent + 1) << "Type:\n";
-      ast_print(data.type, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Init:\n";
-      for(auto e : data.initExpr)
-        ast_print(e, indent + 1);
-    } break;
-    case Ast_DeleteExpr: {
-      auto data = node->DeleteExpr;
-      ast_print(data.name, indent + 1);
-    } break;
-    case Ast_BadStmt:
-      break;
-    case Ast_ExprStmt: {
-      ast_print(node->ExprStmt.expr, indent + 1);
-    } break;
-    case Ast_EmptyStmt: {
-      auto data = node->EmptyStmt;
-      data.print(indent + 1);
-    } break;
-    case Ast_AssignStmt: {
-      auto data = node->AssignStmt;
-      data.op.print(indent + 1);
-      for(const auto& e : data.names)
-        ast_print(e, indent + 1);
-      for(const auto& e : data.expr)
-        ast_print(e, indent + 1);
-    } break;
-    case Ast_BlockStmt: {
-      auto data = node->BlockStmt;
-      for(const auto& e : data.stmts)
-        ast_print(e, indent + 1);
-    } break;
-    case Ast_IfStmt: {
-      auto data = node->IfStmt;
-			std::cout << token::get_spaces(indent + 1) << "Condition:" << std::endl;
-      if(data.cond) ast_print(data.cond, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Body:" << std::endl;
-      if(data.body) ast_print(data.body, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "else:" << std::endl;
-      if(data.if_else_stmt) ast_print(data.if_else_stmt, indent + 1);
-    } break;
-    case Ast_ForStmt: {
-      auto data = node->ForStmt;
-      std::cout << token::get_spaces(indent + 1) << "Init:" << std::endl;
-      if(data.init) ast_print(data.init, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Condition:" << std::endl;
-      if(data.cond) ast_print(data.cond, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Step:" << std::endl;
-      if(data.step) ast_print(data.step, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Body:" << std::endl;
-      if(data.body) ast_print(data.body, indent + 1);
-    } break;
-    case Ast_WhileStmt: {
-      auto data = node->WhileStmt;
-      std::cout << token::get_spaces(indent + 1) << "Condition:" << std::endl;
-      if(data.cond) ast_print(data.cond, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Body:" << std::endl;
-      if(data.body) ast_print(data.body, indent + 1);
-    } break;
-    case Ast_ReturnStmt: {
-      auto data = node->ReturnStmt;
-      for(const auto& e : data.expr)
-        ast_print(e, indent + 1);
-    } break;
-    case Ast_DeferStmt: {
-      auto data = node->DeferStmt;
-      ast_print(data.name, indent + 1);
-    } break;
-    case Ast_BadDecl:
-      break;
-    case Ast_VariableSpec: {
-      auto data = node->VariableSpec;
-      for(const auto& e : data.names)
-        ast_print(e, indent + 1);
-      for(const auto& e : data.values)
-        ast_print(e, indent + 1);
-      if(data.type)
-        ast_print(data.type, indent + 1);
-    } break;
-    case Ast_TypeSpec: {
-      auto data = node->TypeSpec;
-      ast_print(data.type, indent + 1);
-    } break;
-    case Ast_FunctMethodDecl: {
-      auto data = node->FunctMethodDecl;
-      // this should have the type.
-      // it is constructed when being parsed
-      ast_print(data.type, indent + 1);
-      ast_print(data.body, indent + 1);
-    } break;
-    case Ast_ImportSpec: {
-      auto data = node->ImportSpec;
-      data.relPath.print(indent + 1);
-      std::cout << token::get_spaces(indent + 1) << data.fullPath << std::endl;
-      if(data.name)
-        ast_print(data.name, indent + 1);
-      for(const auto& e : data.importNames)
-        ast_print(e, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Ast: " << data.m_ast << std::endl;
-    } break;
-    case Ast_MethodDeclBlock: {
-      // auto data = node->MethodDeclBlock.token;
-    } break;
-    case Ast_FieldSpec: {
-      auto data = node->FieldSpec;
-      for(const auto& e : data.name)
-        ast_print(e, indent + 1);
-      ast_print(data.type, indent + 1);
-    } break;
-    case Ast_TypeAliasSpec: {
-      auto data = node->TypeAliasSpec;
-      std::cout << token::get_spaces(indent + 1) << "Type:" << std::endl;
-      ast_print(data.type, indent + 1);
-      std::cout << token::get_spaces(indent + 1) << "Alias:" << std::endl;
-      ast_print(data.alias, indent + 1);
-    } break;
-    case Ast_BadType:
-      break;
-    case Ast_HelperType: {
-      auto data = node->HelperType;
-      ast_print(data.type, indent + 1);
-    } break;
-    case Ast_PrimativeType: {
-      auto data = node->PrimativeType;
-      data.print(indent + 1);
-    } break;
-    case Ast_MethodType: {
-      auto data = node->MethodType;
-			if(data.name) ast_print(data.name, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Member:" << std::endl;
-			if(data.classOf) ast_print(data.classOf, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Params:" << std::endl;
-			for(const auto& e : data.params)
-				ast_print(e, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Returns:" << std::endl;
-			if(data.returns.empty())
-				std::cout << token::get_spaces(indent + 2) << "void" << std::endl;
-			else
-				for(const auto& e : data.returns)
-					ast_print(e, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Flags: " << data.flags << std::endl;
-    } break;
-    case Ast_FunctionType: {
-      auto data = node->FunctionType;
-			ast_print(data.name, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Params:" << std::endl;
-			for(const auto& e : data.params)
-				ast_print(e, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Return:" << std::endl;
-			if(data.returns.empty())
-				std::cout << token::get_spaces(indent + 2) << "void" << std::endl;
-			else
-				for(const auto& e : data.returns)
-					ast_print(e, indent + 1);
-			std::cout << token::get_spaces(indent + 1) << "Flags: " << data.flags << std::endl;
-    } break;
-    case Ast_PointerType: {
-      auto data = node->PointerType;
-			ast_print(data.type, indent + 1);
-    } break;
-    case Ast_ArrayType: {
-      auto data = node->ArrayType;
-			ast_print(data.size, indent + 1);
-			ast_print(data.type, indent + 1);
-    } break;
-    case Ast_DynamicArrayType: {
-      auto data = node->DynamicArrayType;
-			ast_print(data.type, indent + 1);
-    } break;
-    case Ast_EnumType: {
-      auto data = node->EnumType;
-      std::cout << token::get_spaces(indent + 1) << "Name: " << std::endl;
-     if(data.name) ast_print(data.name, indent + 1);
-      else std::cout << token::get_spaces(indent + 1) << "Anonamous" << std::endl;
-
-      std::cout << token::get_spaces(indent + 1) << "Members: " << std::endl;
-      for(const auto& e : data.members)
-       ast_print(e, indent + 1);
-			// ast_print(data., indent + 1);
-		// 	ast_print(data., indent + 1);
-		//		ast_print(data., indent + 1);
-    } break;
-    case Ast_UnionType: {
-      auto data = node->UnionType;
-      std::cout << token::get_spaces(indent + 1) << "Name: " << std::endl;
-      if(data.name) ast_print(data.name, indent + 1);
-      else std::cout << token::get_spaces(indent + 1) << "Anonamous" << std::endl;
-
-      std::cout << token::get_spaces(indent + 1) << "Members: " << std::endl;
-      for(const auto& e : data.members)
-       ast_print(e, indent + 1);
-			// ast_print(data., indent + 1);
-// 			ast_print(data., indent + 1);
-// 			ast_print(data., indent + 1);
-    } break;
-    case Ast_ClassType: {
-      auto data = node->ClassType;
-      std::cout << token::get_spaces(indent + 1) << "Name: " << std::endl;
-			if(data.name) ast_print(data.name, indent + 1);
-      else std::cout << token::get_spaces(indent + 1) << "Anonamous" << std::endl;
-
-      std::cout << token::get_spaces(indent + 1) << "Members: " << std::endl;
-			for(const auto& e : data.members)
-       ast_print(e, indent + 1);
-
-      std::cout << token::get_spaces(indent + 1) << "Inherate From: " << std::endl;
-			for(const auto& e : data.extends)
-       ast_print(e, indent + 1);
-
-      std::cout << token::get_spaces(indent + 1) << "Methods: " << std::endl;
-      for(const auto& e : data.methods)
-        ast_print(e, indent + 1);
-    } break;
-    case Ast_StructType: {
-      auto data = node->StructType;
-      std::cout << token::get_spaces(indent + 1) << "Name: " << std::endl;
-      if(data.name) ast_print(data.name, indent + 1);
-      else std::cout << token::get_spaces(indent + 1) << "Anonamous" << std::endl;
-
-      std::cout << token::get_spaces(indent + 1) << "Members: " << std::endl;
-      for(const auto& e : data.members)
-       ast_print(e, indent + 1);
-    } break;
-    default:
-      break;
-  }
-}
-
-void ast_destroy(AstNode* node) {
-	if(!node) return;
-  switch(node->kind) {
-    case Ast_Ident:
-    case Ast_Keyword:
-    case Ast_BasicLit:
-    case Ast_BasicDirective:
-		case Ast_NullLit:
-      delete node;
-    	break;
-    case Ast_CompoundLiteral: {
-      auto data = node->CompoundLiteral;
-      ast_destroy(data.type);
-      for(const auto& e : data.literals)
-        ast_destroy(e);
-    } break;
-    case Ast_BadExpr: {
-    } break;
-    case Ast_FuncCall: {
-      auto data = node->FuncCall;
-      ast_destroy(data.type);
-      for(const auto& e : data.actuals)
-        ast_destroy(e);
-    } break;
-    case Ast_UnaryExpr: {
-      auto data = node->UnaryExpr;
-      ast_destroy(data.expr);
-    } break;
-    case Ast_BinaryExpr: {
-      auto data = node->BinaryExpr;
-      ast_destroy(data.lhs);
-      ast_destroy(data.rhs);
-    } break;
-    case Ast_ParenExpr: {
-      auto data = node->ParenExpr;
-      ast_destroy(data.expr);
-    } break;
-    case Ast_IndexExpr: {
-      auto data = node->IndexExpr;
-      ast_destroy(data.operand);
-      ast_destroy(data.index);
-    } break;
-    case Ast_SliceExpr: {
-      auto data = node->SliceExpr;
-      ast_destroy(data.startExp);
-      ast_destroy(data.endExp);
-    } break;
-    case Ast_DerefExpr: {
-      auto data = node->DerefExpr;
-      ast_destroy(data.expr);
-    } break;
-    case Ast_SelectorExpr: {
-      auto data = node->SelectorExpr;
-			ast_destroy(data.expr);
-			ast_destroy(data.elems);
-			ast_destroy(data.next);
-    } break;
-    case Ast_CastExpr: {
-      auto data = node->CastExpr;
-      ast_destroy(data.type);
-      ast_destroy(data.expr);
-    } break;
-    case Ast_IncDecExpr: {
-      auto data = node->IncDecExpr;
-      ast_destroy(data.expr);
-    } break;
-    case Ast_BadStmt:
-      break;
-    case Ast_ExprStmt: {
-      ast_destroy(node->ExprStmt.expr);
-    } break;
-    case Ast_EmptyStmt: {
-    } break;
-    case Ast_AssignStmt: {
-      auto data = node->AssignStmt;
-      for(const auto& e : data.names)
-        ast_destroy(e);
-      for(const auto& e : data.expr)
-        ast_destroy(e);
-    } break;
-    case Ast_BlockStmt: {
-      auto data = node->BlockStmt;
-      for(const auto& e : data.stmts)
-        ast_destroy(e);
-    } break;
-    case Ast_IfStmt: {
-      auto data = node->IfStmt;
-			ast_destroy(data.cond);
-			ast_destroy(data.body);
-			ast_destroy(data.if_else_stmt);
-    } break;
-    case Ast_ForStmt: {
-      auto data = node->ForStmt;
-      ast_destroy(data.init);
-      ast_destroy(data.cond);
-      ast_destroy(data.step);
-      ast_destroy(data.body);
-    } break;
-    case Ast_WhileStmt: {
-      auto data = node->WhileStmt;
-      ast_destroy(data.cond);
-      ast_destroy(data.body);
-    } break;
-    case Ast_ReturnStmt: {
-      auto data = node->ReturnStmt;
-      for(const auto& e : data.expr)
-        ast_destroy(e);
-    } break;
-    case Ast_DeferStmt: {
-      auto data = node->DeferStmt;
-      ast_destroy(data.name);
-    } break;
-    case Ast_BadDecl:
-      break;
-    case Ast_VariableSpec: {
-      auto data = node->VariableSpec;
-      for(const auto& e : data.names)
-        ast_destroy(e);
-      for(const auto& e : data.values)
-        ast_destroy(e);
-      ast_destroy(data.type);
-    } break;
-    case Ast_TypeSpec: {
-      auto data = node->TypeSpec;
-      ast_destroy(data.type);
-    } break;
-    case Ast_FunctMethodDecl: {
-      auto data = node->FunctMethodDecl;
-      // this should have the type.
-      // it is constructed when being parsed
-      ast_destroy(data.type);
-      ast_destroy(data.body);
-    } break;
-    case Ast_ImportSpec: {
-      auto data = node->ImportSpec;
-      ast_destroy(data.name);
-      for(const auto& e : data.importNames)
-        ast_destroy(e);
-    } break;
-    case Ast_MethodDeclBlock: {
-      // auto data = node->MethodDeclBlock.token;
-    } break;
-    case Ast_FieldSpec: {
-      auto data = node->FieldSpec;
-      for(const auto& e : data.name)
-        ast_destroy(e);
-      ast_destroy(data.type);
-    } break;
-    case Ast_TypeAliasSpec: {
-      auto data = node->TypeAliasSpec;
-      ast_destroy(data.type);
-      ast_destroy(data.alias);
-    }
-    case Ast_BadType:
-      break;
-    case Ast_HelperType: {
-      auto data = node->HelperType;
-      ast_destroy(data.type);
-    } break;
-    case Ast_PrimativeType: {
-    } break;
-    case Ast_MethodType: {
-      auto data = node->MethodType;
-			ast_destroy(data.name);
-			ast_destroy(data.classOf);
-			for(const auto& e : data.params)
-				ast_destroy(e);
-			for(const auto& e : data.returns)
-				ast_destroy(e);
-    } break;
-    case Ast_FunctionType: {
-      auto data = node->FunctionType;
-			ast_destroy(data.name);
-			for(const auto& e : data.params)
-				ast_destroy(e);
-			for(const auto& e : data.returns)
-				ast_destroy(e);
-    } break;
-    case Ast_PointerType: {
-      auto data = node->PointerType;
-			ast_destroy(data.type);
-    } break;
-    case Ast_ArrayType: {
-      auto data = node->ArrayType;
-			ast_destroy(data.size);
-			ast_destroy(data.type);
-    } break;
-    case Ast_DynamicArrayType: {
-      auto data = node->DynamicArrayType;
-			ast_destroy(data.type);
-    } break;
-    case Ast_EnumType: {
-      auto data = node->EnumType;
-			// ast_destroy(data., indent + 1);
-		// 	ast_destroy(data., indent + 1);
-		//		ast_destroy(data., indent + 1);
-    } break;
-    case Ast_UnionType: {
-      auto data = node->UnionType;
-			// ast_destroy(data., indent + 1);
-// 			ast_destroy(data., indent + 1);
-// 			ast_destroy(data., indent + 1);
-    } break;
-    case Ast_ClassType: {
-      auto data = node->ClassType;
-			// ast_destroy(data., );
-// 			ast_destroy(data., );
-// 			ast_destroy(data., );
-    } break;
-    case Ast_StructType: {
-      auto data = node->StructType;
-			// ast_destroy(data., );
-// 			ast_destroy(data., );
-// 			ast_destroy(data., );
-    } break;
-    default:
-      break;
-  }
+void indent_print(const std::string& str, int indent = 0, bool nl = true) {
+  while(indent--)
+    std::cout << "  ";
+  std::cout << str;
+  if(nl)
+    std::cout << std::endl;
+  else
+    std::cout << std::flush;
 }
 
 
-AstNode* ast_node(AstNodeKind _kind) {
-	AstNode* node = new AstNode; // not efficient, maybe a pool allocator
-	node->kind = _kind;
-	return node;
+Ast_Node::
+Ast_Node(AstNodeKind k) {
+  kind = k;
 }
 
-AstNode* ast_ident(Token token, Atom* atom) {
-	AstNode* node = ast_node(Ast_Ident);
-	node->Ident.token = token;
-  node->Ident.atom = atom;
-	return node;
+Ast_Node::
+~Ast_Node() {}
+
+void
+Ast_Node::
+print(int indent) {
+  indent_print(std::string(ast_string(kind)), indent);
 }
 
-AstNode* ast_keyword(Token token) {
-	AstNode* node = ast_node(Ast_Keyword);
-	node->Keyword = token;
-	return node;
+
+Ast_BadNode::
+Ast_BadNode(AstNodeKind k): Ast_Node(k) {}
+
+const token::Token&
+Ast_BadNode::
+token() {
+  static Token t = Token();
+  return t;
 }
 
-AstNode* ast_basic_lit(Token token) {
-	AstNode* node = ast_node(Ast_BasicLit);
-	node->BasicLit = token;
-	return node;
+Ast_Identifier::
+Ast_Identifier(Token token, ast::Atom* a): Ast_Node(AstIdent) {
+  tok = token;
+  name = a;
+  ignoreId = (name == nullptr);
 }
 
-AstNode* ast_null_lit(Token token) {
-	AstNode* node = ast_node(Ast_NullLit);
-	node->NullLit = token;
-	return node;
+Ast_Identifier::
+~Ast_Identifier() {
+  //TODO(): implement
+
 }
 
-AstNode* ast_basic_directive(Token token, const std::string& name) {
-	AstNode* node = ast_node(Ast_BasicDirective);
-	node->BasicDirective.token = token;
-	node->BasicDirective.name = name;
-	return node;
+void
+Ast_Identifier::
+print(int indent) {
+  Ast_Node::print(indent);
+  if(name)
+    indent_print(name->name(), indent + 1);
 }
 
-AstNode* ast_compound_literal(Token begin, Token end, AstNode* type, const AstNodeList& literals) {
-	AstNode* node = ast_node(Ast_CompoundLiteral);
-	node->CompoundLiteral.begin = begin;
-	node->CompoundLiteral.end = end;
-	node->CompoundLiteral.type = type;
-	return node;
+const token::Token&
+Ast_Identifier::
+token() {
+  //TODO(): implement
+  return tok;
 }
 
-AstNode* ast_bad_expr(Token begin, Token end) {
-	AstNode* node = ast_node(Ast_BadExpr);
-	node->BadExpr.begin = begin;
-	node->BadExpr.end = end;
-	return node;
-}
-AstNode* ast_func_call(Token begin, Token end, AstNode* name, const AstNodeList& actuals) {
-	AstNode* node = ast_node(Ast_FuncCall);
-	node->FuncCall.begin = begin;
-	node->FuncCall.end = end;
-	node->FuncCall.name = name;
-	// node->FuncCall.type = type;
-	node->FuncCall.actuals = actuals;
-	return node;
+Ast_BasicLiteral::
+Ast_BasicLiteral(Token t) : Ast_Expr(AstBasicLit) {
+  tok = t;
 }
 
-AstNode* ast_unary_expr(Token op, AstNode* expr) {
-	AstNode* node = ast_node(Ast_UnaryExpr);
-	node->UnaryExpr.op = op;
-	node->UnaryExpr.expr = expr;
-	return node;
-}
-AstNode* ast_binary_expr(Token op, AstNode* lhs, AstNode* rhs) {
-	AstNode* node = ast_node(Ast_BinaryExpr);
-	node->BinaryExpr.op = op;
-	node->BinaryExpr.lhs = lhs;
-	node->BinaryExpr.rhs = rhs;
-	return node;
-}
-AstNode* ast_paren_expr(Token begin, Token end, AstNode* expr) {
-	AstNode* node = ast_node(Ast_ParenExpr);
-	node->ParenExpr.begin = begin;
-	node->ParenExpr.end = end;
-	node->ParenExpr.expr = expr;
-	return node;
-}
-AstNode* ast_incdec_expr(Token op, AstNode* expr) {
-	AstNode* node = ast_node(Ast_IncDecExpr);
-	node->IncDecExpr.op = op;
-	node->IncDecExpr.expr = expr;
-	return node;
+void
+Ast_BasicLiteral::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  tok.print(indent + 1);
 }
 
-AstNode* ast_index_expr(Token begin, Token end, AstNode* operand, AstNode* index) {
-  AstNode* node = ast_node(Ast_IndexExpr);
-  node->IndexExpr.begin = begin;
-  node->IndexExpr.end = end;
-  node->IndexExpr.operand = operand;
-  node->IndexExpr.index = index;
-  return node;
+const token::Token&
+Ast_BasicLiteral::
+token() {
+  //TODO(): implement
+  return tok;
 }
 
-AstNode* ast_slice_expr(Token begin, Token end, Token inclusion, AstNode* startExp, AstNode* endExp) {
-  AstNode* node = ast_node(Ast_SliceExpr);
-  node->SliceExpr.begin = begin;
-  node->SliceExpr.end = end;
-  node->SliceExpr.inclusion = inclusion;
-  node->SliceExpr.startExp = startExp;
-  node->SliceExpr.endExp = endExp;
-  return node;
+Ast_NullLiteral::
+Ast_NullLiteral(Token t): Ast_Expr(AstNullLit) {
+  tok = t;
 }
 
-AstNode* ast_deref_expr(Token token, AstNode* expr) {
-  AstNode* node = ast_node(Ast_DerefExpr);
-  node->DerefExpr.token = token;
-  node->DerefExpr.expr = expr;
-  return node;
+void
+Ast_NullLiteral::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  tok.print(indent + 1);
 }
 
-AstNode* ast_selector_expr(Token token, AstNode* expr, AstNode* next, AstNode* elems) {
-  AstNode* node = ast_node(Ast_SelectorExpr);
-  node->SelectorExpr.token = token;
-  node->SelectorExpr.expr = expr;
-  node->SelectorExpr.next = next;
-  node->SelectorExpr.elems = elems;
-  return node;
+const token::Token&
+Ast_NullLiteral::
+token() {
+  //TODO(): implement
+  return tok;
 }
 
-AstNode* ast_cast_expr(Token token, AstNode* type, AstNode* expr) {
-  AstNode* node = ast_node(Ast_CastExpr);
-  node->CastExpr.token = token;
-  node->CastExpr.type = type;
-  node->CastExpr.expr = expr;
-  return node;
+Ast_Decl::
+Ast_Decl(AstNodeKind k) : Ast_Node(k) {}
+
+Ast_Decl::
+~Ast_Decl(){}
+
+void
+Ast_Decl::
+print(int indent) {
+  //TODO(): implement
 }
 
-AstNode* ast_new_expr(Token token, AstNode* type, const AstNodeList& initExpr) {
-  AstNode* node = ast_node(Ast_NewExpr);
-  node->NewExpr.token = token;
-  node->NewExpr.type = type;
-  node->NewExpr.initExpr = initExpr;
-  return node;
+const token::Token&
+Ast_Decl::
+token(){
+  //return n->token();
+  //TODO(): implement
+  static token::Token t = token::Token();
+  return t;
 }
 
-AstNode* ast_delete_expr(Token token, AstNode* name) {
-  AstNode* node = ast_node(Ast_DeleteExpr);
-  node->DeleteExpr.token = token;
-  node->DeleteExpr.name = name;
-  return node;
+Ast_TypeAlias::
+Ast_TypeAlias(Ast_Identifier* a, Ast_Type* t) : Ast_Decl(AstTypeAliasSpec) {
+  alias = a;
+  type = t;
 }
 
-AstNode* ast_address_expr(Token token, AstNode* expr) {
-  AstNode* node = ast_node(Ast_AddressExpr);
-  node->AddressExpr.token = token;
-  node->AddressExpr.expr = expr;
-  return node;
+Ast_TypeAlias::
+~Ast_TypeAlias(){
+  delete alias;
+  delete type;
 }
 
-AstNode* ast_bad_stmt() {
-	AstNode* node = ast_node(Ast_BadExpr);
-	return node;
+void
+Ast_TypeAlias::
+print(int indent) {
+  Ast_Node::print(indent);
+  alias->print(indent + 1);
+  type->print(indent + 1);
+}
+const token::Token&
+Ast_TypeAlias::
+token(){
+  return alias->token();
 }
 
-AstNode* ast_break_stmt(Token token) {
-  AstNode* node = ast_node(Ast_BreakStmt);
-  node->BreakStmt = token;
-  return node;
+Ast_VariableSpec::
+Ast_VariableSpec(Token t, AstList<Ast_Identifier*> n,
+  AstList<Ast_Expr*> v, Ast_Type* ty, VariableFlags f) : Ast_Decl(AstVariableSpec) {
+  tok = t;
+  names = n;
+  values = v;
+  type = ty;
+  flags = f;
 }
 
-AstNode* ast_continue_stmt(Token token) {
-  AstNode* node = ast_node(Ast_ContinueStmt);
-  node->ContinueStmt = token;
-  return node;
+Ast_VariableSpec::
+~Ast_VariableSpec() {
+  delete_content(names)
+  delete_content(values)
+  delete type;
 }
 
-AstNode* ast_expr_stmt(AstNode* expr) {
-	AstNode* node = ast_node(Ast_ExprStmt);
-	node->ExprStmt.expr = expr;
-	return node;
-}
-AstNode* ast_empty_stmt(Token token) {
-	AstNode* node = ast_node(Ast_EmptyStmt);
-	node->EmptyStmt = token;
-	return node;
-}
-AstNode* ast_assign_stmt(Token op, const AstNodeList& names, const AstNodeList& expr) {
-	AstNode* node = ast_node(Ast_AssignStmt);
-	node->AssignStmt.op = op;
-	node->AssignStmt.names = names;
-	node->AssignStmt.expr = expr;
-	return node;
-}
-AstNode* ast_block_stmt(Token begin, Token end, const AstNodeList& stmts) {
-  AstNode* node = ast_node(Ast_BlockStmt);
-  node->BlockStmt.begin = begin;
-  node->BlockStmt.end = end;
-  node->BlockStmt.stmts = stmts;
-  return node;
-}
-AstNode* ast_if_stmt(Token token, AstNode* cond, AstNode* body, AstNode* if_else) {
-  AstNode* node = ast_node(Ast_IfStmt);
-  node->IfStmt.token = token;
-  node->IfStmt.cond = cond;
-  node->IfStmt.body = body;
-  node->IfStmt.if_else_stmt = if_else;
-  return node;
-}
-AstNode* ast_for_stmt(Token token, AstNode* init, AstNode* cond, AstNode* step, AstNode* body) {
-  AstNode* node = ast_node(Ast_ForStmt);
-  node->ForStmt.token = token;
-  node->ForStmt.init = init;
-  node->ForStmt.cond = cond;
-  node->ForStmt.step = step;
-  node->ForStmt.body = body;
-  return node;
-}
-AstNode* ast_while_stmt(Token token, AstNode* cond, AstNode* body) {
-  AstNode* node = ast_node(Ast_WhileStmt);
-  node->WhileStmt.token = token;
-  node->WhileStmt.cond = cond;
-  node->WhileStmt.body = body;
-  return node;
-}
-AstNode* ast_return_stmt(Token token, AstNodeList expr) {
-  AstNode* node = ast_node(Ast_ReturnStmt);
-  node->ReturnStmt.token = token;
-  node->ReturnStmt.expr = expr;
-  return node;
-}
-AstNode* ast_defer_stmt(Token token, AstNode* name) {
-  AstNode* node = ast_node(Ast_DeferStmt);
-  node->DeferStmt.token = token;
-  node->DeferStmt.name = name;
-  return node;
-}
-AstNode* ast_bad_decl() {
-  AstNode* node = ast_node(Ast_BadDecl);
-  return node;
-}
-AstNode* ast_variable_spec(Token token, const AstNodeList& names, const AstNodeList& values, AstNode* type) {
-  AstNode* node = ast_node(Ast_VariableSpec);
-  node->VariableSpec.token = token;
-  node->VariableSpec.names = names;
-  node->VariableSpec.values = values;
-  node->VariableSpec.type = type;
-  return node;
-}
-AstNode* ast_type_spec(AstNode* type) {
-  AstNode* node = ast_node(Ast_TypeSpec);
-  node->TypeSpec.type = type;
-  return node;
-}
-AstNode* ast_funct_method_decl(Token token, AstNode* type, AstNode* body) {
-  AstNode* node = ast_node(Ast_FunctMethodDecl);
-  node->FunctMethodDecl.token = token;
-  node->FunctMethodDecl.type = type;
-  node->FunctMethodDecl.body = body;
-  return node;
-}
-AstNode* ast_import_spec(Token relPath, std::string fullPath, AstNode* name, const AstNodeList& importNames) {
-  AstNode* node = ast_node(Ast_ImportSpec);
-  node->ImportSpec.relPath = relPath;
-  node->ImportSpec.fullPath = fullPath;
-  node->ImportSpec.name = name;
-  node->ImportSpec.importNames = importNames;
-  return node;
+void
+Ast_VariableSpec::
+print(int indent) {
+  Ast_Node::print(indent);
+  print_content(names)
+  print_content(values)
+  if(type) type->print(indent + 1);
+  indent_print("Flags: " + std::to_string(flags), indent + 1);
 }
 
-AstNode* ast_field_spec(Token token, const AstNodeList& name, AstNode* type) {
-  AstNode* node = ast_node(Ast_FieldSpec);
-  node->FieldSpec.token = token;
-  node->FieldSpec.name = name;
-  node->FieldSpec.type= type;
-  return node;
+const token::Token&
+Ast_VariableSpec::
+token(){
+  return tok;
 }
 
-AstNode* ast_type_alias_spec(Token token, AstNode* type, AstNode* alias) {
-  AstNode* node = ast_node(Ast_TypeAliasSpec);
-  node->TypeAliasSpec.token = token;
-  node->TypeAliasSpec.type = type;
-  node->TypeAliasSpec.alias = alias;
-  return node;
+Ast_TypeSpec::
+Ast_TypeSpec(Ast_Type* t) : Ast_Decl(AstTypeSpec) {
+  type = t;
 }
 
-AstNode* ast_bad_type() {
-  AstNode* node = ast_node(Ast_BadType);
-  return node;
+Ast_TypeSpec::
+~Ast_TypeSpec(){
+  delete type;
 }
 
-AstNode* ast_helper_type(AstNode* type) {
-  AstNode* node = ast_node(Ast_HelperType);
-  node->HelperType.type = type;
-  return node;
+void
+Ast_TypeSpec::
+print(int indent) {
+  Ast_Node::print(indent);
+  type->print(indent + 1);
 }
 
-AstNode* ast_primative_type(Token token) {
-  AstNode* node = ast_node(Ast_PrimativeType);
-  node->PrimativeType = token;
-  return node;
+const token::Token&
+Ast_TypeSpec::
+token(){
+  return type->token();
 }
 
-AstNode* ast_function_type(Token token, AstNode* name, const AstNodeList& params, const AstNodeList& returns) {
-  AstNode* node = ast_node(Ast_FunctionType);
-  node->FunctionType.token = token;
-  node->FunctionType.name = name;
-  node->FunctionType.params = params;
-  node->FunctionType.returns = returns;
-  return node;
+Ast_ProcSpec::
+Ast_ProcSpec(Token t, Ast_ProcType* ty, Ast_Stmt* b) : Ast_Decl(AstProcSpec) {
+  tok = t;
+  type = ty;
+  body = b;
 }
 
-AstNode* ast_method_type(Token token, AstNode* name, AstNode* classOf,
-    const AstNodeList& params, const AstNodeList& returns) {
-  AstNode* node = ast_node(Ast_MethodType);
-  node->MethodType.token = token;
-  node->MethodType.name = name;
-  node->MethodType.classOf = classOf;
-  node->MethodType.params = params;
-  node->MethodType.returns = returns;
-  return node;
+Ast_ProcSpec::
+~Ast_ProcSpec(){
+  delete type;
+  delete body;
 }
 
-AstNode* ast_pointer_type(Token token, AstNode* type) {
-  AstNode* node = ast_node(Ast_PointerType);
-  node->PointerType.token = token;
-  node->PointerType.type = type;
-  return node;
+void
+Ast_ProcSpec::
+print(int indent) {
+  Ast_Node::print(indent);
+  type->print(indent + 1);
+  body->print(indent + 1);
 }
 
-AstNode* ast_array_type(Token token, AstNode* size, AstNode* type) {
-  AstNode* node = ast_node(Ast_ArrayType);
-  node->ArrayType.token = token;
-  node->ArrayType.size = size;
-  node->ArrayType.type = type;
-  return node;
+const token::Token&
+Ast_ProcSpec::
+token(){
+  return tok;
 }
 
-AstNode* ast_dynamic_array_type(Token token, AstNode* type) {
-  AstNode* node = ast_node(Ast_DynamicArrayType);
-  node->DynamicArrayType.token = token;
-  node->DynamicArrayType.type = type;
-  return node;
+Ast_ImportSpec::
+Ast_ImportSpec(Token p, const std::string& fp,
+  Ast_Identifier* n, const AstList<Ast_Identifier*>& i) : Ast_Decl(AstImportSpec) {
+  relPath = p;
+  fullPath = fp;
+  name = n;
+  imports = i;
 }
 
-AstNode* ast_map_type(Token begin, Token end, AstNode* key, AstNode* value) {
-  AstNode* node = ast_node(Ast_MapType);
-  node->MapType.begin = begin;
-  node->MapType.end = end;
-  node->MapType.key = key;
-  node->MapType.value = value;
-  return node;
+Ast_ImportSpec::
+~Ast_ImportSpec(){
+  delete name;
+  delete_content(imports)
 }
 
-AstNode* ast_enum_type(Token token, AstNode* name, const AstNodeList& members) {
-  AstNode* node = ast_node(Ast_StructType);
-  node->EnumType.token = token;
-  node->EnumType.name = name;
-  node->EnumType.members = members;
-  return node;
+void
+Ast_ImportSpec::
+print(int indent) {
+  Ast_Node::print(indent);
+  if(name) name->print(indent + 1);
+  relPath.print(indent + 1);
+  indent_print(fullPath, indent + 1);
+  print_content(imports);
+  static std::string t = "true";
+  static std::string f = "false";
+  indent_print("Valid: " + (valid ? t : f), indent + 1);
 }
 
-AstNode* ast_union_type(Token token, AstNode* name, const AstNodeList& members) {
-  AstNode* node = ast_node(Ast_StructType);
-  node->UnionType.token = token;
-  node->UnionType.name = name;
-  node->UnionType.members = members;
-  return node;
+const token::Token&
+Ast_ImportSpec::
+token(){
+  return relPath;
 }
 
-AstNode* ast_class_type(Token token, AstNode* name, const AstNodeList& extends, const AstNodeList& members, const AstNodeList& methods) {
-  AstNode* node = ast_node(Ast_ClassType);
-  node->ClassType.token = token;
-  node->ClassType.extends = extends;
-  node->ClassType.name = name;
-  node->ClassType.members = members;
-  node->ClassType.methods = methods;
-  return node;
+Ast_FieldSpec::
+Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n,
+  Ast_Type* ty, VariableFlags f) : Ast_Decl(AstFieldSpec) {
+  tok = t;
+  names = n;
+  type = ty;
+  flags = f;
 }
-AstNode* ast_struct_type(Token token, AstNode* name, const AstNodeList& members) {
-  AstNode* node = ast_node(Ast_StructType);
-  node->StructType.token = token;
-  node->StructType.name = name;
-  node->StructType.members = members;
-  return node;
+
+Ast_FieldSpec::
+~Ast_FieldSpec(){
+  delete_content(names);
+  delete type;
+}
+
+void
+Ast_FieldSpec::
+print(int indent) {
+  Ast_Node::print(indent);
+  print_content(names);
+  type->print(indent + 1);
+}
+
+const token::Token&
+Ast_FieldSpec::
+token(){
+  return tok;
+}
+
+Ast_Stmt::
+Ast_Stmt(AstNodeKind k) : Ast_Expr(k) {}
+
+// void print(int indent = 0) {
+// }
+// const token::Token& token(){
+// }
+
+Ast_SpecStmt::
+Ast_SpecStmt(Ast_Decl* d) : Ast_Stmt(AstSpecStmt) {
+  assert(d);
+  decl = d;
+}
+
+Ast_SpecStmt::
+~Ast_SpecStmt() {
+  delete decl;
+}
+
+void Ast_SpecStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  decl->print(indent + 1);
+}
+
+const token::Token& Ast_SpecStmt::
+token() {
+  return decl->token();
+}
+
+Ast_ExprStmt::
+Ast_ExprStmt(Ast_Expr* e) : Ast_Stmt(AstExprStmt) {
+  expr = e;
+}
+
+Ast_ExprStmt::
+~Ast_ExprStmt(){
+  delete expr;
+}
+
+void
+Ast_ExprStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_ExprStmt::
+token(){
+  return expr->token();
+}
+
+Ast_EmptyStmt::
+Ast_EmptyStmt(Token t) : Ast_Stmt(AstEmptyStmt) {
+  tok = t;
+}
+
+void
+Ast_EmptyStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  tok.print(indent + 1);
+}
+
+const token::Token&
+Ast_EmptyStmt::
+token(){
+  return tok;
+}
+
+Ast_BreakStmt::
+Ast_BreakStmt(Token t) : Ast_Stmt(AstBreakStmt) {
+  tok = t;
+}
+
+void
+Ast_BreakStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  tok.print(indent + 1);
+}
+
+const token::Token&
+Ast_BreakStmt::
+token(){
+  return tok;
+}
+
+Ast_ContinueStmt::
+Ast_ContinueStmt(Token t) : Ast_Stmt(AstContinueStmt) {
+  tok = t;
+}
+
+void
+Ast_ContinueStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  tok.print(indent + 1);
+}
+
+const token::Token&
+Ast_ContinueStmt::
+token(){
+  return tok;
+}
+
+Ast_AssignmentStmt::
+Ast_AssignmentStmt(Token o, const AstList<Ast_Expr*>& n,
+  const AstList<Ast_Expr*>& e) : Ast_Stmt(AstAssignStmt){
+  op = o;
+  names = n;
+  exprs = e;
+}
+
+Ast_AssignmentStmt::
+~Ast_AssignmentStmt(){
+  delete_content(names)
+  delete_content(exprs)
+}
+
+void
+Ast_AssignmentStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  print_content(names)
+  print_content(exprs)
+}
+
+const token::Token&
+Ast_AssignmentStmt::
+token(){
+  return op;
+}
+
+Ast_BlockStmt::
+Ast_BlockStmt(const AstList<Ast_Stmt*>& s) : Ast_Stmt(AstBlockStmt) {
+  stmts = s;
+}
+
+Ast_BlockStmt::
+~Ast_BlockStmt(){
+  delete_content(stmts)
+}
+
+void
+Ast_BlockStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  print_content(stmts)
+}
+
+const token::Token&
+Ast_BlockStmt::
+token(){
+  // return
+}
+
+Ast_IfStmt::
+Ast_IfStmt(Token t, Ast_Expr* c, Ast_Stmt* b, Ast_Stmt* ef) : Ast_Stmt(AstIfStmt) {
+  tok = t;
+  cond = c;
+  body = b;
+  else_if = ef;
+}
+
+Ast_IfStmt::
+~Ast_IfStmt(){
+  delete cond;
+  delete body;
+  delete else_if;
+}
+
+void
+Ast_IfStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  cond->print(indent + 1);
+  body->print(indent + 1);
+  if(else_if) else_if->print(indent + 1);
+}
+
+const token::Token&
+Ast_IfStmt::
+token() {
+  return tok;
+}
+
+Ast_ForStmt::
+Ast_ForStmt(Token t, Ast_Expr* i, Ast_Expr* c, Ast_Expr* s, Ast_Stmt* b) : Ast_Stmt(AstForStmt) {
+  tok = t;
+  init = i;
+  cond = c;
+  step = s;
+  body = b;
+}
+
+Ast_ForStmt::
+~Ast_ForStmt(){
+  delete init;
+  delete cond;
+  delete body;
+  delete step;
+  delete body;
+}
+
+void
+Ast_ForStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  init->print(indent + 1);
+  cond->print(indent + 1);
+  body->print(indent + 1);
+  step->print(indent + 1);
+  body->print(indent + 1);
+}
+
+const token::Token&
+Ast_ForStmt::
+token(){
+  return tok;
+}
+
+Ast_WhileStmt::
+Ast_WhileStmt(Token t, Ast_Expr* c, Ast_Stmt* b) : Ast_Stmt(AstWhileStmt) {
+  tok = t;
+  cond = c;
+  body = b;
+}
+
+Ast_WhileStmt::
+~Ast_WhileStmt(){
+  delete cond;
+  delete body;
+}
+
+void
+Ast_WhileStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  cond->print(indent + 1);
+  body->print(indent + 1);
+}
+
+const token::Token&
+Ast_WhileStmt::
+token(){
+  return tok;
+}
+
+Ast_ReturnStmt::
+Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v) : Ast_Stmt(AstReturnStmt) {
+  tok = t;
+  values = v;
+}
+
+Ast_ReturnStmt::
+~Ast_ReturnStmt(){
+  delete_content(values);
+}
+
+void
+Ast_ReturnStmt::
+print(int indent) {
+  Ast_Node::print(indent);
+  print_content(values);
+}
+
+const token::Token&
+Ast_ReturnStmt::
+token(){
+  return tok;
+}
+
+Ast_DeferStmt::
+Ast_DeferStmt(Token t, Ast_Expr* e) : Ast_Stmt(AstDeferStmt) {
+  tok = t;
+  expr = e;
+}
+
+Ast_DeferStmt::
+~Ast_DeferStmt(){
+  delete expr;
+}
+
+void
+Ast_DeferStmt::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_DeferStmt::
+token(){
+  return tok;
+}
+
+Ast_Expr::
+Ast_Expr(AstNodeKind k) : Ast_Node(k) {}
+
+Ast_Operand::
+Ast_Operand(Ast_Identifier* id) : Ast_Expr(AstOperand) {
+  name = id;
+}
+
+Ast_Operand::
+~Ast_Operand() {
+  delete name;
+}
+
+void
+Ast_Operand::
+print(int indent) {
+  // TODO(): implement
+  Ast_Node::print(indent);
+  name->print(indent + 1);
+}
+
+const token::Token&
+Ast_Operand::
+token(){
+  return name->token();
+}
+
+Ast_FuncCall::
+Ast_FuncCall(Ast_Expr* n, Ast_Type* t, const AstList<Ast_Expr*>& a) : Ast_Expr(AstFuncCall) {
+  name = n;
+  type = t;
+  actuals = a;
+}
+
+Ast_FuncCall::
+~Ast_FuncCall(){
+  //TODO(): implement
+  delete name;
+  delete type;
+  delete_content(actuals)
+}
+
+void
+Ast_FuncCall::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  name->print(indent + 1);
+  if(type) type->print(indent + 1);
+  print_content(actuals);
+}
+
+const token::Token&
+Ast_FuncCall::
+token(){
+  return name->token();
+}
+
+Ast_UnaryExpr::
+Ast_UnaryExpr(Token t, Ast_Expr* e) : Ast_Expr(AstUnaryExpr) {
+  op = t;
+  expr = e;
+}
+
+Ast_UnaryExpr::
+~Ast_UnaryExpr(){
+  delete expr;
+}
+
+void
+Ast_UnaryExpr::
+print(int indent) {
+  Ast_Node::print(indent);
+  op.print(indent + 1);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_UnaryExpr::
+token(){
+  return op;
+}
+
+Ast_BinaryExpr::
+Ast_BinaryExpr(Token t, Ast_Expr* l, Ast_Expr* r) : Ast_Expr(AstBinaryExpr) {
+  op = t;
+  lhs = l;
+  rhs = r;
+}
+
+Ast_BinaryExpr::
+~Ast_BinaryExpr(){
+  //TODO(): implement
+  delete lhs;
+  delete rhs;
+}
+
+void
+Ast_BinaryExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  op.print(indent + 1);
+  lhs->print(indent + 1);
+  rhs->print(indent + 1);
+}
+
+const token::Token&
+Ast_BinaryExpr::
+token(){
+  return op;
+}
+
+Ast_ParenExpr::
+Ast_ParenExpr(Token b, Token e, Ast_Expr* ex) : Ast_Expr(AstParenExpr) {
+  begin = b;
+  end = e;
+  expr = ex;
+}
+
+
+Ast_ParenExpr::
+~Ast_ParenExpr(){
+  delete expr;
+}
+
+void
+Ast_ParenExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  expr->print(indent + 1);
+}
+const token::Token&
+Ast_ParenExpr::
+token(){
+  return begin;
+}
+
+// this is for array and map indexing
+Ast_IndexExpr::
+Ast_IndexExpr(Token b, Token e, Ast_Expr* op, Ast_Expr* i) : Ast_Expr(AstIndexExpr) {
+  begin = b;
+  end = e;
+  operand = op;
+  index = i;
+}
+
+Ast_IndexExpr::
+~Ast_IndexExpr(){
+  delete operand;
+  delete index;
+}
+
+void
+Ast_IndexExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  operand->print(indent + 1);
+  index->print(indent + 1);
+}
+
+const token::Token&
+Ast_IndexExpr::
+token(){
+  return begin;
+}
+
+// Ast_SliceExpr
+//	void print(int indent = 0) {
+//	}
+//	const token::Token& token(){
+//	}
+
+Ast_DerefExpr::
+Ast_DerefExpr(Token t, Ast_Expr* e) : Ast_Expr(AstDerefExpr) {
+  tok = t;
+  expr = e;
+}
+
+Ast_DerefExpr::
+~Ast_DerefExpr(){
+  delete expr;
+}
+
+void
+Ast_DerefExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_DerefExpr::
+token(){
+  return tok;
+}
+
+Ast_SelectorExpr::
+Ast_SelectorExpr(Ast_Expr* ex, Ast_Expr* el) : Ast_Expr(AstSelectorExpr) {
+  expr = ex;
+  elem = el;
+}
+
+Ast_SelectorExpr::
+~Ast_SelectorExpr(){
+  delete expr;
+  delete elem;
+}
+
+void
+Ast_SelectorExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  expr->print(indent + 1);
+  elem->print(indent + 1);
+}
+
+const token::Token&
+Ast_SelectorExpr::
+token(){
+  return expr->token();
+}
+
+Ast_CastExpr::
+Ast_CastExpr(Ast_Type* t, Ast_Expr* e) : Ast_Expr(AstCastExpr) {
+  type = t;
+  expr = e;
+}
+
+Ast_CastExpr::
+~Ast_CastExpr(){
+  delete type;
+  delete expr;
+}
+
+void
+Ast_CastExpr::
+print(int indent) {
+  Ast_Node::print(indent);
+  type->print(indent + 1);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_CastExpr::
+token(){
+  return type->token();
+}
+
+Ast_AddressExpr::
+Ast_AddressExpr(Token o, Ast_Expr* e) : Ast_Expr(AstAddressExpr) {
+  op = o;
+  expr = e;
+}
+
+Ast_AddressExpr::
+~Ast_AddressExpr(){
+  delete expr;
+}
+
+void
+Ast_AddressExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_AddressExpr::
+token(){
+  return op;
+}
+
+Ast_IncDecExpr::
+Ast_IncDecExpr(Token o, Ast_Expr* e) : Ast_Expr(AstIncDecExpr) {
+  op = o;
+  expr = e;
+}
+
+Ast_IncDecExpr::
+~Ast_IncDecExpr(){
+  delete expr;
+}
+
+void
+Ast_IncDecExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  op.print(indent + 1);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_IncDecExpr::
+token(){
+  return op;
+}
+
+Ast_NewExpr::
+Ast_NewExpr(Token t, Ast_Type* ty, const AstList<Ast_Expr*>& i) : Ast_Expr(AstNewExpr) {
+  tok = t;
+  type = ty;
+  initExpr = i;
+}
+
+Ast_NewExpr::
+~Ast_NewExpr(){
+  //TODO(): implement
+  delete type;
+  delete_content(initExpr)
+}
+
+
+void
+Ast_NewExpr::
+print(int indent) {
+  Ast_Node::print(indent);
+  type->print(indent + 1);
+  print_content(initExpr)
+}
+
+const token::Token&
+Ast_NewExpr::
+token(){
+  return tok;
+}
+
+Ast_DeleteExpr::
+Ast_DeleteExpr(Token t, Ast_Expr* e) : Ast_Expr(AstDeleteExpr) {
+  tok = t;
+  expr = e;
+}
+
+Ast_DeleteExpr::
+~Ast_DeleteExpr(){
+  delete expr;
+}
+
+void
+Ast_DeleteExpr::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  expr->print(indent + 1);
+}
+
+const token::Token&
+Ast_DeleteExpr::
+token(){
+  return tok;
+}
+
+Ast_Type::
+Ast_Type(AstNodeKind k) : Ast_Node(k) {}
+
+Ast_NamedType::
+Ast_NamedType(Ast_Expr* id) : Ast_Type(AstNamedType) {
+  idExpr = id;
+}
+
+Ast_NamedType::
+~Ast_NamedType(){
+  delete idExpr;
+}
+
+void
+Ast_NamedType::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  idExpr->print(indent + 1);
+}
+
+const token::Token&
+Ast_NamedType::
+token(){
+  return idExpr->token();
+}
+
+Ast_PrimativeType::
+Ast_PrimativeType(Token t) : Ast_Type(AstPrimativeType) {
+  type = t;
+}
+
+void
+Ast_PrimativeType::
+print(int indent) {
+  Ast_Node::print(indent);
+  type.print(indent + 1);
+}
+
+const token::Token&
+Ast_PrimativeType::
+token(){
+  return type;
+}
+
+Ast_ProcReturn::
+Ast_ProcReturn(AstNodeKind kind) : Ast_Node(kind) {}
+
+Ast_NamedReturn::
+Ast_NamedReturn(Ast_FieldSpec* f) : Ast_ProcReturn(AstNamedReturn) {
+  field = f;
+}
+
+Ast_NamedReturn::
+~Ast_NamedReturn() {
+  delete field;
+}
+
+void
+Ast_NamedReturn::
+print(int indent) {
+  Ast_Node::print(indent);
+  field->print(indent + 1);
+}
+
+const token::Token&
+Ast_NamedReturn::
+token() {
+  return field->token();
+}
+
+Ast_TypedReturn::
+Ast_TypedReturn(Ast_Type* t) : Ast_ProcReturn(AstTypeReturn) {
+  type = t;
+}
+
+Ast_TypedReturn::
+~Ast_TypedReturn() {
+  delete type;
+}
+
+void
+Ast_TypedReturn::
+print(int indent) {
+  Ast_Node::print(indent);
+  type->print(indent + 1);
+}
+
+const token::Token&
+Ast_TypedReturn::
+token() {
+  return type->token();
+}
+
+Ast_ProcType::
+Ast_ProcType(Token t, Ast_Identifier* n, AstList<Ast_FieldSpec*> p,
+  AstList<Ast_ProcReturn*> r, FunctionFlags f, AstNodeKind kind) : Ast_Type(kind) {
+  tok = t;
+  name = n;
+  params = p;
+  returns = r;
+  flags = f;
+}
+
+Ast_ProcType::
+~Ast_ProcType(){
+  delete name;
+  delete_content(params)
+  delete_content(returns)
+}
+
+void
+Ast_ProcType::
+print(int indent ) {
+  Ast_Node::print(indent);
+  if(name) name->print(indent + 1);
+  print_content(params)
+  print_content(returns)
+}
+
+const token::Token&
+Ast_ProcType::
+token(){
+  return tok;
+}
+
+
+Ast_FunctionType::
+Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_FieldSpec*> p,
+  AstList<Ast_ProcReturn*> r, FunctionFlags f) : Ast_ProcType(t, n, p, r, f, AstFunctionType) {
+}
+
+
+Ast_MethodType::
+Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_FieldSpec*> p,
+AstList<Ast_ProcReturn*> r, FunctionFlags f) : Ast_ProcType(t, n, p, r, f, AstMethodType) {
+  classOf = c;
+}
+
+Ast_MethodType::
+~Ast_MethodType(){
+  delete classOf;
+}
+
+void
+Ast_MethodType::
+print(int indent) {
+  Ast_ProcType::print(indent + 1);
+  classOf->print(indent + 1);
+}
+
+const token::Token&
+Ast_MethodType::
+token(){
+  return Ast_ProcType::token();
+}
+
+
+Ast_PointerType::
+Ast_PointerType(Token t, Ast_Type* ty) : Ast_Type(AstPointerType) {
+  tok = t;
+  type = ty;
+}
+
+Ast_PointerType::
+~Ast_PointerType(){
+  delete type;
+}
+
+void
+Ast_PointerType::
+print(int indent) {
+  Ast_Node::print(indent);
+  type->print(indent + 1);
+}
+
+const token::Token&
+Ast_PointerType::
+token(){
+  return tok;
+}
+
+Ast_ArrayType::
+Ast_ArrayType(Token t, Ast_Type* ty, Ast_Expr* s) : Ast_Type(AstArrayType) {
+  tok = t;
+  type = ty;
+  size = s;
+}
+
+Ast_ArrayType::
+~Ast_ArrayType(){
+  delete size;
+  delete type;
+}
+
+void
+Ast_ArrayType::
+print(int indent) {
+  Ast_Node::print(indent);
+  size->print(indent + 1);
+  type->print(indent + 1);
+}
+
+const token::Token&
+Ast_ArrayType::
+token(){
+  return tok;
+}
+
+Ast_DynamicArrayType::
+Ast_DynamicArrayType(Token t, Ast_Type* ty) : Ast_Type(AstDynamicArrayType) {
+  tok = t;
+  type = ty;
+}
+
+Ast_DynamicArrayType::
+~Ast_DynamicArrayType(){
+  delete type;
+}
+
+void
+Ast_DynamicArrayType::
+print(int indent) {
+  Ast_Node::print(indent);
+  type->print(indent + 1);
+}
+
+const token::Token&
+Ast_DynamicArrayType::
+token(){
+  return tok;
+}
+
+Ast_MapType::
+Ast_MapType(Token t, Ast_Type* k, Ast_Type* v) : Ast_Type(AstMapType) {
+  tok = t;
+  key = k;
+  value = v;
+}
+
+Ast_MapType::
+~Ast_MapType(){
+  delete key;
+  delete value;
+}
+
+void
+Ast_MapType::
+print(int indent) {
+  Ast_Node::print(indent);
+  key->print(indent + 1);
+  value->print(indent + 1);
+}
+
+const token::Token&
+Ast_MapType::
+token(){
+  return tok;
+}
+
+Ast_EnumType::
+Ast_EnumType(Token t, Ast_Identifier* n, const AstList<Ast_Decl*>& m) : Ast_Type(AstEnumType) {
+  tok = t;
+  name = n;
+  members = m;
+}
+
+Ast_EnumType::
+~Ast_EnumType(){
+  delete name;
+  delete_content(members)
+}
+
+void
+Ast_EnumType::
+print(int indent) {
+  Ast_Node::print(indent);
+  if(name) name->print(indent + 1);
+  print_content(members)
+}
+
+const token::Token&
+Ast_EnumType::
+token(){
+  return tok;
+}
+
+Ast_UnionType::
+Ast_UnionType(Token t, Ast_Identifier* n, const AstList<Ast_Decl*>& m) : Ast_Type(AstUnionType) {
+  tok = t;
+  name = n;
+  members = m;
+}
+
+Ast_UnionType::
+~Ast_UnionType(){
+  delete name;
+  delete_content(members)
+}
+
+void
+Ast_UnionType::
+print(int indent) {
+  Ast_Node::print(indent);
+  if(name) name->print(indent + 1);
+  print_content(members)
+}
+
+const token::Token&
+Ast_UnionType::
+token(){
+  return tok;
+}
+
+Ast_ClassType::
+Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m,
+const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p) : Ast_Type(AstClassType) {
+  tok = t;
+  name = n;
+  members = m;
+  extends = e;
+  methods = p;
+}
+
+Ast_ClassType::
+~Ast_ClassType(){
+  //TODO(): implement
+  delete name;
+  delete_content(members)
+  delete_content(extends)
+  delete_content(methods)
+}
+
+void
+Ast_ClassType::
+print(int indent) {
+  //TODO(): implement
+  Ast_Node::print(indent);
+  if(name) name->print(indent + 1);
+  print_content(members)
+  print_content(extends)
+  print_content(methods)
+}
+
+const token::Token&
+Ast_ClassType::
+token() {
+  return tok;
+}
+
+Ast_StructType::
+Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m) : Ast_Type(AstStructType) {
+  tok = t;
+  name = n;
+  members = m;
+}
+
+Ast_StructType::
+~Ast_StructType(){
+  delete name;
+  delete_content(members)
+}
+
+void
+Ast_StructType::
+print(int indent) {
+  Ast_Node::print(indent);
+  if(name) name->print(indent + 1);
+  print_content(members)
+}
+
+const token::Token&
+Ast_StructType::
+token() {
+  return tok;
 }
 
 } // ast

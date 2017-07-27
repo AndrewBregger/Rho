@@ -18,45 +18,11 @@ using str::string;
 using namespace std;
 using namespace token;
 
-void print_token(const Token& _token) {
- 	printf("\t");
-  if(_token.token() == TKN_ERROR)
-    return;
-  auto loc = _token.location();
-  printf("%-8s\tat %3zu|%3zu  -%3zu ", token_string(_token.token()).c_str(),
-    loc.m_line, loc.m_column, loc.m_ecolumn);
-  switch(_token.token()) {
-    case TKN_LSTRING:
-      printf("(%s)\n", _token.get_string());
-      break;
-    case TKN_LINT:
-      printf("(%d)\n", _token.get_int());
-      break;
-    case TKN_LCHAR:
-      printf("(%c)\n", _token.get_char());
-      break;
-    case TKN_LDOUBLE:
-      printf("(%lf)\n", _token.get_float());
-      break;
-    case TKN_IDENTIFIER:
-      printf("(%s)\n", _token.get_string());
-      break;
-    case TKN_LBOOL:
-      cout << "(" << _token.get_boolean() << ")\n";
-      break;
-    case TKN_ERROR:
-      cout << "Error" << endl;
-      break;
-    default:
-      putchar('\n');
-  }
-}
-
 void print_files(ast::AstFile* _file) {
   std::cout << "File: " << _file->m_file->GetPath() << std::endl;
   std::cout << "ID: " << _file->m_id << std::endl;
-  for(auto i : _file->m_decls)
-    ast::ast_print(i, 0);
+  for(auto i : _file->m_stmts)
+    i->print(0);
 }
 
 int main(int argc, char* const* argv) {
