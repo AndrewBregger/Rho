@@ -1,0 +1,26 @@
+{
+    "name": "rho",
+    "displayName": "Rho",
+    "description": "simple syntax highlighting for Custom language Rho.",
+    "version": "0.0.1",
+    "publisher": "n",
+    "engines": {
+        "vscode": "^1.14.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "rho",
+            "aliases": ["Rho", "rho"],
+            "extensions": [".rho"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "rho",
+            "scopeName": "source.rho",
+            "path": "./syntaxes/rho.tmLanguage.json"
+        }]
+    }
+}

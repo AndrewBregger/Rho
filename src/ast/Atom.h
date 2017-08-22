@@ -1,7 +1,7 @@
 #ifndef ATOM_H_
 #define ATOM_H_
 
-#include "utils/string.h"
+#include <string>
 
 namespace ast {
 

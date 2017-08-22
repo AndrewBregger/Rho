@@ -3,10 +3,8 @@
 
 #include <vector>
 
-#include "token/Token.h"
 #include "utils/File.h"
 #include "Atom.h"
-#include "utils/string.h"
 
 using token::Token;
 
@@ -261,6 +259,7 @@ struct Ast_ImportSpec : public Ast_Decl {
 	std::string fullPath;
 	Ast_Identifier* name;
 	AstList<Ast_Identifier*> imports;
+	size_t ast{(size_t) -1};
 	bool valid{false};
 
 	Ast_ImportSpec(token::Token p, const std::string& fp, Ast_Identifier* n,
@@ -274,6 +273,7 @@ struct Ast_ImportSpec : public Ast_Decl {
 struct Ast_FieldSpec : public Ast_Decl {
 	token::Token tok;
 	AstList<Ast_Identifier*> names;
+	AstList<Ast_Expr*> defaults;
 	Ast_Type* type;
 	VariableFlags flags;
 
@@ -303,6 +303,17 @@ struct Ast_NullLiteral : public Ast_Expr {
 	token::Token tok;
 
 	Ast_NullLiteral(Token t);
+
+	virtual void print(int indent = 0) override;
+	virtual const token::Token& token();
+};
+
+struct Ast_CompoundLiteral : public Ast_Expr {
+	token::Token tok;
+	AstList<Ast_Expr*> literals;
+
+	Ast_CompoundLiteral(Token t, const AstList<Ast_Expr*>& lits);
+	~Ast_CompoundLiteral();
 
 	virtual void print(int indent = 0) override;
 	virtual const token::Token& token();
@@ -757,12 +768,13 @@ struct Ast_UnionType : public Ast_Type {
 struct Ast_ClassType : public Ast_Type {
   token::Token tok;
   Ast_Identifier* name;
+  AstList<Ast_Decl*> decls;
   AstList<Ast_FieldSpec*> members;
   AstList<Ast_Type*> extends;
   AstList<Ast_ProcSpec*> methods;
 
   Ast_ClassType(token::Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m,
-      const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p);
+      const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p, const AstList<Ast_Decl*>& d);
   virtual ~Ast_ClassType();
 
   virtual void print(int indent = 0) override;
@@ -772,14 +784,21 @@ struct Ast_ClassType : public Ast_Type {
 struct Ast_StructType : public Ast_Type {
   token::Token tok;
   Ast_Identifier* name;
+  AstList<Ast_Decl*> decls;
   AstList<Ast_FieldSpec*> members;
 
-  Ast_StructType(token::Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m);
+  Ast_StructType(token::Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m, const AstList<Ast_Decl*>& d);
   virtual ~Ast_StructType();
 
   virtual void print(int indent = 0) override;
 	virtual const token::Token& token();
 };
+
+struct Ast_PolymorphicType : public Ast_Type {
+	token::Token tok;
+	Ast_Identifier* name;
+};
+
 }
 
 #endif

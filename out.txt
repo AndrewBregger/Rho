@@ -1,0 +1,763 @@
+Compiling src/parser/Parser.cpp
+src/parser/Parser.cpp:188:53: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+    debug_print("Token Found, Moving to next token\n");
+                                                     ^
+src/parser/Parser.cpp:193:47: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+    debug_print("Token not found, continuing\n");
+                                               ^
+src/parser/Parser.cpp:274:34: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("parse stmt list\n");
+                                  ^
+src/parser/Parser.cpp:288:29: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("parse stmt\n");
+                             ^
+src/parser/Parser.cpp:438:34: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("parse decl expr\n");
+                                  ^
+src/parser/Parser.cpp:892:33: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("return nullptr\n");
+                                 ^
+src/parser/Parser.cpp:1171:39: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("parse hash directive\n");
+                                       ^
+src/parser/Parser.cpp:1186:36: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("parse import stmt\n");
+                                    ^
+src/parser/Parser.cpp:1244:27: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("parse id\n");
+                           ^
+src/parser/Parser.cpp:1264:32: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   debug_print("parse id list\n");
+                                ^
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:115:23: error: expected ‘;’ at end of member declaration
+    ast::Ast_TypeSpec* parse_type_decl(ast::AstNode* id);
+                       ^~~~~~~~~~~~~~~
+src/parser/Parser.h:115:51: error: expected ‘)’ before ‘*’ token
+    ast::Ast_TypeSpec* parse_type_decl(ast::AstNode* id);
+                                                   ^
+src/parser/Parser.h:117:9: error: ‘Ast_TypeSepc’ in namespace ‘ast’ does not name a type
+    ast::Ast_TypeSepc* parse_enum_union_struct();
+         ^~~~~~~~~~~~
+src/parser/Parser.h:126:20: error: ‘Ast_Node’ was not declared in this scope
+       ast::AstList<Ast_Node*> parse_function_return();
+                    ^~~~~~~~
+src/parser/Parser.h:126:20: note: suggested alternative:
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:159:8: note:   ‘ast::Ast_Node’
+ struct Ast_Node {
+        ^~~~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:126:29: error: template argument 1 is invalid
+       ast::AstList<Ast_Node*> parse_function_return();
+                             ^
+src/parser/Parser.h:132:20: error: ‘Ast_FieldSpec’ was not declared in this scope
+       ast::AstList<Ast_FieldSpec*> parse_field_list(FieldFlags flags = FieldDefault);
+                    ^~~~~~~~~~~~~
+src/parser/Parser.h:132:20: note: suggested alternative:
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:282:8: note:   ‘ast::Ast_FieldSpec’
+ struct Ast_FieldSpec : public Ast_Decl {
+        ^~~~~~~~~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:132:34: error: template argument 1 is invalid
+       ast::AstList<Ast_FieldSpec*> parse_field_list(FieldFlags flags = FieldDefault);
+                                  ^
+src/parser/Parser.h:146:17: error: ‘Ast_Expr’ was not declared in this scope
+    ast::AstList<Ast_Expr*> parse_lhs_expr_list();
+                 ^~~~~~~~
+src/parser/Parser.h:146:17: note: suggested alternative:
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:295:8: note:   ‘ast::Ast_Expr’
+ struct Ast_Expr : public Ast_Node {
+        ^~~~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:146:26: error: template argument 1 is invalid
+    ast::AstList<Ast_Expr*> parse_lhs_expr_list();
+                          ^
+src/parser/Parser.h:148:17: error: ‘Ast_Expr’ was not declared in this scope
+    ast::AstList<Ast_Expr*> parse_rhs_expr_list();
+                 ^~~~~~~~
+src/parser/Parser.h:148:17: note: suggested alternative:
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:295:8: note:   ‘ast::Ast_Expr’
+ struct Ast_Expr : public Ast_Node {
+        ^~~~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:148:26: error: template argument 1 is invalid
+    ast::AstList<Ast_Expr*> parse_rhs_expr_list();
+                          ^
+src/parser/Parser.h:156:24: error: expected ‘;’ at end of member declaration
+    ast::Ast_IndexExpr* parse_index_expr(ast::AstNode* operand);
+                        ^~~~~~~~~~~~~~~~
+src/parser/Parser.h:156:53: error: expected ‘)’ before ‘*’ token
+    ast::Ast_IndexExpr* parse_index_expr(ast::AstNode* operand);
+                                                     ^
+src/parser/Parser.h:158:9: error: ‘Ast_CallExpr’ in namespace ‘ast’ does not name a type
+    ast::Ast_CallExpr* parse_call_expr(ast::AstNode* operand);
+         ^~~~~~~~~~~~
+src/parser/Parser.h:166:17: error: ‘Ast_Identifier’ was not declared in this scope
+    ast::AstList<Ast_Identifier*> parse_identifier_list();
+                 ^~~~~~~~~~~~~~
+src/parser/Parser.h:166:17: note: suggested alternative:
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:174:8: note:   ‘ast::Ast_Identifier’
+ struct Ast_Identifier : public Ast_Node {
+        ^~~~~~~~~~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:166:32: error: template argument 1 is invalid
+    ast::AstList<Ast_Identifier*> parse_identifier_list();
+                                ^
+src/parser/Parser.h:170:27: error: expected ‘;’ at end of member declaration
+       ast::Ast_FieldSpec* parse_field_tags(ast::AstNode* field);
+                           ^~~~~~~~~~~~~~~~
+src/parser/Parser.h:170:56: error: expected ‘)’ before ‘*’ token
+       ast::Ast_FieldSpec* parse_field_tags(ast::AstNode* field);
+                                                        ^
+src/parser/Parser.h:179:21: error: ‘AstNode’ is not a member of ‘ast’
+    std::vector<ast::AstNode*> m_specs; // all specs defined in the parsed file.
+                     ^~~~~~~
+src/parser/Parser.h:179:21: note: suggested alternative: ‘Ast_Node’
+    std::vector<ast::AstNode*> m_specs; // all specs defined in the parsed file.
+                     ^~~~~~~
+                     Ast_Node
+src/parser/Parser.h:179:21: error: ‘AstNode’ is not a member of ‘ast’
+src/parser/Parser.h:179:21: note: suggested alternative: ‘Ast_Node’
+    std::vector<ast::AstNode*> m_specs; // all specs defined in the parsed file.
+                     ^~~~~~~
+                     Ast_Node
+src/parser/Parser.h:179:29: error: template argument 1 is invalid
+    std::vector<ast::AstNode*> m_specs; // all specs defined in the parsed file.
+                             ^
+src/parser/Parser.h:179:29: error: template argument 2 is invalid
+src/parser/Parser.cpp: In member function ‘parse::ParseFileError parse::Parser::init(sys::File*)’:
+src/parser/Parser.cpp:42:11: error: ‘ast_file’ was not declared in this scope
+   m_ast = ast_file(_file);
+           ^~~~~~~~
+src/parser/Parser.cpp:42:11: note: suggested alternative: ‘parse_file’
+   m_ast = ast_file(_file);
+           ^~~~~~~~
+           parse_file
+src/parser/Parser.cpp: In member function ‘ast::AstFile* parse::Parser::parse_file()’:
+src/parser/Parser.cpp:84:36: error: no match for ‘operator=’ (operand types are ‘std::vector<ast::Ast_Node*>’ and ‘ast::AstList<ast::Ast_Stmt*> {aka std::vector<ast::Ast_Stmt*, std::allocator<ast::Ast_Stmt*> >}’)
+   m_ast->m_decls = parse_stmt_list();
+                                    ^
+In file included from /usr/local/include/c++/7.1.0/vector:69:0,
+                 from ./src/ast/Ast.h:4,
+                 from src/parser/Parser.h:17,
+                 from src/parser/Parser.cpp:1:
+/usr/local/include/c++/7.1.0/bits/vector.tcc:179:5: note: candidate: std::vector<_Tp, _Alloc>& std::vector<_Tp, _Alloc>::operator=(const std::vector<_Tp, _Alloc>&) [with _Tp = ast::Ast_Node*; _Alloc = std::allocator<ast::Ast_Node*>]
+     vector<_Tp, _Alloc>::
+     ^~~~~~~~~~~~~~~~~~~
+/usr/local/include/c++/7.1.0/bits/vector.tcc:179:5: note:   no known conversion for argument 1 from ‘ast::AstList<ast::Ast_Stmt*> {aka std::vector<ast::Ast_Stmt*, std::allocator<ast::Ast_Stmt*> >}’ to ‘const std::vector<ast::Ast_Node*>&’
+In file included from /usr/local/include/c++/7.1.0/vector:64:0,
+                 from ./src/ast/Ast.h:4,
+                 from src/parser/Parser.h:17,
+                 from src/parser/Parser.cpp:1:
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:461:7: note: candidate: std::vector<_Tp, _Alloc>& std::vector<_Tp, _Alloc>::operator=(std::vector<_Tp, _Alloc>&&) [with _Tp = ast::Ast_Node*; _Alloc = std::allocator<ast::Ast_Node*>]
+       operator=(vector&& __x) noexcept(_Alloc_traits::_S_nothrow_move())
+       ^~~~~~~~
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:461:7: note:   no known conversion for argument 1 from ‘ast::AstList<ast::Ast_Stmt*> {aka std::vector<ast::Ast_Stmt*, std::allocator<ast::Ast_Stmt*> >}’ to ‘std::vector<ast::Ast_Node*>&&’
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:482:7: note: candidate: std::vector<_Tp, _Alloc>& std::vector<_Tp, _Alloc>::operator=(std::initializer_list<_Tp>) [with _Tp = ast::Ast_Node*; _Alloc = std::allocator<ast::Ast_Node*>]
+       operator=(initializer_list<value_type> __l)
+       ^~~~~~~~
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:482:7: note:   no known conversion for argument 1 from ‘ast::AstList<ast::Ast_Stmt*> {aka std::vector<ast::Ast_Stmt*, std::allocator<ast::Ast_Stmt*> >}’ to ‘std::initializer_list<ast::Ast_Node*>’
+src/parser/Parser.cpp: In member function ‘bool parse::Parser::setup_decls()’:
+src/parser/Parser.cpp:125:32: error: expected primary-expression before ‘||’ token
+    if(i->kind == Ast_EmptyStmt || i->kind == Ast_BadStmt) {
+                                ^~
+src/parser/Parser.cpp:125:46: error: ‘Ast_BadStmt’ was not declared in this scope
+    if(i->kind == Ast_EmptyStmt || i->kind == Ast_BadStmt) {
+                                              ^~~~~~~~~~~
+src/parser/Parser.cpp:129:32: error: expected primary-expression before ‘)’ token
+    if(i->kind == Ast_ImportSpec) {
+                                ^
+src/parser/Parser.cpp:130:33: error: no matching function for call to ‘push_back(ast::Ast_Node* const&)’
+     m_ast->m_imports.push_back(i);
+                                 ^
+In file included from /usr/local/include/c++/7.1.0/vector:64:0,
+                 from ./src/ast/Ast.h:4,
+                 from src/parser/Parser.h:17,
+                 from src/parser/Parser.cpp:1:
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:939:7: note: candidate: void std::vector<_Tp, _Alloc>::push_back(const value_type&) [with _Tp = ast::Ast_ImportSpec*; _Alloc = std::allocator<ast::Ast_ImportSpec*>; std::vector<_Tp, _Alloc>::value_type = ast::Ast_ImportSpec*] <near match>
+       push_back(const value_type& __x)
+       ^~~~~~~~~
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:939:7: note:   conversion of argument 1 would be ill-formed:
+src/parser/Parser.cpp:130:32: error: invalid conversion from ‘ast::Ast_Node*’ to ‘std::vector<ast::Ast_ImportSpec*>::value_type {aka ast::Ast_ImportSpec*}’ [-fpermissive]
+     m_ast->m_imports.push_back(i);
+                                ^
+In file included from /usr/local/include/c++/7.1.0/vector:64:0,
+                 from ./src/ast/Ast.h:4,
+                 from src/parser/Parser.h:17,
+                 from src/parser/Parser.cpp:1:
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:953:7: note: candidate: void std::vector<_Tp, _Alloc>::push_back(std::vector<_Tp, _Alloc>::value_type&&) [with _Tp = ast::Ast_ImportSpec*; _Alloc = std::allocator<ast::Ast_ImportSpec*>; std::vector<_Tp, _Alloc>::value_type = ast::Ast_ImportSpec*] <near match>
+       push_back(value_type&& __x)
+       ^~~~~~~~~
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:953:7: note:   conversion of argument 1 would be ill-formed:
+src/parser/Parser.cpp:130:32: error: invalid conversion from ‘ast::Ast_Node*’ to ‘std::vector<ast::Ast_ImportSpec*>::value_type {aka ast::Ast_ImportSpec*}’ [-fpermissive]
+     m_ast->m_imports.push_back(i);
+                                ^
+src/parser/Parser.cpp: In member function ‘void parse::Parser::parse_imports_files()’:
+src/parser/Parser.cpp:140:24: error: ‘struct ast::Ast_ImportSpec’ has no member named ‘ImportSpec’; did you mean ‘Ast_ImportSpec’?
+    auto data = import->ImportSpec;
+                        ^~~~~~~~~~
+                        Ast_ImportSpec
+src/parser/Parser.cpp:146:14: error: ‘struct ast::Ast_ImportSpec’ has no member named ‘ImportSpec’; did you mean ‘Ast_ImportSpec’?
+      import->ImportSpec.m_ast = a->m_id;
+              ^~~~~~~~~~
+              Ast_ImportSpec
+src/parser/Parser.cpp: In member function ‘ast::AstList<ast::Ast_Stmt*> parse::Parser::parse_stmt_list()’:
+src/parser/Parser.cpp:275:3: error: ‘AstNodeList’ was not declared in this scope
+   AstNodeList stmts;
+   ^~~~~~~~~~~
+src/parser/Parser.cpp:275:3: note: suggested alternative: ‘Ast_Node_Kinds’
+   AstNodeList stmts;
+   ^~~~~~~~~~~
+   Ast_Node_Kinds
+src/parser/Parser.cpp:280:14: error: ‘stmts’ was not declared in this scope
+     add_node(stmts, st);
+              ^~~~~
+src/parser/Parser.cpp:280:14: note: suggested alternative: ‘strtok’
+     add_node(stmts, st);
+              ^~~~~
+              strtok
+src/parser/Parser.cpp:282:10: error: ‘stmts’ was not declared in this scope
+   return stmts;
+          ^~~~~
+src/parser/Parser.cpp:282:10: note: suggested alternative: ‘strtok’
+   return stmts;
+          ^~~~~
+          strtok
+src/parser/Parser.cpp: In member function ‘ast::Ast_Stmt* parse::Parser::parse_stmt(parse::Parser::StmtFlags)’:
+src/parser/Parser.cpp:304:43: error: invalid conversion from ‘ast::Ast_Node*’ to ‘ast::Ast_Stmt*’ [-fpermissive]
+    case TKN_MATCH: return parse_match_stmt();
+                           ~~~~~~~~~~~~~~~~^~
+src/parser/Parser.cpp:306:46: error: invalid conversion from ‘ast::Ast_Node*’ to ‘ast::Ast_Stmt*’ [-fpermissive]
+    case TKN_HASH: return parse_hash_directive();
+                          ~~~~~~~~~~~~~~~~~~~~^~
+src/parser/Parser.cpp:309:27: error: ‘ast_break_stmt’ was not declared in this scope
+    case TKN_BREAK: return ast_break_stmt(token);
+                           ^~~~~~~~~~~~~~
+src/parser/Parser.cpp:309:27: note: suggested alternative: ‘parse_block_stmt’
+    case TKN_BREAK: return ast_break_stmt(token);
+                           ^~~~~~~~~~~~~~
+                           parse_block_stmt
+src/parser/Parser.cpp:310:30: error: ‘ast_continue_stmt’ was not declared in this scope
+    case TKN_CONTINUE: return ast_continue_stmt(token);
+                              ^~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:311:39: error: ‘ast_empty_stmt’ was not declared in this scope
+    case TKN_SEM: next_token(); return ast_empty_stmt(token);
+                                       ^~~~~~~~~~~~~~
+src/parser/Parser.cpp:311:39: note: suggested alternative: ‘parse_simple_stmt’
+    case TKN_SEM: next_token(); return ast_empty_stmt(token);
+                                       ^~~~~~~~~~~~~~
+                                       parse_simple_stmt
+src/parser/Parser.cpp:314:5: error: ‘AstNode’ was not declared in this scope
+     AstNode* name = parse_rhs_expr();
+     ^~~~~~~
+src/parser/Parser.cpp:314:5: note: suggested alternative: ‘strmode’
+     AstNode* name = parse_rhs_expr();
+     ^~~~~~~
+     strmode
+src/parser/Parser.cpp:314:14: error: ‘name’ was not declared in this scope
+     AstNode* name = parse_rhs_expr();
+              ^~~~
+src/parser/Parser.cpp:314:14: note: suggested alternative: ‘rename’
+     AstNode* name = parse_rhs_expr();
+              ^~~~
+              rename
+src/parser/Parser.cpp:315:5: error: ‘ast_print’ was not declared in this scope
+     ast_print(name, 0);
+     ^~~~~~~~~
+src/parser/Parser.cpp:315:5: note: suggested alternative: ‘iswprint’
+     ast_print(name, 0);
+     ^~~~~~~~~
+     iswprint
+src/parser/Parser.cpp:317:13: error: ‘ast_delete_expr’ was not declared in this scope
+      return ast_delete_expr(token, name);
+             ^~~~~~~~~~~~~~~
+src/parser/Parser.cpp:317:13: note: suggested alternative: ‘parse_selector_expr’
+      return ast_delete_expr(token, name);
+             ^~~~~~~~~~~~~~~
+             parse_selector_expr
+src/parser/Parser.cpp:321:13: error: ‘ast_bad_stmt’ was not declared in this scope
+      return ast_bad_stmt();
+             ^~~~~~~~~~~~
+src/parser/Parser.cpp:321:13: note: suggested alternative: ‘parse_for_stmt’
+      return ast_bad_stmt();
+             ^~~~~~~~~~~~
+             parse_for_stmt
+src/parser/Parser.cpp: In member function ‘ast::Ast_IfStmt* parse::Parser::parse_if_stmt(token::Token_Type)’:
+src/parser/Parser.cpp:358:29: warning: left operand of comma operator has no effect [-Wunused-value]
+   return new Ast_IfStmt((t, cond, stmt, elseif);
+                             ^~~~
+src/parser/Parser.cpp:358:35: warning: right operand of comma operator has no effect [-Wunused-value]
+   return new Ast_IfStmt((t, cond, stmt, elseif);
+                                   ^~~~
+src/parser/Parser.cpp:358:41: warning: right operand of comma operator has no effect [-Wunused-value]
+   return new Ast_IfStmt((t, cond, stmt, elseif);
+                                         ^~~~~~
+src/parser/Parser.cpp:358:48: error: expected ‘)’ before ‘;’ token
+   return new Ast_IfStmt((t, cond, stmt, elseif);
+                                                ^
+src/parser/Parser.cpp:358:48: error: no matching function for call to ‘ast::Ast_IfStmt::Ast_IfStmt()’
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:526:2: note: candidate: ast::Ast_IfStmt::Ast_IfStmt(token::Token, ast::Ast_Expr*, ast::Ast_Stmt*, ast::Ast_Stmt*)
+  Ast_IfStmt(token::Token t, Ast_Expr* c, Ast_Stmt* b, Ast_Stmt* ef);
+  ^~~~~~~~~~
+./src/ast/Ast.h:526:2: note:   candidate expects 4 arguments, 0 provided
+./src/ast/Ast.h:520:8: note: candidate: constexpr ast::Ast_IfStmt::Ast_IfStmt(const ast::Ast_IfStmt&)
+ struct Ast_IfStmt : public Ast_Stmt {
+        ^~~~~~~~~~
+./src/ast/Ast.h:520:8: note:   candidate expects 1 argument, 0 provided
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:408:7: error: ‘Ast_Defer’ in namespace ‘ast’ does not name a type
+  ast::Ast_Defer*
+       ^~~~~~~~~
+src/parser/Parser.cpp:424:2: error: prototype for ‘ast::Ast_ReturnStmt parse::Parser::parse_return_stmt()’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:109:25: error: candidate is: ast::Ast_ReturnStmt* parse::Parser::parse_return_stmt()
+    ast::Ast_ReturnStmt* parse_return_stmt();
+                         ^~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp: In member function ‘ast::Ast_Decl* parse::Parser::parse_decl()’:
+src/parser/Parser.cpp:450:13: error: ‘ast_type_alias_spec’ was not declared in this scope
+      return ast_type_alias_spec(token, type, alias);
+             ^~~~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:455:13: error: ‘ast_bad_decl’ was not declared in this scope
+      return ast_bad_decl();
+             ^~~~~~~~~~~~
+src/parser/Parser.cpp:464:32: error: expression cannot be used as a function
+       decl = parse_type_decl(id);
+                                ^
+src/parser/Parser.cpp:470:15: error: ‘ast_bad_decl’ was not declared in this scope
+        return ast_bad_decl();
+               ^~~~~~~~~~~~
+src/parser/Parser.cpp:477:12: error: ‘ast_bad_decl’ was not declared in this scope
+     return ast_bad_decl();
+            ^~~~~~~~~~~~
+src/parser/Parser.cpp: In member function ‘ast::Ast_Stmt* parse::Parser::parse_simple_stmt(parse::Parser::StmtFlags)’:
+src/parser/Parser.cpp:491:33: error: cannot convert ‘ast::Ast_Decl*’ to ‘ast::Ast_Stmt*’ in initialization
+     Ast_Stmt* stmt = parse_decl();
+                                 ^
+src/parser/Parser.cpp:495:13: error: ‘ast_bad_decl’ was not declared in this scope
+      return ast_bad_decl();
+             ^~~~~~~~~~~~
+src/parser/Parser.cpp:505:24: error: cannot convert ‘ast::Ast_Decl*’ to ‘ast::Ast_Stmt*’ in return
+      return parse_decl();
+                        ^
+src/parser/Parser.cpp:507:47: error: conversion from ‘int’ to non-scalar type ‘ast::AstList<ast::Ast_Expr*> {aka std::vector<ast::Ast_Expr*, std::allocator<ast::Ast_Expr*> >}’ requested
+   AstList<Ast_Expr*> lhs = parse_lhs_expr_list();
+                            ~~~~~~~~~~~~~~~~~~~^~
+src/parser/Parser.cpp:525:39: error: invalid new-expression of abstract class type ‘ast::Ast_BadNode’
+      return new Ast_BadNode(AstBadDecl);
+                                       ^
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:169:8: note:   because the following virtual functions are pure within ‘ast::Ast_BadNode’:
+ struct Ast_BadNode : public Ast_Node {
+        ^~~~~~~~~~~
+./src/ast/Ast.h:166:30: note: 	virtual const token::Token& ast::Ast_Node::token()
+  virtual const token::Token& token() = 0;
+                              ^~~~~
+src/parser/Parser.cpp:529:50: error: conversion from ‘int’ to non-scalar type ‘ast::AstList<ast::Ast_Expr*> {aka std::vector<ast::Ast_Expr*, std::allocator<ast::Ast_Expr*> >}’ requested
+      AstList<Ast_Expr*> rhs = parse_rhs_expr_list();
+                               ~~~~~~~~~~~~~~~~~~~^~
+src/parser/Parser.cpp:532:40: error: invalid new-expression of abstract class type ‘ast::Ast_BadNode’
+       return new Ast_BadNode(AstBadStmt);
+                                        ^
+src/parser/Parser.cpp:536:49: error: no matching function for call to ‘ast::Ast_AssignmentStmt::Ast_AssignmentStmt(token::Token&, ast::AstList<ast::Ast_Expr*>&, ast::AstList<ast::Ast_Expr*>&)’
+        return new Ast_AssignmentStmt(t, lhs, rhs);
+                                                 ^
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:503:2: note: candidate: ast::Ast_AssignmentStmt::Ast_AssignmentStmt(token::Token, ast::AstList<ast::Ast_Node*>&, ast::AstList<ast::Ast_Expr*>&)
+  Ast_AssignmentStmt(token::Token o, const AstList<Ast_Node*>& n,
+  ^~~~~~~~~~~~~~~~~~
+./src/ast/Ast.h:503:2: note:   no known conversion for argument 2 from ‘ast::AstList<ast::Ast_Expr*> {aka std::vector<ast::Ast_Expr*, std::allocator<ast::Ast_Expr*> >}’ to ‘ast::AstList<ast::Ast_Node*>& {aka const std::vector<ast::Ast_Node*>&}’
+./src/ast/Ast.h:498:8: note: candidate: ast::Ast_AssignmentStmt::Ast_AssignmentStmt(const ast::Ast_AssignmentStmt&)
+ struct Ast_AssignmentStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~~~~~~~
+./src/ast/Ast.h:498:8: note:   candidate expects 1 argument, 3 provided
+src/parser/Parser.cpp:538:40: error: invalid new-expression of abstract class type ‘ast::Ast_BadNode’
+       return new Ast_BadNode(AstBadStmt);
+                                        ^
+src/parser/Parser.cpp:541:48: error: no matching function for call to ‘ast::Ast_AssignmentStmt::Ast_AssignmentStmt(token::Token&, ast::AstList<ast::Ast_Expr*>&, ast::AstList<ast::Ast_Expr*>&)’
+       return new Ast_AssignmentStmt(t, lhs, rhs);
+                                                ^
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:503:2: note: candidate: ast::Ast_AssignmentStmt::Ast_AssignmentStmt(token::Token, ast::AstList<ast::Ast_Node*>&, ast::AstList<ast::Ast_Expr*>&)
+  Ast_AssignmentStmt(token::Token o, const AstList<Ast_Node*>& n,
+  ^~~~~~~~~~~~~~~~~~
+./src/ast/Ast.h:503:2: note:   no known conversion for argument 2 from ‘ast::AstList<ast::Ast_Expr*> {aka std::vector<ast::Ast_Expr*, std::allocator<ast::Ast_Expr*> >}’ to ‘ast::AstList<ast::Ast_Node*>& {aka const std::vector<ast::Ast_Node*>&}’
+./src/ast/Ast.h:498:8: note: candidate: ast::Ast_AssignmentStmt::Ast_AssignmentStmt(const ast::Ast_AssignmentStmt&)
+ struct Ast_AssignmentStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~~~~~~~
+./src/ast/Ast.h:498:8: note:   candidate expects 1 argument, 3 provided
+src/parser/Parser.cpp:554:37: error: invalid new-expression of abstract class type ‘ast::Ast_BadNode’
+    return new Ast_BadNode(AstBadStmt);
+                                     ^
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:557:7: error: ‘Ast_VaraibleSpec’ in namespace ‘ast’ does not name a type
+  ast::Ast_VaraibleSpec*
+       ^~~~~~~~~~~~~~~~
+src/parser/Parser.cpp: In member function ‘ast::Ast_BlockStmt* parse::Parser::parse_block_stmt()’:
+src/parser/Parser.cpp:610:45: error: no matching function for call to ‘ast::Ast_BlockStmt::Ast_BlockStmt(token::Token&, token::Token&, ast::AstList<ast::Ast_Stmt*>&)’
+   return new Ast_BlockStmt(begin, end, stmts);
+                                             ^
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:513:2: note: candidate: ast::Ast_BlockStmt::Ast_BlockStmt(ast::AstList<ast::Ast_Stmt*>&)
+  Ast_BlockStmt(const AstList<Ast_Stmt*>& s);
+  ^~~~~~~~~~~~~
+./src/ast/Ast.h:513:2: note:   candidate expects 1 argument, 3 provided
+./src/ast/Ast.h:511:8: note: candidate: ast::Ast_BlockStmt::Ast_BlockStmt(const ast::Ast_BlockStmt&)
+ struct Ast_BlockStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~~
+./src/ast/Ast.h:511:8: note:   candidate expects 1 argument, 3 provided
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:615:18: error: ‘ast::Ast_TypeSpec* parse::Parser::parse_type_decl’ is not a static data member of ‘class parse::Parser’
+  parse_type_decl(AstNode* id) {
+                  ^~~~~~~
+src/parser/Parser.cpp:615:18: error: ‘AstNode’ was not declared in this scope
+src/parser/Parser.cpp:615:18: note: suggested alternative: ‘strmode’
+  parse_type_decl(AstNode* id) {
+                  ^~~~~~~
+                  strmode
+src/parser/Parser.cpp:615:27: error: ‘id’ was not declared in this scope
+  parse_type_decl(AstNode* id) {
+                           ^~
+src/parser/Parser.cpp: In function ‘ast::Ast_TypeSpec* parse::parse_enum_union_struct()’:
+src/parser/Parser.cpp:676:24: error: ‘parse_identifier’ was not declared in this scope
+   Ast_Identifier* id = parse_identifier();
+                        ^~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:30:27: error: ‘__allow_token’ was not declared in this scope
+ #define allow_token(type) __allow_token(__FUNCTION__, __LINE__, type)
+                           ^
+src/parser/Parser.cpp:678:6: note: in expansion of macro ‘allow_token’
+   if(allow_token(TKN_SEM)) {
+      ^~~~~~~~~~~
+src/parser/Parser.cpp:30:27: note: suggested alternative: ‘allow_token’
+ #define allow_token(type) __allow_token(__FUNCTION__, __LINE__, type)
+                           ^
+src/parser/Parser.cpp:678:6: note: in expansion of macro ‘allow_token’
+   if(allow_token(TKN_SEM)) {
+      ^~~~~~~~~~~
+src/parser/Parser.cpp:679:4: error: ‘expect_token’ was not declared in this scope
+    expect_token(TKN_STRUCT);
+    ^~~~~~~~~~~~
+src/parser/Parser.cpp:679:4: note: suggested alternative: ‘check_token’
+    expect_token(TKN_STRUCT);
+    ^~~~~~~~~~~~
+    check_token
+src/parser/Parser.cpp:681:24: error: ‘parse_field’ was not declared in this scope
+     Ast_Field* field = parse_field();
+                        ^~~~~~~~~~~
+src/parser/Parser.cpp:682:40: error: ‘FieldNoDefault’ was not declared in this scope
+     field = parse_variable_tags(field, FieldNoDefault | FieldNoView);
+                                        ^~~~~~~~~~~~~~
+src/parser/Parser.cpp:682:57: error: ‘FieldNoView’ was not declared in this scope
+     field = parse_variable_tags(field, FieldNoDefault | FieldNoView);
+                                                         ^~~~~~~~~~~
+src/parser/Parser.cpp:682:13: error: ‘parse_variable_tags’ was not declared in this scope
+     field = parse_variable_tags(field, FieldNoDefault | FieldNoView);
+             ^~~~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:684:9: error: ‘expect_semicolon’ was not declared in this scope
+     if(!expect_semicolon("struct member"))
+         ^~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:685:6: error: ‘synchronize’ was not declared in this scope
+      synchronize();
+      ^~~~~~~~~~~
+src/parser/Parser.cpp:689:17: error: ‘m_ast’ was not declared in this scope
+    report_error(m_ast, "expecting semicolon when declaring a structure in a union or enum\n");
+                 ^~~~~
+src/parser/Parser.cpp:690:4: error: ‘synchronize’ was not declared in this scope
+    synchronize();
+    ^~~~~~~~~~~
+src/parser/Parser.cpp:691:11: error: ‘ast_bad_decl’ was not declared in this scope
+    return ast_bad_decl();
+           ^~~~~~~~~~~~
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:699:22: error: ‘ast::Ast_ProcSpec* parse::Parser::parse_function_decl’ is not a static data member of ‘class parse::Parser’
+  parse_function_decl(AstNode* id) {
+                      ^~~~~~~
+src/parser/Parser.cpp:699:22: error: ‘AstNode’ was not declared in this scope
+src/parser/Parser.cpp:699:22: note: suggested alternative: ‘strmode’
+  parse_function_decl(AstNode* id) {
+                      ^~~~~~~
+                      strmode
+src/parser/Parser.cpp:699:31: error: ‘id’ was not declared in this scope
+  parse_function_decl(AstNode* id) {
+                               ^~
+src/parser/Parser.cpp:726:27: error: ‘ast::Ast_Type* parse::Parser::parse_function_type’ is not a static data member of ‘class parse::Parser’
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                           ^~~~~~~
+src/parser/Parser.cpp:726:27: error: ‘AstNode’ is not a member of ‘ast’
+src/parser/Parser.cpp:726:27: note: suggested alternative: ‘Ast_Node’
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                           ^~~~~~~
+                           Ast_Node
+src/parser/Parser.cpp:726:36: error: ‘id’ was not declared in this scope
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                                    ^~
+src/parser/Parser.cpp:726:45: error: ‘AstNode’ is not a member of ‘ast’
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                                             ^~~~~~~
+src/parser/Parser.cpp:726:45: note: suggested alternative: ‘Ast_Node’
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                                             ^~~~~~~
+                                             Ast_Node
+src/parser/Parser.cpp:726:54: error: ‘reciever’ was not declared in this scope
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                                                      ^~~~~~~~
+src/parser/Parser.cpp:726:54: note: suggested alternative: ‘register’
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                                                      ^~~~~~~~
+                                                      register
+src/parser/Parser.cpp:726:64: error: expected primary-expression before ‘bool’
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                                                                ^~~~
+src/parser/Parser.cpp:726:76: error: expression list treated as compound expression in initializer [-fpermissive]
+  parse_function_type(ast::AstNode* id, ast::AstNode* reciever, bool isConst) {
+                                                                            ^
+src/parser/Parser.cpp:757:2: error: prototype for ‘ast::AstList<ast::Ast_Node*> parse::Parser::parse_function_return()’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:126:31: error: candidate is: int parse::Parser::parse_function_return()
+       ast::AstList<Ast_Node*> parse_function_return();
+                               ^~~~~~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp: In member function ‘ast::Ast_Type* parse::Parser::parse_type_or_ident()’:
+src/parser/Parser.cpp:827:6: error: ‘Ast_Operande’ was not declared in this scope
+      Ast_Operande* expr = new Ast_Operand(parse_identifier());
+      ^~~~~~~~~~~~
+src/parser/Parser.cpp:827:6: note: suggested alternative: ‘parse_operand’
+      Ast_Operande* expr = new Ast_Operand(parse_identifier());
+      ^~~~~~~~~~~~
+      parse_operand
+src/parser/Parser.cpp:827:20: error: ‘expr’ was not declared in this scope
+      Ast_Operande* expr = new Ast_Operand(parse_identifier());
+                    ^~~~
+src/parser/Parser.cpp:827:20: note: suggested alternative: ‘exit’
+      Ast_Operande* expr = new Ast_Operand(parse_identifier());
+                    ^~~~
+                    exit
+src/parser/Parser.cpp:828:32: error: ‘ast_token’ was not declared in this scope
+      ss = new Ast_SelectorExpr(ast_token(ss), ss, nullptr, expr);
+                                ^~~~~~~~~
+src/parser/Parser.cpp:828:32: note: suggested alternative: ‘next_token’
+      ss = new Ast_SelectorExpr(ast_token(ss), ss, nullptr, expr);
+                                ^~~~~~~~~
+                                next_token
+src/parser/Parser.cpp:830:5: error: return-statement with no value, in function returning ‘ast::Ast_Type*’ [-fpermissive]
+     return ;
+     ^~~~~~
+src/parser/Parser.cpp:867:52: error: no matching function for call to ‘ast::Ast_MapType::Ast_MapType(token::Token&, token::Token&, ast::Ast_Type*&, ast::Ast_Type*&)’
+       return new Ast_MapType(begin, end, key, value);
+                                                    ^
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:678:3: note: candidate: ast::Ast_MapType::Ast_MapType(token::Token, ast::Ast_Type*, ast::Ast_Type*)
+   Ast_MapType(token::Token t, Ast_Type* k, Ast_Type* v);
+   ^~~~~~~~~~~
+./src/ast/Ast.h:678:3: note:   candidate expects 3 arguments, 4 provided
+./src/ast/Ast.h:674:8: note: candidate: constexpr ast::Ast_MapType::Ast_MapType(const ast::Ast_MapType&)
+ struct Ast_MapType : public Ast_Type {
+        ^~~~~~~~~~~
+./src/ast/Ast.h:674:8: note:   candidate expects 1 argument, 4 provided
+src/parser/Parser.cpp:876:18: error: expected type-specifier before ‘Ast_ArraryType’
+       return new Ast_ArraryType(begin, expr, type);
+                  ^~~~~~~~~~~~~~
+src/parser/Parser.cpp:876:18: error: expected ‘;’ before ‘Ast_ArraryType’
+src/parser/Parser.cpp:876:18: error: ‘Ast_ArraryType’ was not declared in this scope
+src/parser/Parser.cpp:887:35: error: expression cannot be used as a function
+     return parse_type_decl(nullptr);
+                                   ^
+src/parser/Parser.cpp: In member function ‘ast::Ast_FieldSpec* parse::Parser::parse_field(parse::Parser::FieldFlags)’:
+src/parser/Parser.cpp:905:56: error: conversion from ‘int’ to non-scalar type ‘ast::AstList<ast::Ast_Identifier*> {aka std::vector<ast::Ast_Identifier*, std::allocator<ast::Ast_Identifier*> >}’ requested
+   AstList<Ast_Identifier*> name = parse_identifier_list();
+                                   ~~~~~~~~~~~~~~~~~~~~~^~
+src/parser/Parser.cpp:909:54: error: ‘struct ast::Ast_Identifier’ has no member named ‘Ident’
+   Ast_Field* field = new Ast_FieldSpec(name.front()->Ident.token, name, type);
+                                                      ^~~~~
+src/parser/Parser.cpp:910:43: error: no matching function for call to ‘parse::Parser::parse_variable_tags(ast::Ast_Field*&, parse::Parser::FieldFlags&)’
+   field = parse_variable_tags(field, flags);
+                                           ^
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:174:27: note: candidate: ast::Ast_FieldSpec* parse::Parser::parse_variable_tags(ast::Ast_FieldSpec*, parse::Parser::FieldFlags)
+       ast::Ast_FieldSpec* parse_variable_tags(ast::Ast_FieldSpec* var, FieldFlags flags);
+                           ^~~~~~~~~~~~~~~~~~~
+src/parser/Parser.h:174:27: note:   no known conversion for argument 1 from ‘ast::Ast_Field*’ to ‘ast::Ast_FieldSpec*’
+src/parser/Parser.cpp:911:10: error: cannot convert ‘ast::Ast_Field*’ to ‘ast::Ast_FieldSpec*’ in return
+   return field;
+          ^~~~~
+In file included from src/parser/Parser.h:17:0,
+                 from src/parser/Parser.cpp:1:
+./src/ast/Ast.h:25:8: note: class type ‘ast::Ast_Field’ is incomplete
+ struct Ast_Field;
+        ^~~~~~~~~
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:915:2: error: prototype for ‘ast::AstList<ast::Ast_FieldSpec*> parse::Parser::parse_field_list(parse::Parser::FieldFlags)’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:132:36: error: candidate is: int parse::Parser::parse_field_list(parse::Parser::FieldFlags)
+       ast::AstList<Ast_FieldSpec*> parse_field_list(FieldFlags flags = FieldDefault);
+                                    ^~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:916:19: error: ‘enum parse::Parser::FieldFlags’ is private within this context
+  parse_field_list(FieldFlags flags) {
+                   ^~~~~~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:76:12: note: declared private here
+       enum FieldFlags : unsigned char {
+            ^~~~~~~~~~
+src/parser/Parser.cpp: In member function ‘ast::Ast_Expr* parse::Parser::parse_operand(bool)’:
+src/parser/Parser.cpp:933:37: error: cannot convert ‘ast::Ast_BasicLiteral*’ to ‘ast::Ast_Expr*’ in return
+    return new Ast_BasicLiteral(token);
+                                     ^
+src/parser/Parser.cpp:939:38: error: cannot convert ‘ast::Ast_BasicLiteral*’ to ‘ast::Ast_Expr*’ in return
+     return new Ast_BasicLiteral(token);
+                                      ^
+src/parser/Parser.cpp:942:37: error: cannot convert ‘ast::Ast_NullLiteral*’ to ‘ast::Ast_Expr*’ in return
+     return new Ast_NullLiteral(token);
+                                     ^
+src/parser/Parser.cpp:944:17: error: expected type-specifier before ‘Ast_Operan’
+      return new Ast_Operan(parse_identifier());
+                 ^~~~~~~~~~
+src/parser/Parser.cpp:944:17: error: expected ‘;’ before ‘Ast_Operan’
+src/parser/Parser.cpp:944:17: error: ‘Ast_Operan’ was not declared in this scope
+src/parser/Parser.cpp:944:17: note: suggested alternative: ‘parse_operand’
+      return new Ast_Operan(parse_identifier());
+                 ^~~~~~~~~~
+                 parse_operand
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:990:2: error: prototype for ‘ast::AstList<ast::Ast_Expr*> parse::Parser::parse_lhs_expr_list()’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:146:28: error: candidate is: int parse::Parser::parse_lhs_expr_list()
+    ast::AstList<Ast_Expr*> parse_lhs_expr_list();
+                            ^~~~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:1004:2: error: prototype for ‘ast::AstList<ast::Ast_Expr*> parse::Parser::parse_rhs_expr_list()’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:148:28: error: candidate is: int parse::Parser::parse_rhs_expr_list()
+    ast::AstList<Ast_Expr*> parse_rhs_expr_list();
+                            ^~~~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp: In member function ‘ast::Ast_Expr* parse::Parser::parse_primary_expr(bool)’:
+src/parser/Parser.cpp:1028:16: error: ‘parse_call_expr’ was not declared in this scope
+      operand = parse_call_expr(operand);
+                ^~~~~~~~~~~~~~~
+src/parser/Parser.cpp:1028:16: note: suggested alternative: ‘parse_lhs_expr’
+      operand = parse_call_expr(operand);
+                ^~~~~~~~~~~~~~~
+                parse_lhs_expr
+src/parser/Parser.cpp:1032:40: error: expression cannot be used as a function
+      operand = parse_index_expr(operand);
+                                        ^
+src/parser/Parser.cpp:1037:16: error: ‘ast_selector_expr’ was not declared in this scope
+      operand = ast_selector_expr(token, operand, nullptr, parse_primary_expr(_lhs));
+                ^~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:1037:16: note: suggested alternative: ‘parse_selector_expr’
+      operand = ast_selector_expr(token, operand, nullptr, parse_primary_expr(_lhs));
+                ^~~~~~~~~~~~~~~~~
+                parse_selector_expr
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:1103:2: error: prototype for ‘ast::Ast_Expr* parse::Parser::parse_binary_expr(bool, int)’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:152:25: error: candidate is: ast::Ast_BinaryExpr* parse::Parser::parse_binary_expr(bool, int)
+    ast::Ast_BinaryExpr* parse_binary_expr(bool _lhs, int _prec_in);
+                         ^~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:1124:2: error: prototype for ‘ast::Ast_Expr* parse::Parser::parse_unary_expr(bool)’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:154:24: error: candidate is: ast::Ast_UnaryExpr* parse::Parser::parse_unary_expr(bool)
+    ast::Ast_UnaryExpr* parse_unary_expr(bool _lhs);
+                        ^~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:1149:19: error: ‘ast::Ast_IndexExpr* parse::Parser::parse_index_expr’ is not a static data member of ‘class parse::Parser’
+  parse_index_expr(AstNode* operand) {
+                   ^~~~~~~
+src/parser/Parser.cpp:1149:19: error: ‘AstNode’ was not declared in this scope
+src/parser/Parser.cpp:1149:19: note: suggested alternative: ‘strmode’
+  parse_index_expr(AstNode* operand) {
+                   ^~~~~~~
+                   strmode
+src/parser/Parser.cpp:1149:28: error: ‘operand’ was not declared in this scope
+  parse_index_expr(AstNode* operand) {
+                            ^~~~~~~
+src/parser/Parser.cpp:1149:28: note: suggested alternative: ‘srand’
+  parse_index_expr(AstNode* operand) {
+                            ^~~~~~~
+                            srand
+src/parser/Parser.cpp:1157:7: error: ‘Ast_ProcCall’ in namespace ‘ast’ does not name a type
+  ast::Ast_ProcCall*
+       ^~~~~~~~~~~~
+src/parser/Parser.cpp: In member function ‘ast::Ast_Node* parse::Parser::parse_hash_directive()’:
+src/parser/Parser.cpp:1180:36: error: invalid new-expression of abstract class type ‘ast::Ast_BadNode’
+   return new Ast_BadNode(AstBadStmt);
+                                    ^
+src/parser/Parser.cpp: In member function ‘ast::Ast_ImportSpec* parse::Parser::parse_import_stmt()’:
+src/parser/Parser.cpp:1190:37: error: invalid new-expression of abstract class type ‘ast::Ast_BadNode’
+    return new Ast_BadNode(AstBadDecl);
+                                     ^
+src/parser/Parser.cpp:1227:32: error: no match for ‘operator=’ (operand types are ‘ast::AstList<ast::Ast_Identifier*> {aka std::vector<ast::Ast_Identifier*, std::allocator<ast::Ast_Identifier*> >}’ and ‘int’)
+    ids = parse_identifier_list();
+                                ^
+In file included from /usr/local/include/c++/7.1.0/vector:69:0,
+                 from ./src/ast/Ast.h:4,
+                 from src/parser/Parser.h:17,
+                 from src/parser/Parser.cpp:1:
+/usr/local/include/c++/7.1.0/bits/vector.tcc:179:5: note: candidate: std::vector<_Tp, _Alloc>& std::vector<_Tp, _Alloc>::operator=(const std::vector<_Tp, _Alloc>&) [with _Tp = ast::Ast_Identifier*; _Alloc = std::allocator<ast::Ast_Identifier*>]
+     vector<_Tp, _Alloc>::
+     ^~~~~~~~~~~~~~~~~~~
+/usr/local/include/c++/7.1.0/bits/vector.tcc:179:5: note:   no known conversion for argument 1 from ‘int’ to ‘const std::vector<ast::Ast_Identifier*, std::allocator<ast::Ast_Identifier*> >&’
+In file included from /usr/local/include/c++/7.1.0/vector:64:0,
+                 from ./src/ast/Ast.h:4,
+                 from src/parser/Parser.h:17,
+                 from src/parser/Parser.cpp:1:
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:461:7: note: candidate: std::vector<_Tp, _Alloc>& std::vector<_Tp, _Alloc>::operator=(std::vector<_Tp, _Alloc>&&) [with _Tp = ast::Ast_Identifier*; _Alloc = std::allocator<ast::Ast_Identifier*>]
+       operator=(vector&& __x) noexcept(_Alloc_traits::_S_nothrow_move())
+       ^~~~~~~~
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:461:7: note:   no known conversion for argument 1 from ‘int’ to ‘std::vector<ast::Ast_Identifier*, std::allocator<ast::Ast_Identifier*> >&&’
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:482:7: note: candidate: std::vector<_Tp, _Alloc>& std::vector<_Tp, _Alloc>::operator=(std::initializer_list<_Tp>) [with _Tp = ast::Ast_Identifier*; _Alloc = std::allocator<ast::Ast_Identifier*>]
+       operator=(initializer_list<value_type> __l)
+       ^~~~~~~~
+/usr/local/include/c++/7.1.0/bits/stl_vector.h:482:7: note:   no known conversion for argument 1 from ‘int’ to ‘std::initializer_list<ast::Ast_Identifier*>’
+src/parser/Parser.cpp:1236:10: error: ‘ast_import_spec’ was not declared in this scope
+   return ast_import_spec(token, sys::File::FullPath(path), id, ids);
+          ^~~~~~~~~~~~~~~
+src/parser/Parser.cpp:1236:10: note: suggested alternative: ‘parse_import_stmt’
+   return ast_import_spec(token, sys::File::FullPath(path), id, ids);
+          ^~~~~~~~~~~~~~~
+          parse_import_stmt
+src/parser/Parser.cpp: In member function ‘ast::Ast_Identifier* parse::Parser::parse_identifier()’:
+src/parser/Parser.cpp:1258:10: error: ‘ast_ident’ was not declared in this scope
+   return ast_ident(token, atom);
+          ^~~~~~~~~
+src/parser/Parser.cpp: At global scope:
+src/parser/Parser.cpp:1262:2: error: prototype for ‘ast::AstList<ast::Ast_Identifier*> parse::Parser::parse_identifier_list()’ does not match any in class ‘parse::Parser’
+  Parser::
+  ^~~~~~
+In file included from src/parser/Parser.cpp:1:0:
+src/parser/Parser.h:166:34: error: candidate is: int parse::Parser::parse_identifier_list()
+    ast::AstList<Ast_Identifier*> parse_identifier_list();
+                                  ^~~~~~~~~~~~~~~~~~~~~
+src/parser/Parser.cpp:1284:6: error: ‘AstNode’ in namespace ‘ast’ does not name a type
+ ast::AstNode*
+      ^~~~~~~
+src/parser/Parser.cpp:1290:6: error: ‘AstNode’ in namespace ‘ast’ does not name a type
+ ast::AstNode*
+      ^~~~~~~
+make: *** [Makefile:20: src/parser/Parser.o] Error 1

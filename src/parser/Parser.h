@@ -6,6 +6,15 @@
 ///			  as a recursive desent parser.
 ///////////////////////////////////////////////////////////////////////////////
 
+
+/*
+	Need to implemented:
+	1. static list and map construction
+	2. struct and class construction and destruction
+	3. generic types
+	4. polymoric functions, methods, structs, and classes
+*/
+
 #ifndef PARSER_H_
 #define PARSER_H_
 
@@ -39,10 +48,10 @@ namespace parse {
 			/// @brief Parser Constructor
 			Parser(ast::AtomTable* table = nullptr);
 
-			/// @brief will parse all files needed by root file
+			/// @brief will parse the givin file and nothing else
 			/// @param _file the root file to be parsed
 			/// 			 (should contain main, if compiling executable)
-			std::vector<ast::AstFile*> parse_files(sys::File* _file);
+			ast::AstFile* parse_file(sys::File* _file);
 		private:
 			ParseFileError init(sys::File* _file);
 
@@ -75,10 +84,8 @@ namespace parse {
       };
 
      	typedef int FieldFlags;
-      #define	FieldNoDefault 0
       #define	FieldAllowDefault 1 << 0 // allows default initialization of the field
       #define	FieldAllowView 1 << 1 // allows the field to have a view, pub keyword
-      #define	FieldNoView 1 << 2
       #define	FieldDefault FieldAllowDefault
 
 
@@ -115,6 +122,8 @@ namespace parse {
 
 			ast::Ast_Type* parse_type_decl(ast::Ast_Identifier* id);
 
+			void parse_type_body(ast::AstList<ast::Ast_Decl*>& d, ast::AstList<ast::Ast_FieldSpec*>& fields);
+
 			ast::Ast_TypeSpec* parse_enum_union_struct();
 
 			ast::Ast_ProcSpec* parse_function_decl(ast::Ast_Identifier* id);
@@ -136,8 +145,6 @@ namespace parse {
 
       ast::Ast_BlockStmt* parse_block_stmt();
 
-			ast::Ast_Expr* parse_operand(bool _lhs);
-
 			ast::Ast_Expr* parse_expr(bool _lhs);
 
 			ast::Ast_Expr* parse_lhs_expr();
@@ -147,6 +154,14 @@ namespace parse {
 			ast::AstList<ast::Ast_Expr*> parse_lhs_expr_list();
 
 			ast::AstList<ast::Ast_Expr*> parse_rhs_expr_list();
+
+			ast::Ast_Expr* parse_compound_literal();
+
+			ast::Ast_Expr* parse_element();
+
+			ast::Ast_Expr* parse_element_list();
+
+			ast::Ast_Expr* parse_operand(bool _lhs);
 
 			ast::Ast_Expr* parse_primary_expr(bool _lhs);
 
@@ -168,6 +183,8 @@ namespace parse {
 
 			ast::Ast_Type* parse_type();
 
+			ast::Ast_PolymorphicType* parse_polymorphic_type();
+
       // ast::Ast_FieldSpec* parse_field_tags(ast::Ast_FieldSpec* field);
 
       ast::Ast_ProcType* parse_function_tags(ast::Ast_ProcType* funct);
@@ -185,8 +202,8 @@ namespace parse {
 			std::vector<ast::AstFile*> m_asts; // this gets returned
 
 			// used as intermediates when parsing mutltiple files.
-			std::queue<sys::File*> parseQueue;
-			std::unordered_map<size_t, ast::AstFile*> files;
+			std::queue<sys::File*> parseQueue; // imports
+			std::unordered_map<std::string, ast::AstFile*> files;
 	};
 }
 

@@ -1,0 +1,54 @@
+list :: class<Type> {
+	node :: class {
+		value: Type;
+		next, prev: *node;
+	}
+	head, tail* node;
+	size: u64;
+}
+
+append_back :: *list<Type> (val: &Type) {
+	var temp = new node;
+	if !head {
+		head = temp;
+		tail = head;
+	}
+	else {
+		temp.prev = tail;
+		tail.next = temp;
+		tail = temp;
+	}
+	// until increment and decrament are parsed
+	size += 1;
+}
+
+append_front :: *list<Type> (val: &Type) {
+	var temp = new node;
+	if !head {
+		head = temp;
+		tail = head;
+	}
+	else {
+		temp.next = head;
+		head.prev = temp;
+		head = temp;
+	}
+	// until increment and decrament are parsed
+	size += 1;
+}
+
+pop_back :: *list<Type> () {
+	var temp = tail;
+	var new_back = temp.prev;
+	new_back.next = null;
+	tail = new_back;
+	delete temp;
+}
+
+pop_front :: *list<Type> () {
+	var temp = head;
+	var new_back = temp.prev;
+	new_back.next = null;
+
+	delete temp;
+}

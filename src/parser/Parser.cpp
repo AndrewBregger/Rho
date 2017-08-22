@@ -91,34 +91,35 @@ namespace parse {
 		return m_ast;
 	}
 
-	std::vector<ast::AstFile*>
+	ast::AstFile*
 	Parser::
-	parse_files(sys::File* _file) {
+	parse_file(sys::File* _file) {
 		ParseFileError err = init(_file);
 		switch(err) {
 			case ParseFile_Empty:
 				report_file_error(m_ast, "File Error: '%.*s' was empty\n", _file->GetPath().size(), m_file->GetPath().c_str());
-				return m_asts;
+				return nullptr;
 			case ParseFile_Permissions:
 				report_file_error(m_ast, "File Error: '%.*s' wrong permissions on file\n", _file->GetPath().size(), m_file->GetPath().c_str());
-				return m_asts;
+				return nullptr;
 			case ParseFile_WrongExtension:
 				report_file_error(m_ast, "File Error: '%.*s' wrong extension\n", _file->GetPath().size(), _file->GetPath().c_str());
-				return m_asts;
+				return nullptr;
 			case ParseFile_InvalidFile:
 				report_file_error(m_ast, "File Error: '%.*s' file doen't exist\n", _file->GetPath().size(), _file->GetPath().c_str());
-				return m_asts;
+				return nullptr;
 			case ParseFile_InvalidToken:
 				report_file_error(m_ast, "File Error: '%.*s' has invalid token\n", _file->GetPath().size(), _file->GetPath().c_str());
-				return m_asts;
+				return nullptr;
 			default:
 				break;
 		}
+
 		AstFile* ast = parse_file();
-		if(setup_decls())
-			parse_imports_files();
-		m_asts.push_back(ast);
-		return m_asts;
+
+		setup_decls();
+
+		return ast;
 	}
 
 	bool
@@ -149,13 +150,6 @@ namespace parse {
 		}
 
 		return true;
-	}
-
-	void
-	Parser::
-	parse_imports_files() {
-		for(auto import : m_ast->m_imports) {
-		}
 	}
 
 	void
@@ -268,7 +262,7 @@ namespace parse {
 				case TKN_BREAK:
 				case TKN_CONTINUE:
 				case TKN_RETURN:
-					m_ast->m_currToken.print(1);
+					//m_ast->m_currToken.print(1);
 					return;
 				default:
 					break;
@@ -444,7 +438,7 @@ namespace parse {
 	Parser::
 	parse_decl() {
 		debug_print("parse decl expr\n");
-		Ast_Decl* decl;
+		Ast_Decl* decl = nullptr;
 		switch(m_ast->m_currToken.token()) {
 			case TKN_LET:
 			case TKN_VAR:
@@ -483,8 +477,7 @@ namespace parse {
 				}
 			} break;
 			default:
-				report_error(m_ast, "Unexpected token in declaration\n");
-				return nullptr; //ast_bad_decl();
+				break;
 		}
 		return decl;
 	}
@@ -640,22 +633,18 @@ namespace parse {
 				}
 				expect_token(TKN_LBRACK);
 				AstList<Ast_FieldSpec*> members;
-				while(m_ast->m_currToken.token() != TKN_RBRACK) {
-					Ast_FieldSpec* field = parse_field(
-						static_cast<FieldFlags>(
-						(m_ast->inClassDecl? (FieldAllowView | FieldAllowDefault): FieldAllowDefault)
-					)
-					);
-					if(!expect_semicolon("member variable declaration"))
-						return nullptr;
-					add_node(members, field);
-				}
-				expect_token(TKN_RBRACK);
+				AstList<Ast_Decl*> decls;
+
+				parse_type_body(decls, members);
+
 				if(token.token() == TKN_CLASS)
-					type = new Ast_ClassType(token, id, members, extends, AstList<Ast_ProcSpec*>());
+					type = new Ast_ClassType(token, id, members, extends, AstList<Ast_ProcSpec*>(), decls);
 				else
-					type = new Ast_StructType(token, id, members);
-				m_ast->inClassDecl = oldClassDecl;
+					type = new Ast_StructType(token, id, members, decls);
+
+				if(token.token() == TKN_CLASS)
+					m_ast->inClassDecl = oldClassDecl;
+
 			} break;
 			case TKN_ENUM: {
 				// expect_token(TKN_ENUM);
@@ -685,6 +674,16 @@ namespace parse {
 		return type;
 	}
 
+	void
+	Parser::
+	parse_type_body(AstList<Ast_Decl*>& sub,
+		AstList<Ast_FieldSpec*>& fields) {
+		Ast_FieldSpec* field = parse_field(
+		static_cast<FieldFlags>(
+			(m_ast->inClassDecl? (FieldAllowView | FieldAllowDefault): FieldAllowDefault)
+		));
+	}
+
 	ast::Ast_TypeSpec*
 	Parser::
 	parse_enum_union_struct() {
@@ -705,7 +704,7 @@ namespace parse {
 			synchronize();
 			return nullptr;
 		}
-		Ast_StructType* s = new Ast_StructType(id->token(), id, list);
+		Ast_StructType* s = new Ast_StructType(id->token(), id, list, AstList<Ast_Decl*>());
 		return new Ast_TypeSpec(s);
 	}
 
@@ -977,6 +976,10 @@ namespace parse {
         Ast_Expr* epxr = parse_operand(_lhs);
         return new Ast_AddressExpr(op, epxr);
       }
+      case TKN_LBRACK: {
+      	// Token token = expect_token(TKN_LBRACK);
+      	return parse_compound_literal();
+      }
       default:
         break;
 		}
@@ -1061,6 +1064,32 @@ namespace parse {
 		}
 		return operand;
 	}
+
+
+	ast::Ast_Expr*
+	Parser::parse_compound_literal() {
+		Token token = expect_token(TKN_LBRACK);
+		AstList<Ast_Expr*> lits;
+		do {
+			if(check_token(TKN_RBRACK))
+				break;
+			add_node(lits, parse_element());
+		} while(allow_token(TKN_COM));
+		expect_token(TKN_RBRACK);
+		return new Ast_CompoundLiteral(token, lits);
+	}
+
+	ast::Ast_Expr*
+	Parser::parse_element() {
+		if(check_token(TKN_LBRACK))
+			return parse_compound_literal();
+		return parse_rhs_expr();
+	}
+
+	// ast::Ast_Expr*
+	// Parser::parse_element_list() {
+
+	// }
 
   int operator_precedence(Token_Type _type) {
     switch(_type) {
@@ -1151,9 +1180,13 @@ namespace parse {
 			case TKN_NEW: {
 				Token token = expect_token(TKN_NEW);
 				Ast_Type* type = parse_type_or_ident();
-				// ast::ast_print(type, 0);
 				// for now thats all that is implemeneted
 				AstList<Ast_Expr*> expr;
+				if(allow_token(TKN_LPAREN)) {
+					expr = parse_rhs_expr_list();
+					expect_token(TKN_RPAREN);
+				}
+
 				return new Ast_NewExpr(token, type, expr);
 			} break;
 			default:
@@ -1179,7 +1212,7 @@ namespace parse {
 		expect_token(TKN_LPAREN);
 		AstList<Ast_Expr*> actuals = parse_rhs_expr_list();
 		// custom expr list parser
-		Token close_paren = expect_token(TKN_RPAREN);
+		expect_token(TKN_RPAREN);
 		return new Ast_FuncCall(operand, nullptr, actuals);
 	}
 
@@ -1220,7 +1253,6 @@ namespace parse {
 				next_token();
 			}
 			else {
-				// TODO(Andrew): reword the error message
 				report_error(m_ast, "expecting an identifeir or '*' after ':'\n");
 			}
 		}
@@ -1313,6 +1345,14 @@ parse_function_tags(ast::Ast_ProcType* funct) {
 ast::Ast_FieldSpec*
 Parser::
 parse_variable_tags(ast::Ast_FieldSpec* var, FieldFlags flags) {
+	for(;;) {
+		if(flags & FieldAllowDefault) {
+
+		}
+		else {
+
+		}
+	}
 	return var;
 }
 

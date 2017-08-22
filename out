@@ -1,0 +1,1659 @@
+Compiling src/ast/Ast.cpp
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+   Ast_Node_Kinds
+   ^~~~~~~~~~~~~~
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+src/ast/Ast.cpp:27:3: warning: ISO C++11 requires at least one argument for the "..." in a variadic macro
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:64:14: error: ‘AstNode’ was not declared in this scope
+  std::vector<AstNode*> m_decls;
+              ^~~~~~~
+src/ast/Ast.h:64:14: note: suggested alternative: ‘Ast_Node’
+  std::vector<AstNode*> m_decls;
+              ^~~~~~~
+              Ast_Node
+src/ast/Ast.h:64:22: error: template argument 1 is invalid
+  std::vector<AstNode*> m_decls;
+                      ^
+src/ast/Ast.h:64:22: error: template argument 2 is invalid
+src/ast/Ast.h:65:19: error: ‘AstNode’ is not a member of ‘ast’
+  std::vector<ast::AstNode*> m_imports;
+                   ^~~~~~~
+src/ast/Ast.h:65:19: note: suggested alternative: ‘Ast_Node’
+  std::vector<ast::AstNode*> m_imports;
+                   ^~~~~~~
+                   Ast_Node
+src/ast/Ast.h:65:19: error: ‘AstNode’ is not a member of ‘ast’
+src/ast/Ast.h:65:19: note: suggested alternative: ‘Ast_Node’
+  std::vector<ast::AstNode*> m_imports;
+                   ^~~~~~~
+                   Ast_Node
+src/ast/Ast.h:65:27: error: template argument 1 is invalid
+  std::vector<ast::AstNode*> m_imports;
+                           ^
+src/ast/Ast.h:65:27: error: template argument 2 is invalid
+src/ast/Ast.h:66:2: error: ‘AstNode’ does not name a type; did you mean ‘Ast_Node’?
+  AstNode* currParent{nullptr}; // null if in global scope
+  ^~~~~~~
+  Ast_Node
+src/ast/Ast.h:66:30: warning: extra ‘;’ [-Wpedantic]
+  AstNode* currParent{nullptr}; // null if in global scope
+                              ^
+src/ast/Ast.h:161:2: error: expected ‘;’ after struct definition
+ }
+  ^
+  ;
+src/ast/Ast.h:172:36: error: ‘virtual const token::Token& ast::Ast_Identifier::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:164:8: note: previous declaration ‘token::Token ast::Ast_Identifier::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:181:36: error: ‘virtual const token::Token& ast::Ast_BasicLiteral::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:176:8: note: previous declaration ‘token::Token ast::Ast_BasicLiteral::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:190:36: error: ‘virtual const token::Token& ast::Ast_NullLiteral::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:185:8: note: previous declaration ‘token::Token ast::Ast_NullLiteral::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:206:2: error: ‘Ast_Type’ does not name a type; did you mean ‘Ast_Node’?
+  Ast_Type* type;
+  ^~~~~~~~
+  Ast_Node
+src/ast/Ast.h:208:35: error: ‘Ast_Type’ has not been declared
+  Ast_TypeAlias(Ast_Identifier* a, Ast_Type* t);
+                                   ^~~~~~~~
+src/ast/Ast.h:213:36: error: ‘virtual const token::Token& ast::Ast_TypeAlias::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:204:8: note: previous declaration ‘token::Token ast::Ast_TypeAlias::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:219:10: error: ‘Ast_Expr’ was not declared in this scope
+  AstList<Ast_Expr*> values;
+          ^~~~~~~~
+src/ast/Ast.h:219:10: note: suggested alternative: ‘Ast_EndExpr’
+  AstList<Ast_Expr*> values;
+          ^~~~~~~~
+          Ast_EndExpr
+src/ast/Ast.h:219:19: error: template argument 1 is invalid
+  AstList<Ast_Expr*> values;
+                   ^
+src/ast/Ast.h:220:2: error: ‘Ast_Type’ does not name a type; did you mean ‘Ast_Node’?
+  Ast_Type* type;
+  ^~~~~~~~
+  Ast_Node
+src/ast/Ast.h:223:11: error: ‘Ast_Expr’ was not declared in this scope
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+           ^~~~~~~~
+src/ast/Ast.h:223:11: note: suggested alternative: ‘Ast_EndExpr’
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+           ^~~~~~~~
+           Ast_EndExpr
+src/ast/Ast.h:223:20: error: template argument 1 is invalid
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+                    ^
+src/ast/Ast.h:223:11: error: ‘Ast_Expr’ was not declared in this scope
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+           ^~~~~~~~
+src/ast/Ast.h:223:11: note: suggested alternative: ‘Ast_EndExpr’
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+           ^~~~~~~~
+           Ast_EndExpr
+src/ast/Ast.h:223:20: error: template argument 1 is invalid
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+                    ^
+src/ast/Ast.h:223:11: error: ‘Ast_Expr’ was not declared in this scope
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+           ^~~~~~~~
+src/ast/Ast.h:223:11: note: suggested alternative: ‘Ast_EndExpr’
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+           ^~~~~~~~
+           Ast_EndExpr
+src/ast/Ast.h:223:20: error: template argument 1 is invalid
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+                    ^
+src/ast/Ast.h:223:3: error: ‘AstList’ is not a type
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+   ^~~~~~~
+src/ast/Ast.h:223:10: error: expected ‘,’ or ‘...’ before ‘<’ token
+   AstList<Ast_Expr*> v, Ast_Type* ty);
+          ^
+src/ast/Ast.h:226:36: error: ‘virtual const token::Token& ast::Ast_VariableSpec::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:217:8: note: previous declaration ‘token::Token ast::Ast_VariableSpec::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:230:2: error: ‘Ast_Type’ does not name a type; did you mean ‘Ast_Node’?
+  Ast_Type* type;
+  ^~~~~~~~
+  Ast_Node
+src/ast/Ast.h:232:23: error: expected ‘)’ before ‘*’ token
+  Ast_TypeSpec(Ast_Type* t);
+                       ^
+src/ast/Ast.h:241:2: error: ‘Ast_Type’ does not name a type; did you mean ‘Ast_Node’?
+  Ast_Type* type;
+  ^~~~~~~~
+  Ast_Node
+src/ast/Ast.h:242:2: error: ‘Ast_Stmt’ does not name a type; did you mean ‘AstIfStmt’?
+  Ast_Stmt* body;
+  ^~~~~~~~
+  AstIfStmt
+src/ast/Ast.h:244:24: error: ‘Ast_Type’ has not been declared
+  Ast_ProcSpec(Token t, Ast_Type* ty, Ast_Stmt* b);
+                        ^~~~~~~~
+src/ast/Ast.h:244:38: error: ‘Ast_Stmt’ has not been declared
+  Ast_ProcSpec(Token t, Ast_Type* ty, Ast_Stmt* b);
+                                      ^~~~~~~~
+src/ast/Ast.h:248:36: error: ‘virtual const token::Token& ast::Ast_ProcSpec::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:240:8: note: previous declaration ‘token::Token ast::Ast_ProcSpec::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:258:23: error: expected ‘)’ before ‘p’
+  Ast_Identifier(Token p, const std::string& fp, Ast_Identifier* n,
+                       ^
+src/ast/Ast.h:269:2: error: ‘Ast_Type’ does not name a type; did you mean ‘Ast_Node’?
+  Ast_Type* type;
+  ^~~~~~~~
+  Ast_Node
+src/ast/Ast.h:272:60: error: ‘Ast_Type’ has not been declared
+  Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0);
+                                                            ^~~~~~~~
+src/ast/Ast.h:272:70: error: conflicting declaration ‘int* t’
+  Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0);
+                                                                      ^
+src/ast/Ast.h:272:22: note: previous declaration as ‘token::Token t’
+  Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0);
+                      ^
+src/ast/Ast.h:276:36: error: ‘virtual const token::Token& ast::Ast_FieldSpec::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:267:8: note: previous declaration ‘token::Token ast::Ast_FieldSpec::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:279:35: error: expected class-name before ‘{’ token
+ struct Ast_Stmt : public Ast_Expr {
+                                   ^
+src/ast/Ast.h:285:2: error: ‘Ast_Expr’ does not name a type; did you mean ‘Ast_EndExpr’?
+  Ast_Expr* expr;
+  ^~~~~~~~
+  Ast_EndExpr
+src/ast/Ast.h:287:23: error: expected ‘)’ before ‘*’ token
+  Ast_ExprStmt(Ast_Expr* e);
+                       ^
+src/ast/Ast.h:290:15: error: ‘virtual void ast::Ast_ExprStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:300:36: error: ‘virtual const token::Token& ast::Ast_EmptyStmt::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:295:8: note: previous declaration ‘token::Token ast::Ast_EmptyStmt::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:299:15: error: ‘virtual void ast::Ast_EmptyStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:309:36: error: ‘virtual const token::Token& ast::Ast_BreakStmt::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:304:8: note: previous declaration ‘token::Token ast::Ast_BreakStmt::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:308:15: error: ‘virtual void ast::Ast_BreakStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:318:36: error: ‘virtual const token::Token& ast::Ast_ContinueStmt::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:313:8: note: previous declaration ‘token::Token ast::Ast_ContinueStmt::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:317:15: error: ‘virtual void ast::Ast_ContinueStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:324:10: error: ‘Ast_Expr’ was not declared in this scope
+  AstList<Ast_Expr*> exprs;
+          ^~~~~~~~
+src/ast/Ast.h:324:10: note: suggested alternative: ‘Ast_EndExpr’
+  AstList<Ast_Expr*> exprs;
+          ^~~~~~~~
+          Ast_EndExpr
+src/ast/Ast.h:324:19: error: template argument 1 is invalid
+  AstList<Ast_Expr*> exprs;
+                   ^
+src/ast/Ast.h:327:17: error: ‘Ast_Expr’ was not declared in this scope
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+src/ast/Ast.h:327:17: note: suggested alternative: ‘Ast_EndExpr’
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+                 Ast_EndExpr
+src/ast/Ast.h:327:26: error: template argument 1 is invalid
+   const AstList<Ast_Expr*>& e);
+                          ^
+src/ast/Ast.h:327:17: error: ‘Ast_Expr’ was not declared in this scope
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+src/ast/Ast.h:327:17: note: suggested alternative: ‘Ast_EndExpr’
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+                 Ast_EndExpr
+src/ast/Ast.h:327:26: error: template argument 1 is invalid
+   const AstList<Ast_Expr*>& e);
+                          ^
+src/ast/Ast.h:327:17: error: ‘Ast_Expr’ was not declared in this scope
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+src/ast/Ast.h:327:17: note: suggested alternative: ‘Ast_EndExpr’
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+                 Ast_EndExpr
+src/ast/Ast.h:327:26: error: template argument 1 is invalid
+   const AstList<Ast_Expr*>& e);
+                          ^
+src/ast/Ast.h:327:17: error: ‘Ast_Expr’ was not declared in this scope
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+src/ast/Ast.h:327:17: note: suggested alternative: ‘Ast_EndExpr’
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+                 Ast_EndExpr
+src/ast/Ast.h:327:26: error: template argument 1 is invalid
+   const AstList<Ast_Expr*>& e);
+                          ^
+src/ast/Ast.h:327:17: error: ‘Ast_Expr’ was not declared in this scope
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+src/ast/Ast.h:327:17: note: suggested alternative: ‘Ast_EndExpr’
+   const AstList<Ast_Expr*>& e);
+                 ^~~~~~~~
+                 Ast_EndExpr
+src/ast/Ast.h:327:26: error: template argument 1 is invalid
+   const AstList<Ast_Expr*>& e);
+                          ^
+src/ast/Ast.h:327:9: error: invalid use of template-name ‘ast::AstList’ without an argument list
+   const AstList<Ast_Expr*>& e);
+         ^~~~~~~
+src/ast/Ast.h:18:31: note: ‘template<class T> using AstList = std::vector<T>’ declared here
+ using AstList = std::vector<T>;
+                               ^
+src/ast/Ast.h:327:16: error: expected ‘,’ or ‘...’ before ‘<’ token
+   const AstList<Ast_Expr*>& e);
+                ^
+src/ast/Ast.h:330:15: error: ‘virtual void ast::Ast_AssignmentStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:339:15: error: ‘virtual void ast::Ast_BlockStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:345:2: error: ‘Ast_Expr’ does not name a type; did you mean ‘Ast_EndExpr’?
+  Ast_Expr* init,* cond,* step;
+  ^~~~~~~~
+  Ast_EndExpr
+src/ast/Ast.h:348:22: error: ‘Ast_Expr’ has not been declared
+  Ast_IfStmt(Token t, Ast_Expr* i, Ast_Expr* c, Ast_Expr* s, Ast_Stmt* b);
+                      ^~~~~~~~
+src/ast/Ast.h:348:35: error: ‘Ast_Expr’ has not been declared
+  Ast_IfStmt(Token t, Ast_Expr* i, Ast_Expr* c, Ast_Expr* s, Ast_Stmt* b);
+                                   ^~~~~~~~
+src/ast/Ast.h:348:48: error: ‘Ast_Expr’ has not been declared
+  Ast_IfStmt(Token t, Ast_Expr* i, Ast_Expr* c, Ast_Expr* s, Ast_Stmt* b);
+                                                ^~~~~~~~
+src/ast/Ast.h:352:36: error: ‘virtual const token::Token& ast::Ast_IfStmt::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:344:8: note: previous declaration ‘token::Token ast::Ast_IfStmt::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:351:15: error: ‘virtual void ast::Ast_IfStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:357:2: error: ‘Ast_Expr’ does not name a type; did you mean ‘Ast_EndExpr’?
+  Ast_Expr* cond;
+  ^~~~~~~~
+  Ast_EndExpr
+src/ast/Ast.h:360:25: error: ‘Ast_Expr’ has not been declared
+  Ast_WhileStmt(Token t, Ast_Expr* c, Ast_Expr* b);
+                         ^~~~~~~~
+src/ast/Ast.h:360:38: error: ‘Ast_Expr’ has not been declared
+  Ast_WhileStmt(Token t, Ast_Expr* c, Ast_Expr* b);
+                                      ^~~~~~~~
+src/ast/Ast.h:364:36: error: ‘virtual const token::Token& ast::Ast_WhileStmt::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:356:8: note: previous declaration ‘token::Token ast::Ast_WhileStmt::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:363:15: error: ‘virtual void ast::Ast_WhileStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:369:10: error: ‘Ast_Expr’ was not declared in this scope
+  AstList<Ast_Expr*> values;
+          ^~~~~~~~
+src/ast/Ast.h:369:10: note: suggested alternative: ‘Ast_EndExpr’
+  AstList<Ast_Expr*> values;
+          ^~~~~~~~
+          Ast_EndExpr
+src/ast/Ast.h:369:19: error: template argument 1 is invalid
+  AstList<Ast_Expr*> values;
+                   ^
+src/ast/Ast.h:371:40: error: ‘Ast_Expr’ was not declared in this scope
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+src/ast/Ast.h:371:40: note: suggested alternative: ‘Ast_EndExpr’
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+                                        Ast_EndExpr
+src/ast/Ast.h:371:49: error: template argument 1 is invalid
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                                 ^
+src/ast/Ast.h:371:40: error: ‘Ast_Expr’ was not declared in this scope
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+src/ast/Ast.h:371:40: note: suggested alternative: ‘Ast_EndExpr’
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+                                        Ast_EndExpr
+src/ast/Ast.h:371:49: error: template argument 1 is invalid
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                                 ^
+src/ast/Ast.h:371:40: error: ‘Ast_Expr’ was not declared in this scope
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+src/ast/Ast.h:371:40: note: suggested alternative: ‘Ast_EndExpr’
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+                                        Ast_EndExpr
+src/ast/Ast.h:371:49: error: template argument 1 is invalid
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                                 ^
+src/ast/Ast.h:371:40: error: ‘Ast_Expr’ was not declared in this scope
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+src/ast/Ast.h:371:40: note: suggested alternative: ‘Ast_EndExpr’
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+                                        Ast_EndExpr
+src/ast/Ast.h:371:49: error: template argument 1 is invalid
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                                 ^
+src/ast/Ast.h:371:40: error: ‘Ast_Expr’ was not declared in this scope
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+src/ast/Ast.h:371:40: note: suggested alternative: ‘Ast_EndExpr’
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                        ^~~~~~~~
+                                        Ast_EndExpr
+src/ast/Ast.h:371:49: error: template argument 1 is invalid
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                                 ^
+src/ast/Ast.h:371:32: error: invalid use of template-name ‘ast::AstList’ without an argument list
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                ^~~~~~~
+src/ast/Ast.h:18:31: note: ‘template<class T> using AstList = std::vector<T>’ declared here
+ using AstList = std::vector<T>;
+                               ^
+src/ast/Ast.h:371:39: error: expected ‘,’ or ‘...’ before ‘<’ token
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+                                       ^
+src/ast/Ast.h:375:36: error: ‘virtual const token::Token& ast::Ast_ReturnStmt::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:368:8: note: previous declaration ‘token::Token ast::Ast_ReturnStmt::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:374:15: error: ‘virtual void ast::Ast_ReturnStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:380:2: error: ‘Ast_Expr’ does not name a type; did you mean ‘Ast_EndExpr’?
+  Ast_Expr* expr;
+  ^~~~~~~~
+  Ast_EndExpr
+src/ast/Ast.h:382:25: error: ‘Ast_Expr’ has not been declared
+  Ast_DeferStmt(Token t, Ast_Expr* e);
+                         ^~~~~~~~
+src/ast/Ast.h:386:36: error: ‘virtual const token::Token& ast::Ast_DeferStmt::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:379:8: note: previous declaration ‘token::Token ast::Ast_DeferStmt::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:385:15: error: ‘virtual void ast::Ast_DeferStmt::print(int)’ marked ‘override’, but does not override
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.h:396:2: error: expected ‘;’ at end of member declaration
+  Ast_Type* type;
+  ^~~~~~~~
+src/ast/Ast.h:396:12: error: ISO C++ forbids declaration of ‘type’ with no type [-fpermissive]
+  Ast_Type* type;
+            ^~~~
+src/ast/Ast.h:399:34: error: ‘Ast_Type’ is not a type
+  Ast_FuncCall(Ast_Identifier* n, Ast_Type* t, const AstList<Ast_Expr*>& a);
+                                  ^~~~~~~~
+src/ast/Ast.h:444:45: error: ISO C++ forbids declaration of ‘Ast_IndexExpr’ with no type [-fpermissive]
+  Ast_IndexExpr(Token b, Token e, Ast_Expr* i);
+                                             ^
+src/ast/Ast.h:445:24: error: expected class-name before ‘(’ token
+  virtual ~Ast_IndexExpr();
+                        ^
+src/ast/Ast.h:464:36: error: ‘virtual const token::Token& ast::Ast_DerefExpr::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:457:8: note: previous declaration ‘token::Token ast::Ast_DerefExpr::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:479:2: error: ‘Ast_Type’ does not name a type; did you mean ‘Ast_Expr’?
+  Ast_Type* type;
+  ^~~~~~~~
+  Ast_Expr
+src/ast/Ast.h:482:23: error: expected ‘)’ before ‘*’ token
+  Ast_CastExpr(Ast_Type* t, Ast_Expr* e);
+                       ^
+src/ast/Ast.h:513:2: error: ‘Ast_Type’ does not name a type; did you mean ‘Ast_Expr’?
+  Ast_Type* type;
+  ^~~~~~~~
+  Ast_Expr
+src/ast/Ast.h:516:23: error: ‘Ast_Type’ has not been declared
+  Ast_NewExpr(Token t, Ast_Type* ty, const AstList<Ast_Expr*>& i);
+                       ^~~~~~~~
+src/ast/Ast.h:521:36: error: ‘virtual const token::Token& ast::Ast_NewExpr::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:512:8: note: previous declaration ‘token::Token ast::Ast_NewExpr::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:532:36: error: ‘virtual const token::Token& ast::Ast_DeleteExpr::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:525:8: note: previous declaration ‘token::Token ast::Ast_DeleteExpr::token’
+  Token token;
+        ^~~~~
+src/ast/Ast.h:563:11: error: ‘Ast_Field’ was not declared in this scope
+   AstList<Ast_Field*> params;
+           ^~~~~~~~~
+src/ast/Ast.h:563:11: note: suggested alternative: ‘AstFile’
+   AstList<Ast_Field*> params;
+           ^~~~~~~~~
+           AstFile
+src/ast/Ast.h:563:21: error: template argument 1 is invalid
+   AstList<Ast_Field*> params;
+                     ^
+src/ast/Ast.h:567:56: error: ‘Ast_Field’ was not declared in this scope
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                        ^~~~~~~~~
+src/ast/Ast.h:567:56: note: suggested alternative: ‘AstFile’
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                        ^~~~~~~~~
+                                                        AstFile
+src/ast/Ast.h:567:66: error: template argument 1 is invalid
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                                  ^
+src/ast/Ast.h:567:56: error: ‘Ast_Field’ was not declared in this scope
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                        ^~~~~~~~~
+src/ast/Ast.h:567:56: note: suggested alternative: ‘AstFile’
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                        ^~~~~~~~~
+                                                        AstFile
+src/ast/Ast.h:567:66: error: template argument 1 is invalid
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                                  ^
+src/ast/Ast.h:567:56: error: ‘Ast_Field’ was not declared in this scope
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                        ^~~~~~~~~
+src/ast/Ast.h:567:56: note: suggested alternative: ‘AstFile’
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                        ^~~~~~~~~
+                                                        AstFile
+src/ast/Ast.h:567:66: error: template argument 1 is invalid
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                                  ^
+src/ast/Ast.h:567:48: error: ‘AstList’ is not a type
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                ^~~~~~~
+src/ast/Ast.h:567:55: error: expected ‘,’ or ‘...’ before ‘<’ token
+   Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                       ^
+src/ast/Ast.h:572:36: error: ‘virtual const token::Token& ast::Ast_FunctionType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:561:9: note: previous declaration ‘token::Token ast::Ast_FunctionType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:578:67: error: ‘Ast_Field’ was not declared in this scope
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                   ^~~~~~~~~
+src/ast/Ast.h:578:67: note: suggested alternative: ‘AstFile’
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                   ^~~~~~~~~
+                                                                   AstFile
+src/ast/Ast.h:578:77: error: template argument 1 is invalid
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                             ^
+src/ast/Ast.h:578:67: error: ‘Ast_Field’ was not declared in this scope
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                   ^~~~~~~~~
+src/ast/Ast.h:578:67: note: suggested alternative: ‘AstFile’
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                   ^~~~~~~~~
+                                                                   AstFile
+src/ast/Ast.h:578:77: error: template argument 1 is invalid
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                             ^
+src/ast/Ast.h:578:67: error: ‘Ast_Field’ was not declared in this scope
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                   ^~~~~~~~~
+src/ast/Ast.h:578:67: note: suggested alternative: ‘AstFile’
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                   ^~~~~~~~~
+                                                                   AstFile
+src/ast/Ast.h:578:77: error: template argument 1 is invalid
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                             ^
+src/ast/Ast.h:578:59: error: ‘AstList’ is not a type
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                           ^~~~~~~
+src/ast/Ast.h:578:66: error: expected ‘,’ or ‘...’ before ‘<’ token
+   Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                  ^
+src/ast/Ast.h:595:36: error: ‘virtual const token::Token& ast::Ast_PointerType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:588:9: note: previous declaration ‘token::Token ast::Ast_PointerType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:607:36: error: ‘virtual const token::Token& ast::Ast_ArrayType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:599:9: note: previous declaration ‘token::Token ast::Ast_ArrayType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:614:43: error: conflicting declaration ‘ast::Ast_Type* t’
+   Ast_DynamicArrayType(Token t, Ast_Type* t);
+                                           ^
+src/ast/Ast.h:614:30: note: previous declaration as ‘token::Token t’
+   Ast_DynamicArrayType(Token t, Ast_Type* t);
+                              ^
+src/ast/Ast.h:618:36: error: ‘virtual const token::Token& ast::Ast_DynamicArrayType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:611:9: note: previous declaration ‘token::Token ast::Ast_DynamicArrayType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:629:36: error: ‘virtual const token::Token& ast::Ast_MapType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:622:9: note: previous declaration ‘token::Token ast::Ast_MapType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:641:36: error: ‘virtual const token::Token& ast::Ast_EnumType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:633:9: note: previous declaration ‘token::Token ast::Ast_EnumType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:653:36: error: ‘virtual const token::Token& ast::Ast_UnionType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:645:9: note: previous declaration ‘token::Token ast::Ast_UnionType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:659:11: error: ‘Ast_Field’ was not declared in this scope
+   AstList<Ast_Field*> members;
+           ^~~~~~~~~
+src/ast/Ast.h:659:11: note: suggested alternative: ‘AstFile’
+   AstList<Ast_Field*> members;
+           ^~~~~~~~~
+           AstFile
+src/ast/Ast.h:659:21: error: template argument 1 is invalid
+   AstList<Ast_Field*> members;
+                     ^
+src/ast/Ast.h:663:59: error: ‘Ast_Field’ was not declared in this scope
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+src/ast/Ast.h:663:59: note: suggested alternative: ‘AstFile’
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+                                                           AstFile
+src/ast/Ast.h:663:69: error: template argument 1 is invalid
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                     ^
+src/ast/Ast.h:663:59: error: ‘Ast_Field’ was not declared in this scope
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+src/ast/Ast.h:663:59: note: suggested alternative: ‘AstFile’
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+                                                           AstFile
+src/ast/Ast.h:663:69: error: template argument 1 is invalid
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                     ^
+src/ast/Ast.h:663:59: error: ‘Ast_Field’ was not declared in this scope
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+src/ast/Ast.h:663:59: note: suggested alternative: ‘AstFile’
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+                                                           AstFile
+src/ast/Ast.h:663:69: error: template argument 1 is invalid
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                     ^
+src/ast/Ast.h:663:59: error: ‘Ast_Field’ was not declared in this scope
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+src/ast/Ast.h:663:59: note: suggested alternative: ‘AstFile’
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+                                                           AstFile
+src/ast/Ast.h:663:69: error: template argument 1 is invalid
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                     ^
+src/ast/Ast.h:663:59: error: ‘Ast_Field’ was not declared in this scope
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+src/ast/Ast.h:663:59: note: suggested alternative: ‘AstFile’
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                           ^~~~~~~~~
+                                                           AstFile
+src/ast/Ast.h:663:69: error: template argument 1 is invalid
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                     ^
+src/ast/Ast.h:663:51: error: invalid use of template-name ‘ast::AstList’ without an argument list
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                   ^~~~~~~
+src/ast/Ast.h:18:31: note: ‘template<class T> using AstList = std::vector<T>’ declared here
+ using AstList = std::vector<T>;
+                               ^
+src/ast/Ast.h:663:58: error: expected ‘,’ or ‘...’ before ‘<’ token
+   Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                          ^
+src/ast/Ast.h:668:36: error: ‘virtual const token::Token& ast::Ast_ClassType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:657:9: note: previous declaration ‘token::Token ast::Ast_ClassType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.h:674:11: error: ‘Ast_Field’ was not declared in this scope
+   AstList<Ast_Field*> members;
+           ^~~~~~~~~
+src/ast/Ast.h:674:11: note: suggested alternative: ‘AstFile’
+   AstList<Ast_Field*> members;
+           ^~~~~~~~~
+           AstFile
+src/ast/Ast.h:674:21: error: template argument 1 is invalid
+   AstList<Ast_Field*> members;
+                     ^
+src/ast/Ast.h:676:60: error: ‘Ast_Field’ was not declared in this scope
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+src/ast/Ast.h:676:60: note: suggested alternative: ‘AstFile’
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+                                                            AstFile
+src/ast/Ast.h:676:70: error: template argument 1 is invalid
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                                      ^
+src/ast/Ast.h:676:60: error: ‘Ast_Field’ was not declared in this scope
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+src/ast/Ast.h:676:60: note: suggested alternative: ‘AstFile’
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+                                                            AstFile
+src/ast/Ast.h:676:70: error: template argument 1 is invalid
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                                      ^
+src/ast/Ast.h:676:60: error: ‘Ast_Field’ was not declared in this scope
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+src/ast/Ast.h:676:60: note: suggested alternative: ‘AstFile’
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+                                                            AstFile
+src/ast/Ast.h:676:70: error: template argument 1 is invalid
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                                      ^
+src/ast/Ast.h:676:60: error: ‘Ast_Field’ was not declared in this scope
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+src/ast/Ast.h:676:60: note: suggested alternative: ‘AstFile’
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+                                                            AstFile
+src/ast/Ast.h:676:70: error: template argument 1 is invalid
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                                      ^
+src/ast/Ast.h:676:60: error: ‘Ast_Field’ was not declared in this scope
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+src/ast/Ast.h:676:60: note: suggested alternative: ‘AstFile’
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                            ^~~~~~~~~
+                                                            AstFile
+src/ast/Ast.h:676:70: error: template argument 1 is invalid
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                                      ^
+src/ast/Ast.h:676:52: error: invalid use of template-name ‘ast::AstList’ without an argument list
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                    ^~~~~~~
+src/ast/Ast.h:18:31: note: ‘template<class T> using AstList = std::vector<T>’ declared here
+ using AstList = std::vector<T>;
+                               ^
+src/ast/Ast.h:676:59: error: expected ‘,’ or ‘...’ before ‘<’ token
+   Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m);
+                                                           ^
+src/ast/Ast.h:680:36: error: ‘virtual const token::Token& ast::Ast_StructType::token()’ conflicts with a previous declaration
+  virtual const token::Token& token();
+                                    ^
+src/ast/Ast.h:672:9: note: previous declaration ‘token::Token ast::Ast_StructType::token’
+   Token token;
+         ^~~~~
+src/ast/Ast.cpp: In function ‘bool ast::ast_is_decl(ast::Ast_Node*)’:
+src/ast/Ast.cpp:9:10: error: ‘AstBeginDecl’ was not declared in this scope
+   return AstBeginDecl < node->kind && node->kind < AstEndDecl;
+          ^~~~~~~~~~~~
+src/ast/Ast.cpp:9:10: note: suggested alternative: ‘Ast_BeginDecl’
+   return AstBeginDecl < node->kind && node->kind < AstEndDecl;
+          ^~~~~~~~~~~~
+          Ast_BeginDecl
+src/ast/Ast.cpp:9:52: error: ‘AstEndDecl’ was not declared in this scope
+   return AstBeginDecl < node->kind && node->kind < AstEndDecl;
+                                                    ^~~~~~~~~~
+src/ast/Ast.cpp:9:52: note: suggested alternative: ‘Ast_EndDecl’
+   return AstBeginDecl < node->kind && node->kind < AstEndDecl;
+                                                    ^~~~~~~~~~
+                                                    Ast_EndDecl
+src/ast/Ast.cpp: In function ‘bool ast::ast_is_expr(ast::Ast_Node*)’:
+src/ast/Ast.cpp:13:10: error: ‘AstBeginExpr’ was not declared in this scope
+   return AstBeginExpr < node->kind && node->kind < AstEndExpr;
+          ^~~~~~~~~~~~
+src/ast/Ast.cpp:13:10: note: suggested alternative: ‘Ast_BeginExpr’
+   return AstBeginExpr < node->kind && node->kind < AstEndExpr;
+          ^~~~~~~~~~~~
+          Ast_BeginExpr
+src/ast/Ast.cpp:13:52: error: ‘AstEndExpr’ was not declared in this scope
+   return AstBeginExpr < node->kind && node->kind < AstEndExpr;
+                                                    ^~~~~~~~~~
+src/ast/Ast.cpp:13:52: note: suggested alternative: ‘Ast_EndExpr’
+   return AstBeginExpr < node->kind && node->kind < AstEndExpr;
+                                                    ^~~~~~~~~~
+                                                    Ast_EndExpr
+src/ast/Ast.cpp: In function ‘bool ast::ast_is_stmt(ast::Ast_Node*)’:
+src/ast/Ast.cpp:17:10: error: ‘AstBeginStmt’ was not declared in this scope
+   return AstBeginStmt < node->kind && node->kind < AstEndStmt;
+          ^~~~~~~~~~~~
+src/ast/Ast.cpp:17:10: note: suggested alternative: ‘Ast_BeginStmt’
+   return AstBeginStmt < node->kind && node->kind < AstEndStmt;
+          ^~~~~~~~~~~~
+          Ast_BeginStmt
+src/ast/Ast.cpp:17:52: error: ‘AstEndStmt’ was not declared in this scope
+   return AstBeginStmt < node->kind && node->kind < AstEndStmt;
+                                                    ^~~~~~~~~~
+src/ast/Ast.cpp:17:52: note: suggested alternative: ‘Ast_EndStmt’
+   return AstBeginStmt < node->kind && node->kind < AstEndStmt;
+                                                    ^~~~~~~~~~
+                                                    Ast_EndStmt
+src/ast/Ast.cpp: In function ‘bool ast::ast_is_type(ast::Ast_Node*)’:
+src/ast/Ast.cpp:21:10: error: ‘AstBeginType’ was not declared in this scope
+   return AstBeginType < node->kind && node->kind < AstEndType;
+          ^~~~~~~~~~~~
+src/ast/Ast.cpp:21:10: note: suggested alternative: ‘Ast_BeginType’
+   return AstBeginType < node->kind && node->kind < AstEndType;
+          ^~~~~~~~~~~~
+          Ast_BeginType
+src/ast/Ast.cpp:21:52: error: ‘AstEndType’ was not declared in this scope
+   return AstBeginType < node->kind && node->kind < AstEndType;
+                                                    ^~~~~~~~~~
+src/ast/Ast.cpp:21:52: note: suggested alternative: ‘Ast_EndType’
+   return AstBeginType < node->kind && node->kind < AstEndType;
+                                                    ^~~~~~~~~~
+                                                    Ast_EndType
+src/ast/Ast.cpp: In constructor ‘ast::Ast_Identifier::Ast_Identifier(token::Token, ast::Atom*)’:
+src/ast/Ast.cpp:56:41: error: no matching function for call to ‘ast::Ast_Node::Ast_Node()’
+ Ast_Identifier(Token token, ast::Atom* a) {
+                                         ^
+src/ast/Ast.cpp:45:1: note: candidate: ast::Ast_Node::Ast_Node(ast::AstNodeKind)
+ Ast_Node::
+ ^~~~~~~~
+src/ast/Ast.cpp:45:1: note:   candidate expects 1 argument, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:148:8: note: candidate: constexpr ast::Ast_Node::Ast_Node(const ast::Ast_Node&)
+ struct Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:148:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:66:21: error: default argument given for parameter 1 of ‘void ast::Ast_Identifier::print(int)’ [-fpermissive]
+ print(int indent = 0) {
+                     ^
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:171:15: note: previous specification in ‘virtual void ast::Ast_Identifier::print(int)’ here
+  virtual void print(int indent = 0) override;
+               ^~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_Identifier::token()’:
+src/ast/Ast.cpp:73:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_BasicLiteral::Ast_BasicLiteral(token::Token)’:
+src/ast/Ast.cpp:76:25: error: no matching function for call to ‘ast::Ast_Node::Ast_Node()’
+ Ast_BasicLiteral(Token t) {
+                         ^
+src/ast/Ast.cpp:45:1: note: candidate: ast::Ast_Node::Ast_Node(ast::AstNodeKind)
+ Ast_Node::
+ ^~~~~~~~
+src/ast/Ast.cpp:45:1: note:   candidate expects 1 argument, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:148:8: note: candidate: constexpr ast::Ast_Node::Ast_Node(const ast::Ast_Node&)
+ struct Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:148:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_BasicLiteral::token()’:
+src/ast/Ast.cpp:89:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_NullLiteral::Ast_NullLiteral(token::Token)’:
+src/ast/Ast.cpp:92:24: error: no matching function for call to ‘ast::Ast_Node::Ast_Node()’
+ Ast_NullLiteral(Token t) {
+                        ^
+src/ast/Ast.cpp:45:1: note: candidate: ast::Ast_Node::Ast_Node(ast::AstNodeKind)
+ Ast_Node::
+ ^~~~~~~~
+src/ast/Ast.cpp:45:1: note:   candidate expects 1 argument, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:148:8: note: candidate: constexpr ast::Ast_Node::Ast_Node(const ast::Ast_Node&)
+ struct Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:148:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_NullLiteral::token()’:
+src/ast/Ast.cpp:103:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_Decl::Ast_Decl(ast::Ast_Identifier*)’:
+src/ast/Ast.cpp:106:27: error: no matching function for call to ‘ast::Ast_Node::Ast_Node()’
+ Ast_Decl(Ast_Identifier* n){
+                           ^
+src/ast/Ast.cpp:45:1: note: candidate: ast::Ast_Node::Ast_Node(ast::AstNodeKind)
+ Ast_Node::
+ ^~~~~~~~
+src/ast/Ast.cpp:45:1: note:   candidate expects 1 argument, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:148:8: note: candidate: constexpr ast::Ast_Node::Ast_Node(const ast::Ast_Node&)
+ struct Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:148:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_Decl::token()’:
+src/ast/Ast.cpp:123:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:125:1: error: prototype for ‘ast::Ast_TypeAlias::Ast_TypeAlias(ast::Ast_Identifier*, ast::Ast_Type*)’ does not match any in class ‘ast::Ast_TypeAlias’
+ Ast_TypeAlias::
+ ^~~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:203:8: error: candidates are: constexpr ast::Ast_TypeAlias::Ast_TypeAlias(const ast::Ast_TypeAlias&)
+ struct Ast_TypeAlias : public Ast_Decl {
+        ^~~~~~~~~~~~~
+src/ast/Ast.h:208:2: error:                 ast::Ast_TypeAlias::Ast_TypeAlias(ast::Ast_Identifier*, int*)
+  Ast_TypeAlias(Ast_Identifier* a, Ast_Type* t);
+  ^~~~~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_TypeAlias::token()’:
+src/ast/Ast.cpp:140:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:142:1: error: prototype for ‘ast::Ast_VariableSpec::Ast_VariableSpec(token::Token, ast::AstList<ast::Ast_Identifier*>, ast::AstList<ast::Ast_Expr*>, ast::Ast_Type*)’ does not match any in class ‘ast::Ast_VariableSpec’
+ Ast_VariableSpec::
+ ^~~~~~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:216:8: error: candidates are: ast::Ast_VariableSpec::Ast_VariableSpec(ast::Ast_VariableSpec&&)
+ struct Ast_VariableSpec : public Ast_Decl {
+        ^~~~~~~~~~~~~~~~
+src/ast/Ast.h:216:8: error:                 ast::Ast_VariableSpec::Ast_VariableSpec(const ast::Ast_VariableSpec&)
+src/ast/Ast.h:222:2: error:                 ast::Ast_VariableSpec::Ast_VariableSpec(token::Token, ast::AstList<ast::Ast_Identifier*>, int)
+  Ast_VariableSpec(Token t, AstList<Ast_Identifier*> n,
+  ^~~~~~~~~~~~~~~~
+src/ast/Ast.cpp:147:19: error: definition of implicitly-declared ‘virtual ast::Ast_VariableSpec::~Ast_VariableSpec()’
+ ~Ast_VariableSpec() {
+                   ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_VariableSpec::token()’:
+src/ast/Ast.cpp:159:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:161:1: error: prototype for ‘ast::Ast_TypeSpec::Ast_TypeSpec(ast::Ast_Type*)’ does not match any in class ‘ast::Ast_TypeSpec’
+ Ast_TypeSpec::
+ ^~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:229:8: error: candidates are: constexpr ast::Ast_TypeSpec::Ast_TypeSpec(const ast::Ast_TypeSpec&)
+ struct Ast_TypeSpec : public Ast_Decl {
+        ^~~~~~~~~~~~
+src/ast/Ast.h:229:8: error:                 ast::Ast_TypeSpec::Ast_TypeSpec()
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_TypeSpec::token()’:
+src/ast/Ast.cpp:177:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:179:1: error: prototype for ‘ast::Ast_ProcSpec::Ast_ProcSpec(token::Token, ast::Ast_Type*, ast::Ast_Stmt*)’ does not match any in class ‘ast::Ast_ProcSpec’
+ Ast_ProcSpec::
+ ^~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:239:8: error: candidates are: constexpr ast::Ast_ProcSpec::Ast_ProcSpec(const ast::Ast_ProcSpec&)
+ struct Ast_ProcSpec : public Ast_Decl {
+        ^~~~~~~~~~~~
+src/ast/Ast.h:244:2: error:                 ast::Ast_ProcSpec::Ast_ProcSpec(token::Token, int*, int*)
+  Ast_ProcSpec(Token t, Ast_Type* ty, Ast_Stmt* b);
+  ^~~~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ProcSpec::token()’:
+src/ast/Ast.cpp:195:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:198:100: error: ISO C++ forbids declaration of ‘Ast_Identifier’ with no type [-fpermissive]
+ Ast_Identifier(Token p, const std::string& fp, Ast_Identifier* n, const AstList<Ast_Identifier*>& i){
+                                                                                                    ^
+src/ast/Ast.cpp:198:100: error: no ‘int ast::Ast_ImportSpec::Ast_Identifier(token::Token, const string&, ast::Ast_Identifier*, ast::AstList<ast::Ast_Identifier*>&)’ member function declared in class ‘ast::Ast_ImportSpec’
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ImportSpec::token()’:
+src/ast/Ast.cpp:213:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:216:69: error: conflicting declaration ‘ast::Ast_Type* t’
+ Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0){
+                                                                     ^
+src/ast/Ast.cpp:216:21: note: previous declaration as ‘token::Token t’
+ Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0){
+                     ^
+src/ast/Ast.cpp:216:91: error: default argument given for parameter 3 of ‘ast::Ast_FieldSpec::Ast_FieldSpec(token::Token, ast::AstList<ast::Ast_Identifier*>&, ast::VariableFlags)’ [-fpermissive]
+ Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0){
+                                                                                           ^
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:272:2: note: previous specification in ‘ast::Ast_FieldSpec::Ast_FieldSpec(token::Token, ast::AstList<ast::Ast_Identifier*>&, ast::VariableFlags)’ here
+  Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0);
+  ^~~~~~~~~~~~~
+src/ast/Ast.cpp: In constructor ‘ast::Ast_FieldSpec::Ast_FieldSpec(token::Token, ast::AstList<ast::Ast_Identifier*>&, ast::VariableFlags)’:
+src/ast/Ast.cpp:216:91: error: no matching function for call to ‘ast::Ast_Decl::Ast_Decl()’
+ Ast_FieldSpec(Token t, const AstList<Ast_Identifier*>& n, Ast_Type* t, VariableFlags f = 0){
+                                                                                           ^
+src/ast/Ast.cpp:105:1: note: candidate: ast::Ast_Decl::Ast_Decl(ast::Ast_Identifier*)
+ Ast_Decl::
+ ^~~~~~~~
+src/ast/Ast.cpp:105:1: note:   candidate expects 1 argument, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:193:8: note: candidate: constexpr ast::Ast_Decl::Ast_Decl(const ast::Ast_Decl&)
+ struct Ast_Decl : public Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:193:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_FieldSpec::token()’:
+src/ast/Ast.cpp:231:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:239:1: error: prototype for ‘ast::Ast_ExprStmt::Ast_ExprStmt(ast::Ast_Expr*)’ does not match any in class ‘ast::Ast_ExprStmt’
+ Ast_ExprStmt::
+ ^~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:284:8: error: candidates are: constexpr ast::Ast_ExprStmt::Ast_ExprStmt(const ast::Ast_ExprStmt&)
+ struct Ast_ExprStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~
+src/ast/Ast.h:284:8: error:                 constexpr ast::Ast_ExprStmt::Ast_ExprStmt()
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ExprStmt::token()’:
+src/ast/Ast.cpp:255:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_EmptyStmt::token()’:
+src/ast/Ast.cpp:269:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_BreakStmt::token()’:
+src/ast/Ast.cpp:283:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ContinueStmt::token()’:
+src/ast/Ast.cpp:297:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:299:1: error: prototype for ‘ast::Ast_AssignmentStmt::Ast_AssignmentStmt(token::Token, ast::AstList<ast::Ast_Node*>&, ast::AstList<ast::Ast_Expr*>&)’ does not match any in class ‘ast::Ast_AssignmentStmt’
+ Ast_AssignmentStmt::
+ ^~~~~~~~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:321:8: error: candidates are: ast::Ast_AssignmentStmt::Ast_AssignmentStmt(const ast::Ast_AssignmentStmt&)
+ struct Ast_AssignmentStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~~~~~~~
+src/ast/Ast.h:326:2: error:                 ast::Ast_AssignmentStmt::Ast_AssignmentStmt(token::Token, ast::AstList<ast::Ast_Node*>&, int)
+  Ast_AssignmentStmt(Token o, const AstList<Ast_Node*>& n,
+  ^~~~~~~~~~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_AssignmentStmt::token()’:
+src/ast/Ast.cpp:315:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_BlockStmt::token()’:
+src/ast/Ast.cpp:333:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:335:1: error: prototype for ‘ast::Ast_IfStmt::Ast_IfStmt(token::Token, ast::Ast_Expr*, ast::Ast_Expr*, ast::Ast_Expr*, ast::Ast_Stmt*)’ does not match any in class ‘ast::Ast_IfStmt’
+ Ast_IfStmt::
+ ^~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:343:8: error: candidates are: constexpr ast::Ast_IfStmt::Ast_IfStmt(const ast::Ast_IfStmt&)
+ struct Ast_IfStmt : public Ast_Stmt {
+        ^~~~~~~~~~
+src/ast/Ast.h:348:2: error:                 ast::Ast_IfStmt::Ast_IfStmt(token::Token, int*, int*, int*, ast::Ast_Stmt*)
+  Ast_IfStmt(Token t, Ast_Expr* i, Ast_Expr* c, Ast_Expr* s, Ast_Stmt* b);
+  ^~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_IfStmt::token()’:
+src/ast/Ast.cpp:351:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:353:1: error: prototype for ‘ast::Ast_WhileStmt::Ast_WhileStmt(token::Token, ast::Ast_Expr*, ast::Ast_Expr*)’ does not match any in class ‘ast::Ast_WhileStmt’
+ Ast_WhileStmt::
+ ^~~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:355:8: error: candidates are: constexpr ast::Ast_WhileStmt::Ast_WhileStmt(const ast::Ast_WhileStmt&)
+ struct Ast_WhileStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~~
+src/ast/Ast.h:360:2: error:                 ast::Ast_WhileStmt::Ast_WhileStmt(token::Token, int*, int*)
+  Ast_WhileStmt(Token t, Ast_Expr* c, Ast_Expr* b);
+  ^~~~~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_WhileStmt::token()’:
+src/ast/Ast.cpp:369:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:371:1: error: prototype for ‘ast::Ast_ReturnStmt::Ast_ReturnStmt(token::Token, ast::AstList<ast::Ast_Expr*>)’ does not match any in class ‘ast::Ast_ReturnStmt’
+ Ast_ReturnStmt::
+ ^~~~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:367:8: error: candidates are: constexpr ast::Ast_ReturnStmt::Ast_ReturnStmt(const ast::Ast_ReturnStmt&)
+ struct Ast_ReturnStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~~~
+src/ast/Ast.h:371:2: error:                 ast::Ast_ReturnStmt::Ast_ReturnStmt(token::Token, int)
+  Ast_ReturnStmt(Token t, const AstList<Ast_Expr*> v);
+  ^~~~~~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ReturnStmt::token()’:
+src/ast/Ast.cpp:387:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:389:1: error: prototype for ‘ast::Ast_DeferStmt::Ast_DeferStmt(token::Token, ast::Ast_Expr*)’ does not match any in class ‘ast::Ast_DeferStmt’
+ Ast_DeferStmt::
+ ^~~~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:378:8: error: candidates are: constexpr ast::Ast_DeferStmt::Ast_DeferStmt(const ast::Ast_DeferStmt&)
+ struct Ast_DeferStmt : public Ast_Stmt {
+        ^~~~~~~~~~~~~
+src/ast/Ast.h:382:2: error:                 ast::Ast_DeferStmt::Ast_DeferStmt(token::Token, int*)
+  Ast_DeferStmt(Token t, Ast_Expr* e);
+  ^~~~~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_DeferStmt::token()’:
+src/ast/Ast.cpp:405:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:414:33: error: ‘Ast_Type’ is not a type
+ Ast_FuncCall(Ast_Identifier* n, Ast_Type* t, const AstList<Ast_Expr*>& a){
+                                 ^~~~~~~~
+src/ast/Ast.cpp: In constructor ‘ast::Ast_FuncCall::Ast_FuncCall(ast::Ast_Identifier*, int*, ast::AstList<ast::Ast_Expr*>&)’:
+src/ast/Ast.cpp:414:73: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_FuncCall(Ast_Identifier* n, Ast_Type* t, const AstList<Ast_Expr*>& a){
+                                                                         ^
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:389:8: note: ‘ast::Ast_Expr::Ast_Expr()’ is implicitly deleted because the default definition would be ill-formed:
+ struct Ast_Expr : public Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:389:8: error: no matching function for call to ‘ast::Ast_Node::Ast_Node()’
+src/ast/Ast.cpp:45:1: note: candidate: ast::Ast_Node::Ast_Node(ast::AstNodeKind)
+ Ast_Node::
+ ^~~~~~~~
+src/ast/Ast.cpp:45:1: note:   candidate expects 1 argument, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:148:8: note: candidate: constexpr ast::Ast_Node::Ast_Node(const ast::Ast_Node&)
+ struct Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:148:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp:414:73: error: no matching function for call to ‘ast::Ast_Identifier::Ast_Identifier()’
+ Ast_FuncCall(Ast_Identifier* n, Ast_Type* t, const AstList<Ast_Expr*>& a){
+                                                                         ^
+src/ast/Ast.cpp:55:1: note: candidate: ast::Ast_Identifier::Ast_Identifier(token::Token, ast::Atom*)
+ Ast_Identifier::
+ ^~~~~~~~~~~~~~
+src/ast/Ast.cpp:55:1: note:   candidate expects 2 arguments, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:163:8: note: candidate: constexpr ast::Ast_Identifier::Ast_Identifier(const ast::Ast_Identifier&)
+ struct Ast_Identifier : public Ast_Node {
+        ^~~~~~~~~~~~~~
+src/ast/Ast.h:163:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_FuncCall::token()’:
+src/ast/Ast.cpp:429:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_UnaryExpr::Ast_UnaryExpr(token::Token, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:432:35: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_UnaryExpr(Token t, Ast_Expr* e){
+                                   ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_UnaryExpr::token()’:
+src/ast/Ast.cpp:447:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In function ‘ast::Ast_BinaryExpr ast::Ast_BinaryExpr(token::Token, ast::Ast_Expr*, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:452:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:453:17: error: declaration of ‘~ast::Ast_BinaryExpr’ as non-member
+ ~Ast_BinaryExpr(){
+                 ^
+src/ast/Ast.cpp: In function ‘const token::Token& ast::token()’:
+src/ast/Ast.cpp:459:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_ParenExpr::Ast_ParenExpr(token::Token, token::Token, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:462:45: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_ParenExpr(Token b, Token e, Ast_Expr* ex){
+                                             ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ParenExpr::token()’:
+src/ast/Ast.cpp:475:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:479:44: error: ISO C++ forbids declaration of ‘Ast_IndexExpr’ with no type [-fpermissive]
+ Ast_IndexExpr(Token b, Token e, Ast_Expr* i){
+                                            ^
+src/ast/Ast.cpp: In member function ‘int ast::Ast_IndexnExpr::Ast_IndexExpr(token::Token, token::Token, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:480:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:483:15: error: expected class-name before ‘(’ token
+ ~Ast_IndexExpr(){
+               ^
+src/ast/Ast.cpp:483:16: error: definition of implicitly-declared ‘virtual ast::Ast_IndexnExpr::~Ast_IndexnExpr()’
+ ~Ast_IndexExpr(){
+                ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_IndexnExpr::token()’:
+src/ast/Ast.cpp:494:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_DerefExpr::Ast_DerefExpr(token::Token, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:503:35: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_DerefExpr(Token t, Ast_Expr* e){
+                                   ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_DerefExpr::token()’:
+src/ast/Ast.cpp:518:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_SelectorExpr::Ast_SelectorExpr(ast::Ast_Node*, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:521:44: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_SelectorExpr(Ast_Node* ex, Ast_Expr* el){
+                                            ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_SelectorExpr::token()’:
+src/ast/Ast.cpp:536:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In function ‘ast::Ast_CastExpr ast::Ast_CastExpr(ast::Ast_Type*, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:541:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:542:15: error: declaration of ‘~ast::Ast_CastExpr’ as non-member
+ ~Ast_CastExpr(){
+               ^
+src/ast/Ast.cpp: In function ‘void ast::print(int)’:
+src/ast/Ast.cpp:545:6: error: redefinition of ‘void ast::print(int)’
+ void print(int indent) {
+      ^~~~~
+src/ast/Ast.cpp:456:6: note: ‘void ast::print(int)’ previously defined here
+ void print(int indent) {
+      ^~~~~
+src/ast/Ast.cpp: In function ‘const token::Token& ast::token()’:
+src/ast/Ast.cpp:547:21: error: redefinition of ‘const token::Token& ast::token()’
+ const token::Token& token(){
+                     ^~~~~
+src/ast/Ast.cpp:458:21: note: ‘const token::Token& ast::token()’ previously defined here
+ const token::Token& token(){
+                     ^~~~~
+src/ast/Ast.cpp:548:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_AddressExpr::Ast_AddressExpr(token::Token, ast::Ast_Node*)’:
+src/ast/Ast.cpp:551:37: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_AddressExpr(Token o, Ast_Node* e){
+                                     ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_AddressExpr::token()’:
+src/ast/Ast.cpp:566:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_IncDecExpr::Ast_IncDecExpr(token::Token, ast::Ast_Node*)’:
+src/ast/Ast.cpp:569:36: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_IncDecExpr(Token o, Ast_Node* e){
+                                    ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_IncDecExpr::token()’:
+src/ast/Ast.cpp:584:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:586:1: error: prototype for ‘ast::Ast_NewExpr::Ast_NewExpr(token::Token, ast::Ast_Type*, ast::AstList<ast::Ast_Expr*>&)’ does not match any in class ‘ast::Ast_NewExpr’
+ Ast_NewExpr::
+ ^~~~~~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:511:8: error: candidates are: ast::Ast_NewExpr::Ast_NewExpr(const ast::Ast_NewExpr&)
+ struct Ast_NewExpr : public Ast_Expr {
+        ^~~~~~~~~~~
+src/ast/Ast.h:516:2: error:                 ast::Ast_NewExpr::Ast_NewExpr(token::Token, int*, ast::AstList<ast::Ast_Expr*>&)
+  Ast_NewExpr(Token t, Ast_Type* ty, const AstList<Ast_Expr*>& i);
+  ^~~~~~~~~~~
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_NewExpr::token()’:
+src/ast/Ast.cpp:603:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_DeleteExpr::Ast_DeleteExpr(token::Token, ast::Ast_Node*)’:
+src/ast/Ast.cpp:606:36: error: use of deleted function ‘ast::Ast_Expr::Ast_Expr()’
+ Ast_DeleteExpr(Token t, Ast_Node* e){
+                                    ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_DeleteExpr::token()’:
+src/ast/Ast.cpp:620:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_NamedType::Ast_NamedType(ast::Ast_Node*)’:
+src/ast/Ast.cpp:629:27: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_NamedType(Ast_Node* id){
+                           ^
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:535:8: note: ‘ast::Ast_Type::Ast_Type()’ is implicitly deleted because the default definition would be ill-formed:
+ struct Ast_Type : public Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:535:8: error: no matching function for call to ‘ast::Ast_Node::Ast_Node()’
+src/ast/Ast.cpp:45:1: note: candidate: ast::Ast_Node::Ast_Node(ast::AstNodeKind)
+ Ast_Node::
+ ^~~~~~~~
+src/ast/Ast.cpp:45:1: note:   candidate expects 1 argument, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:148:8: note: candidate: constexpr ast::Ast_Node::Ast_Node(const ast::Ast_Node&)
+ struct Ast_Node {
+        ^~~~~~~~
+src/ast/Ast.h:148:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_NamedType::token()’:
+src/ast/Ast.cpp:644:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_PrimativeType::Ast_PrimativeType(token::Token)’:
+src/ast/Ast.cpp:647:26: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_PrimativeType(Token t){
+                          ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_PrimativeType::token()’:
+src/ast/Ast.cpp:658:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:661:54: error: ‘Ast_Field’ was not declared in this scope
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                      ^~~~~~~~~
+src/ast/Ast.cpp:661:54: note: suggested alternative: ‘AstFile’
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                      ^~~~~~~~~
+                                                      AstFile
+src/ast/Ast.cpp:661:64: error: template argument 1 is invalid
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                                ^
+src/ast/Ast.cpp:661:54: error: ‘Ast_Field’ was not declared in this scope
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                      ^~~~~~~~~
+src/ast/Ast.cpp:661:54: note: suggested alternative: ‘AstFile’
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                      ^~~~~~~~~
+                                                      AstFile
+src/ast/Ast.cpp:661:64: error: template argument 1 is invalid
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                                ^
+src/ast/Ast.cpp:661:54: error: ‘Ast_Field’ was not declared in this scope
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                      ^~~~~~~~~
+src/ast/Ast.cpp:661:54: note: suggested alternative: ‘AstFile’
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                      ^~~~~~~~~
+                                                      AstFile
+src/ast/Ast.cpp:661:64: error: template argument 1 is invalid
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                                ^
+src/ast/Ast.cpp:661:46: error: ‘AstList’ is not a type
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                              ^~~~~~~
+src/ast/Ast.cpp:661:53: error: expected ‘,’ or ‘...’ before ‘<’ token
+ Ast_FunctionType(Token t, Ast_Identifier* n, AstList<Ast_Field*> p,
+                                                     ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_FunctionType::Ast_FunctionType(token::Token, ast::Ast_Identifier*, int)’:
+src/ast/Ast.cpp:662:38: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ AstList<Ast_Node*> r, FunctionFlags f){
+                                      ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_FunctionType::token()’:
+src/ast/Ast.cpp:677:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:680:65: error: ‘Ast_Field’ was not declared in this scope
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                 ^~~~~~~~~
+src/ast/Ast.cpp:680:65: note: suggested alternative: ‘AstFile’
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                 ^~~~~~~~~
+                                                                 AstFile
+src/ast/Ast.cpp:680:75: error: template argument 1 is invalid
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                           ^
+src/ast/Ast.cpp:680:65: error: ‘Ast_Field’ was not declared in this scope
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                 ^~~~~~~~~
+src/ast/Ast.cpp:680:65: note: suggested alternative: ‘AstFile’
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                 ^~~~~~~~~
+                                                                 AstFile
+src/ast/Ast.cpp:680:75: error: template argument 1 is invalid
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                           ^
+src/ast/Ast.cpp:680:65: error: ‘Ast_Field’ was not declared in this scope
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                 ^~~~~~~~~
+src/ast/Ast.cpp:680:65: note: suggested alternative: ‘AstFile’
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                 ^~~~~~~~~
+                                                                 AstFile
+src/ast/Ast.cpp:680:75: error: template argument 1 is invalid
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                           ^
+src/ast/Ast.cpp:680:57: error: ‘AstList’ is not a type
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                         ^~~~~~~
+src/ast/Ast.cpp:680:64: error: expected ‘,’ or ‘...’ before ‘<’ token
+ Ast_MethodType(Token t, Ast_Identifier* n, Ast_Type* c, AstList<Ast_Field*> p,
+                                                                ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_MethodType::Ast_MethodType(token::Token, ast::Ast_Identifier*, ast::Ast_Type*, int)’:
+src/ast/Ast.cpp:681:38: error: no matching function for call to ‘ast::Ast_FunctionType::Ast_FunctionType()’
+ AstList<Ast_Node*> r, FunctionFlags f){
+                                      ^
+src/ast/Ast.cpp:660:1: note: candidate: ast::Ast_FunctionType::Ast_FunctionType(token::Token, ast::Ast_Identifier*, int)
+ Ast_FunctionType::
+ ^~~~~~~~~~~~~~~~
+src/ast/Ast.cpp:660:1: note:   candidate expects 3 arguments, 0 provided
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:560:8: note: candidate: ast::Ast_FunctionType::Ast_FunctionType(const ast::Ast_FunctionType&)
+ struct Ast_FunctionType : public Ast_Type {
+        ^~~~~~~~~~~~~~~~
+src/ast/Ast.h:560:8: note:   candidate expects 1 argument, 0 provided
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_MethodType::token()’:
+src/ast/Ast.cpp:696:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_PointerType::Ast_PointerType(token::Token, ast::Ast_Type*)’:
+src/ast/Ast.cpp:700:38: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_PointerType(Token t, Ast_Type* ty){
+                                      ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_PointerType::token()’:
+src/ast/Ast.cpp:715:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_ArrayType::Ast_ArrayType(token::Token, ast::Ast_Type*, ast::Ast_Expr*)’:
+src/ast/Ast.cpp:718:49: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_ArrayType(Token t, Ast_Type* ty, Ast_Expr* s){
+                                                 ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ArrayType::token()’:
+src/ast/Ast.cpp:733:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:736:41: error: conflicting declaration ‘ast::Ast_Type* t’
+ Ast_DynamicArrayType(Token t, Ast_Type* t){
+                                         ^
+src/ast/Ast.cpp:736:28: note: previous declaration as ‘token::Token t’
+ Ast_DynamicArrayType(Token t, Ast_Type* t){
+                            ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_DynamicArrayType::Ast_DynamicArrayType(token::Token)’:
+src/ast/Ast.cpp:736:42: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_DynamicArrayType(Token t, Ast_Type* t){
+                                          ^
+src/ast/Ast.cpp: In function ‘void ast::print(int)’:
+src/ast/Ast.cpp:743:6: error: redefinition of ‘void ast::print(int)’
+ void print(int indent) {
+      ^~~~~
+src/ast/Ast.cpp:456:6: note: ‘void ast::print(int)’ previously defined here
+ void print(int indent) {
+      ^~~~~
+src/ast/Ast.cpp: In function ‘const token::Token& ast::token()’:
+src/ast/Ast.cpp:745:21: error: redefinition of ‘const token::Token& ast::token()’
+ const token::Token& token(){
+                     ^~~~~
+src/ast/Ast.cpp:458:21: note: ‘const token::Token& ast::token()’ previously defined here
+ const token::Token& token(){
+                     ^~~~~
+src/ast/Ast.cpp:746:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_MapType::Ast_MapType(token::Token, ast::Ast_Type*, ast::Ast_Type*)’:
+src/ast/Ast.cpp:749:46: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_MapType(Token t, Ast_Type* k, Ast_Type* v){
+                                              ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_MapType::token()’:
+src/ast/Ast.cpp:764:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_EnumType::Ast_EnumType(token::Token, ast::Ast_Identifier*, ast::AstList<ast::Ast_Decl*>&)’:
+src/ast/Ast.cpp:767:69: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_EnumType(Token t, Ast_Identifier* n, const AstList<Ast_Decl*>& m){
+                                                                     ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_EnumType::token()’:
+src/ast/Ast.cpp:782:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_UnionType::Ast_UnionType(token::Token, ast::Ast_Identifier*, ast::AstList<ast::Ast_Decl*>&)’:
+src/ast/Ast.cpp:785:70: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_UnionType(Token t, Ast_Identifier* n, const AstList<Ast_Decl*>& m){
+                                                                      ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_UnionType::token()’:
+src/ast/Ast.cpp:800:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:803:57: error: ‘Ast_Field’ was not declared in this scope
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+src/ast/Ast.cpp:803:57: note: suggested alternative: ‘AstFile’
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+                                                         AstFile
+src/ast/Ast.cpp:803:67: error: template argument 1 is invalid
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                   ^
+src/ast/Ast.cpp:803:57: error: ‘Ast_Field’ was not declared in this scope
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+src/ast/Ast.cpp:803:57: note: suggested alternative: ‘AstFile’
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+                                                         AstFile
+src/ast/Ast.cpp:803:67: error: template argument 1 is invalid
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                   ^
+src/ast/Ast.cpp:803:57: error: ‘Ast_Field’ was not declared in this scope
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+src/ast/Ast.cpp:803:57: note: suggested alternative: ‘AstFile’
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+                                                         AstFile
+src/ast/Ast.cpp:803:67: error: template argument 1 is invalid
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                   ^
+src/ast/Ast.cpp:803:57: error: ‘Ast_Field’ was not declared in this scope
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+src/ast/Ast.cpp:803:57: note: suggested alternative: ‘AstFile’
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+                                                         AstFile
+src/ast/Ast.cpp:803:67: error: template argument 1 is invalid
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                   ^
+src/ast/Ast.cpp:803:57: error: ‘Ast_Field’ was not declared in this scope
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+src/ast/Ast.cpp:803:57: note: suggested alternative: ‘AstFile’
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                         ^~~~~~~~~
+                                                         AstFile
+src/ast/Ast.cpp:803:67: error: template argument 1 is invalid
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                                   ^
+src/ast/Ast.cpp:803:49: error: invalid use of template-name ‘ast::AstList’ without an argument list
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                 ^~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:18:31: note: ‘template<class T> using AstList = std::vector<T>’ declared here
+ using AstList = std::vector<T>;
+                               ^
+src/ast/Ast.cpp:803:56: error: expected ‘,’ or ‘...’ before ‘<’ token
+ Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m,
+                                                        ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_ClassType::Ast_ClassType(token::Token, ast::Ast_Identifier*, int)’:
+src/ast/Ast.cpp:804:61: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p){
+                                                             ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_ClassType::token()’:
+src/ast/Ast.cpp:819:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+src/ast/Ast.cpp: At global scope:
+src/ast/Ast.cpp:822:58: error: ‘Ast_Field’ was not declared in this scope
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+src/ast/Ast.cpp:822:58: note: suggested alternative: ‘AstFile’
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+                                                          AstFile
+src/ast/Ast.cpp:822:68: error: template argument 1 is invalid
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                                    ^
+src/ast/Ast.cpp:822:58: error: ‘Ast_Field’ was not declared in this scope
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+src/ast/Ast.cpp:822:58: note: suggested alternative: ‘AstFile’
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+                                                          AstFile
+src/ast/Ast.cpp:822:68: error: template argument 1 is invalid
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                                    ^
+src/ast/Ast.cpp:822:58: error: ‘Ast_Field’ was not declared in this scope
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+src/ast/Ast.cpp:822:58: note: suggested alternative: ‘AstFile’
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+                                                          AstFile
+src/ast/Ast.cpp:822:68: error: template argument 1 is invalid
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                                    ^
+src/ast/Ast.cpp:822:58: error: ‘Ast_Field’ was not declared in this scope
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+src/ast/Ast.cpp:822:58: note: suggested alternative: ‘AstFile’
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+                                                          AstFile
+src/ast/Ast.cpp:822:68: error: template argument 1 is invalid
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                                    ^
+src/ast/Ast.cpp:822:58: error: ‘Ast_Field’ was not declared in this scope
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+src/ast/Ast.cpp:822:58: note: suggested alternative: ‘AstFile’
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                          ^~~~~~~~~
+                                                          AstFile
+src/ast/Ast.cpp:822:68: error: template argument 1 is invalid
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                                    ^
+src/ast/Ast.cpp:822:50: error: invalid use of template-name ‘ast::AstList’ without an argument list
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                  ^~~~~~~
+In file included from src/ast/Ast.cpp:1:0:
+src/ast/Ast.h:18:31: note: ‘template<class T> using AstList = std::vector<T>’ declared here
+ using AstList = std::vector<T>;
+                               ^
+src/ast/Ast.cpp:822:57: error: expected ‘,’ or ‘...’ before ‘<’ token
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                         ^
+src/ast/Ast.cpp: In constructor ‘ast::Ast_StructType::Ast_StructType(token::Token, ast::Ast_Identifier*, int)’:
+src/ast/Ast.cpp:822:72: error: use of deleted function ‘ast::Ast_Type::Ast_Type()’
+ Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_Field*>& m){
+                                                                        ^
+src/ast/Ast.cpp: In member function ‘virtual const token::Token& ast::Ast_StructType::token()’:
+src/ast/Ast.cpp:837:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+make: *** [Makefile:20: src/ast/Ast.o] Error 1

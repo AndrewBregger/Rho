@@ -2,7 +2,6 @@
 #define ATOM_TABLE_H_
 
 #include "Atom.h"
-#include "utils/string.h"
 #include <functional>
 #include <unordered_map>
 

@@ -308,6 +308,7 @@ print(int indent) {
   static std::string t = "true";
   static std::string f = "false";
   indent_print("Valid: " + (valid ? t : f), indent + 1);
+  indent_print("Ast: " + std::to_string(ast), indent + 1);
 }
 
 const token::Token&
@@ -646,6 +647,30 @@ token(){
 
 Ast_Expr::
 Ast_Expr(AstNodeKind k) : Ast_Node(k) {}
+
+Ast_CompoundLiteral::
+Ast_CompoundLiteral(Token t, const AstList<Ast_Expr*>& lits) : Ast_Expr(AstCompoundLiteral){
+  tok = t;
+  literals = lits;
+}
+
+Ast_CompoundLiteral::
+~Ast_CompoundLiteral() {
+  delete_content(literals)
+}
+
+void
+Ast_CompoundLiteral::
+print(int indent) {
+  Ast_Node::print(indent);
+  print_content(literals)
+}
+
+const token::Token&
+Ast_CompoundLiteral::
+token() {
+  return tok;
+}
 
 Ast_Operand::
 Ast_Operand(Ast_Identifier* id) : Ast_Expr(AstOperand) {
@@ -1318,9 +1343,10 @@ token(){
 
 Ast_ClassType::
 Ast_ClassType(Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m,
-const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p) : Ast_Type(AstClassType) {
+const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p, const AstList<Ast_Decl*>& d) : Ast_Type(AstClassType) {
   tok = t;
   name = n;
+  decls = d;
   members = m;
   extends = e;
   methods = p;
@@ -1328,21 +1354,21 @@ const AstList<Ast_Type*>& e, const AstList<Ast_ProcSpec*>& p) : Ast_Type(AstClas
 
 Ast_ClassType::
 ~Ast_ClassType(){
-  //TODO(): implement
   delete name;
   delete_content(members)
   delete_content(extends)
+  delete_content(decls);
   delete_content(methods)
 }
 
 void
 Ast_ClassType::
 print(int indent) {
-  //TODO(): implement
   Ast_Node::print(indent);
   if(name) name->print(indent + 1);
   print_content(members)
   print_content(extends)
+  print_content(decls);
   print_content(methods)
 }
 
@@ -1353,9 +1379,10 @@ token() {
 }
 
 Ast_StructType::
-Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m) : Ast_Type(AstStructType) {
+Ast_StructType(Token t, Ast_Identifier* n, const AstList<Ast_FieldSpec*>& m, const AstList<Ast_Decl*>& d) : Ast_Type(AstStructType) {
   tok = t;
   name = n;
+  decls = d;
   members = m;
 }
 
@@ -1363,6 +1390,7 @@ Ast_StructType::
 ~Ast_StructType(){
   delete name;
   delete_content(members)
+  delete_content(decls);
 }
 
 void
@@ -1371,6 +1399,7 @@ print(int indent) {
   Ast_Node::print(indent);
   if(name) name->print(indent + 1);
   print_content(members)
+  print_content(decls);
 }
 
 const token::Token&

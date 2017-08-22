@@ -1,0 +1,46 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Rho",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#characters"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.rho",
+				"match": "\\b(if|while|for|return|else|let|var|union|enum|class|struct)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.rho",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.rho",
+					"match": "\\\\."
+				}
+			]
+		},
+		"characters": {
+			"name": "char.quoted.double.rho",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.rho",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.rho"
+}

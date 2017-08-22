@@ -7,7 +7,7 @@ file_extensions:
 scope: source.rho
 variables:
   operators: '\boperator\s*(?:[-+*/%ˆ&|~!=<>]|[-+*/%^&|=!<>]=|<<=?|>>=?|&&|\|\||\+\+|--|,|->\*?|\(\)|\[\])'
-  identifiers: '\b[[:alpha:]_][[:alnum:]_]*\b'  
+  identifiers: '\b[[:alpha:]_][[:alnum:]_]*\b'
 contexts:
   main:
     # Strings begin and end with quotes, and use backslashes as an escape
@@ -22,7 +22,7 @@ contexts:
       push: line_comment
     - match: '/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
       scope: punctuation.definition.comment
-      
+
 
     # Keywords are if, else for and while.
     # Note that blackslashes don't need to be escaped within single quoted
@@ -33,7 +33,10 @@ contexts:
       scope: keyword.control
 
     - match: ^\s*(#load)\b
-      scope: keyword.fileOp
+      scope: keyword.control.import
+
+    - match: ^\s*(#construct)\b
+      scope: keyword.
 
     - match: '\b(i8|i16|i32|i64|u8|u16|u32|u64|f32|f64|uf32|uf64|bool|string|byte|char)\b'
       scope: keyword.types
@@ -61,8 +64,8 @@ contexts:
     - match: '"'
       scope: punctuation.definition.string.end
       pop: true
-  
-  
+
+
   line_comment:
     - meta_scope: comment.line.example-c
     - match: $
