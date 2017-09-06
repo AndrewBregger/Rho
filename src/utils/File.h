@@ -29,6 +29,20 @@ namespace sys {
 				size_t m_size;
 			};
 
+			/// @brief Content of a line and any
+			///        trimming information.
+			struct LineInfo {
+				std::string line;
+				size_t rTrim{0};
+				size_t lTrim{0};
+
+				LineInfo(const std::string& line, size_t r, size_t l) {
+					this->line = line;
+					rTrim = r;
+					lTrim = l;
+				}
+			};
+
 			/// @brief File constuctor
 			/// @param _path path to file
 			/// @param _mode IO operator of the file
@@ -61,7 +75,8 @@ namespace sys {
 
 			/// @brief Gets a line from the file.
 			/// @param _line Line of the file being returned. Starts at 1.
-			std::string GetLine(size_t _line);
+			const std::string & GetLine(size_t _line);
+			const File::LineInfo& GetLineInfo(size_t _line);
 
 
 			FileError GetError() {
@@ -80,8 +95,8 @@ namespace sys {
 			std::string m_path; ///< Path to the file on disk.
 			std::string m_fullPath; ///< absolute path.
 			FileMode m_mode; ///< IO mode of the file.
-			std::vector<std::string> m_lineCache; ///< lines of the file.
-
+			// std::vector<std::string> m_lineCache; ///< lines of the file.
+			std::vector<LineInfo> m_lineInfo;
 			// this is problamatic if I want to process multiple files
 			// at the same time.
 			static File* m_current; ///< Current file being parsed

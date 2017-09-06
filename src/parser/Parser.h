@@ -1,210 +1,264 @@
-///////////////////////////////////////////////////////////////////////////////
-/// @group Parser
-/// @ingroup Parser
-///
-/// @note A parser for the Rho programming language implemented as
-///			  as a recursive desent parser.
-///////////////////////////////////////////////////////////////////////////////
+//
+// Created by Andrew Bregger on 8/23/17.
+//
 
+#ifndef RHO_PARSER_H
+#define RHO_PARSER_H
 
-/*
-	Need to implemented:
-	1. static list and map construction
-	2. struct and class construction and destruction
-	3. generic types
-	4. polymoric functions, methods, structs, and classes
-*/
-
-#ifndef PARSER_H_
-#define PARSER_H_
-
-
-#include <thread>
-#include <mutex>
-
-#include <queue>
-#include <unordered_map>
+#include <stack>
 #include "ast/Ast.h"
-#include "token/Location.h"
-#include "Scope.h"
-#include "token/Token.h"
 #include "ast/AtomTable.h"
 #include "utils/File.h"
+#include "token/Token.h"
+#include "utils/report_errors.hpp"
 
-namespace parse {
+using namespace ast;
+using namespace token;
+using sys::File;
 
-	enum ParseFileError {
-		ParseFile_None,
+namespace parser {
 
-		ParseFile_Empty,
-		ParseFile_Permissions,
-		ParseFile_WrongExtension,
-		ParseFile_InvalidFile,
-		ParseFile_InvalidToken
+	struct ParserState {
+		Token prev;
+		Token token;
+		size_t index;
+		Ast_Node* parent;
+		ErrorStats stats;
 	};
 
 	class Parser {
 		public:
-			/// @brief Parser Constructor
-			Parser(ast::AtomTable* table = nullptr);
 
-			/// @brief will parse the givin file and nothing else
-			/// @param _file the root file to be parsed
-			/// 			 (should contain main, if compiling executable)
-			ast::AstFile* parse_file(sys::File* _file);
-		private:
-			ParseFileError init(sys::File* _file);
+		/// @brief Constructor
+		/// @{
+		Parser();
+		/// @}
 
-			/// @name Parsing utilities
-			/// @{
-
-			void next_token();
-			Token peak_token(int _num = 1);
-			token::Token expect_token(token::Token_Type _type);
-
-
-			bool __check_token(const char* where, int line, token::Token_Type _type);
-			bool __allow_token(const char* where, int line, token::Token_Type _type);
-
-			bool expect_operator();
-
-      bool expect_semicolon(const char* where);
-
-			/// @}
-
-			/// @name error correction
-			/// @{
-      void synchronize();
-      /// @}
-
-      enum StmtFlags : unsigned char {
-      	StmtNoSemi = 0,
-      	StmtExpectSemi = 1 << 0,
-  			StmtDefault = StmtExpectSemi
-      };
-
-     	typedef int FieldFlags;
-      #define	FieldAllowDefault 1 << 0 // allows default initialization of the field
-      #define	FieldAllowView 1 << 1 // allows the field to have a view, pub keyword
-      #define	FieldDefault FieldAllowDefault
-
-
-			ast::AstFile* parse_file();
-
-			bool setup_decls();
-
-			void parse_imports_files();
-
-			ast::AstList<ast::Ast_Stmt*> parse_stmt_list();
-
-			ast::Ast_Stmt* parse_stmt(StmtFlags flags = StmtDefault);
-
-      ast::Ast_Stmt* parse_simple_stmt(StmtFlags flags);
-
-      ast::Ast_WhileStmt* parse_while_stmt();
-
-      ast::Ast_ForStmt* parse_for_stmt();
-
-			// this parameter is to handle else if cases
-      ast::Ast_IfStmt* parse_if_stmt(token::Token_Type expected);
-
-      ast::Ast_Stmt* parse_match_stmt();
-
-      ast::Ast_DeferStmt* parse_defer_stmt();
-
-			ast::Ast_ImportSpec* parse_import_stmt();
-
-			ast::Ast_ReturnStmt* parse_return_stmt();
-
-			ast::Ast_Decl* parse_decl();
-
-			ast::Ast_VariableSpec* parse_variable_decl();
-
-			ast::Ast_Type* parse_type_decl(ast::Ast_Identifier* id);
-
-			void parse_type_body(ast::AstList<ast::Ast_Decl*>& d, ast::AstList<ast::Ast_FieldSpec*>& fields);
-
-			ast::Ast_TypeSpec* parse_enum_union_struct();
-
-			ast::Ast_ProcSpec* parse_function_decl(ast::Ast_Identifier* id);
-
-			ast::Ast_ProcType* parse_function_type(ast::Ast_Identifier* id,
-          ast::Ast_Type* reciever, bool isConst);
-
-      ast::Ast_Type* parse_function_reciever(bool& isConst);
-
-      ast::AstList<ast::Ast_ProcReturn*> parse_function_return();
-
-			ast::Ast_Type* parse_type_or_ident();
-
-			ast::Ast_FieldSpec* parse_field(FieldFlags flags = FieldDefault);
-
-      ast::AstList<ast::Ast_FieldSpec*> parse_field_list(FieldFlags flags = FieldDefault);
-
-      ast::Ast_BlockStmt* parse_body();
-
-      ast::Ast_BlockStmt* parse_block_stmt();
-
-			ast::Ast_Expr* parse_expr(bool _lhs);
-
-			ast::Ast_Expr* parse_lhs_expr();
-
-			ast::Ast_Expr* parse_rhs_expr();
-
-			ast::AstList<ast::Ast_Expr*> parse_lhs_expr_list();
-
-			ast::AstList<ast::Ast_Expr*> parse_rhs_expr_list();
-
-			ast::Ast_Expr* parse_compound_literal();
-
-			ast::Ast_Expr* parse_element();
-
-			ast::Ast_Expr* parse_element_list();
-
-			ast::Ast_Expr* parse_operand(bool _lhs);
-
-			ast::Ast_Expr* parse_primary_expr(bool _lhs);
-
-			ast::Ast_Expr* parse_binary_expr(bool _lhs, int _prec_in);
-
-			ast::Ast_Expr* parse_unary_expr(bool _lhs);
-
-			ast::Ast_IndexExpr* parse_index_expr(ast::Ast_Expr* operand);
-
-			ast::Ast_FuncCall* parse_call_expr(ast::Ast_Expr* operand);
-
-			ast::Ast_SelectorExpr* parse_selector_expr(bool _lhs);
-
-			ast::Ast_Stmt* parse_hash_directive();
-
-			ast::Ast_Identifier* parse_identifier();
-
-			ast::AstList<ast::Ast_Identifier*> parse_identifier_list();
-
-			ast::Ast_Type* parse_type();
-
-			ast::Ast_PolymorphicType* parse_polymorphic_type();
-
-      // ast::Ast_FieldSpec* parse_field_tags(ast::Ast_FieldSpec* field);
-
-      ast::Ast_ProcType* parse_function_tags(ast::Ast_ProcType* funct);
-
-      ast::Ast_FieldSpec* parse_variable_tags(ast::Ast_FieldSpec* var, FieldFlags flags);
-
+		/// @brief Parser API
+		/// @{
+		AstFile* parse_file(File* file);
+		/// @}
 		private:
 
-			ast::AstFile* m_ast;
-			std::vector<ast::Ast_Decl*> m_specs; // all specs defined in the parsed file.
-		 	size_t m_errorCount{0}, m_warnCount{0};
-			sys::File* m_file{nullptr};
-			ast::AtomTable* m_atomTable{nullptr}; // @note(Andrew): Maybe this should
-																						// be for the entire program no per file.
-			std::vector<ast::AstFile*> m_asts; // this gets returned
+		/// @brief Token operations and checking
+		/// @{
 
-			// used as intermediates when parsing mutltiple files.
-			std::queue<sys::File*> parseQueue; // imports
-			std::unordered_map<std::string, ast::AstFile*> files;
+		/// @brief checks the current tokens type to given types.
+		template <Token_Type type, Token_Type... types>
+		inline bool check_tokens() {
+			return check_token<type>() || check_tokens<types...>();
+		}
+
+		template <Token_Type type>
+		inline bool check_tokens() {
+			return check_token<type>();
+		}
+
+		/// @brief checks the current token to given type.
+		/// @note is the base case for the recursive template definition.
+		template <Token_Type type>
+		inline bool check_token() {
+			return type == token.token();
+		}
+
+		/// @brief checks the current tokens type to given types and consumes it.
+		template <Token_Type... types>
+		inline bool allow_tokens() {
+			if(check_tokens<types...>()) {
+				consume();
+				return true;
+			}
+			return false;
+		}
+
+//		template <Token_Type type>
+//		inline bool allow_tokens() {
+//			if(check_token<type>()) {
+//				consume();
+//				return true;
+//			}
+//			return false;
+//		}
+
+		/// @brief checks the current token to given type.
+		/// @note is the base case for the recursive template definition.
+		template <Token_Type type>
+		inline bool allow_token() {
+			if(check_token<type>()) {
+				consume();
+				return true;
+			}
+			return false;
+		}
+
+
+		template<Token_Type type, typename... T>
+		inline Token expect_token(const std::string& msg, T ... params) {
+			Token p = token;
+			if(p.token() == type) {
+				consume();
+			}
+			else {
+				if(msg.empty()) {
+					if(type == TKN_IDENTIFIER)
+						syntax_error(p, file, "expecting an %s: found '%s'",
+						             Token(type, Special, Location()).string().c_str(),
+						             p.error_string().c_str());
+					else
+						syntax_error(p, file, "expecting '%s': found '%s'",
+					             Token(type, Special, Location()).string().c_str(),
+					             p.error_string().c_str());
+				}
+				else
+					syntax_error(p, file, msg, params...);
+			}
+			return p;
+		}
+
+		void consume();
+
+		Token peek_token(int offset = 1);
+
+
+		bool expect_operator();
+
+		/// @brief initializes the parser state with the new file.
+		bool init();
+
+		void post_proccess();
+
+		ParserState save_state();
+
+		void restore_state(ParserState state);
+
+		/// @brief syncs the state of the parser if an error ocurred
+		///        finds the next statement to continue parsing.
+		void sync();
+
+		/// @}
+
+		/// @brief Statement Parsing
+		/// @{
+		Ast_Stmt* parse_stmt();
+
+		Ast_Stmt* parse_simple_stmt();
+
+		Ast_IfStmt* parse_if_stmt();
+
+		Ast_WhileStmt* parse_while_stmt();
+
+		Ast_ForStmt* parse_for_stmt();
+
+		Ast_DeferStmt* parse_defer_stmt();
+
+		Ast_ReturnStmt* parse_return_stmt();
+
+		Ast_BlockStmt* parse_block_stmt();
+
+		Ast_Stmt* parse_hash_stmt();
+
+//		Ast_MatchStmt* parse_match_stmt();
+//		Ast_CaseStmt* parse_case_stmt();
+
+		/// @}
+
+		/// @brief Expression Parsing
+		/// @{
+		Ast_Expr* parse_expr(bool lhs = false);
+
+		Ast_Expr* parse_binary_expr(int prec_in);
+
+		Ast_Expr* parse_unary_expr();
+
+		Ast_Expr* parse_operand();
+
+		Ast_Expr* parse_atomic_expr();
+
+		Ast_FuncCall* parse_function_call(Ast_Expr* operand);
+
+		Ast_IndexExpr* parse_index_expr(Ast_Expr* operand);
+
+		Ast_InExpr* parse_in_expr(Ast_Expr* operand);
+
+		Ast_RangeExpr* parse_range_expr(Ast_Expr* operand);
+
+		AstList<Ast_Expr*> parse_expr_list(bool lhs);
+
+		Ast_Identifier* parse_identifier();
+
+		AstList<Ast_Identifier*> parse_identifier_list();
+
+		Ast_CompoundLiteral *parse_compound_literal(Ast_Expr *operand);
+
+		Ast_Expr *parse_compound_element(Ast_Expr *operand);
+
+		/// @}
+
+		/// @brief Declaration Parsing
+		/// @{
+		Ast_Decl* parse_decl();
+
+		Ast_VariableSpec *parse_variable_spec(AstList<Ast_Identifier *> ids);
+
+		Ast_ProcSpec *parse_proc_spec(Ast_Identifier *id);
+
+		Ast_TypeSpec *parse_type_spec(Ast_Identifier *id);
+
+		Ast_FieldSpec* parse_field_spec();
+
+		Ast_FieldSpec *parse_class_field();
+
+		Ast_FieldSpec* parse_param_field();
+
+		Ast_ImportSpec* parse_import_spec();
+
+		/// @}
+
+		/// @brief Type Parsing
+		/// @{
+		Ast_Type* parse_type();
+
+		Ast_StructType* parse_struct_type();
+
+		Ast_ClassType* parse_class_type();
+
+		Ast_ProcType* parse_function_type(Ast_Type* reciever = nullptr, bool constant = true);
+
+		AstList<Ast_ProcReturn*> parse_function_return();
+
+		AstList<Ast_PolymorphicType*> parse_polymophic_type_list();
+		/// @}
+
+		/// @brief Parsing Helpers
+		/// @{
+		template <typename R, typename Functor>
+		R parse_parenthesis(Functor funct) {
+			if(check_token<TKN_LPAREN>()) {
+				consume();
+				R value = (this->*funct)();
+				expect_token<TKN_RPAREN>("");
+				return value;
+			}
+			return (this->*funct)();
+		}
+		/// @}
+		private:
+		Token token;
+		Token prev;
+		size_t index{0};
+
+		std::vector<Token> tokens;
+		std::vector<Token> comments;
+		sys::File* file;
+		Ast_Node* currParent{nullptr}; // null if in global scope
+		ErrorStats* stats;
+
+		bool inClassBody{false};
+		bool inFunctionBody{false};
+
+		AtomTable* atoms;
 	};
 }
 
-#endif // PARSER_H_
+
+#endif //RHO_PARSER_H

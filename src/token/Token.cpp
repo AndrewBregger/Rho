@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
+#include <sstream>
 
 #ifdef WIN32
 	#define strdup_ strdup_s
@@ -147,10 +148,22 @@ namespace token {
 		}
 
 		const std::string&
-		token_string(Token_Type _token) {
-			auto iter = token_str.find(_token);
+		Token::
+		string() {
+			auto iter = token_str.find(m_tokenType);
 			if(iter == token_str.end()) {
-				std::cout << "Token not found: " << _token << std::endl;
+				std::cout << "Token not found: " << m_tokenType << std::endl;
+				return iter->second;
+			}
+			return iter->second;
+		}
+
+		const std::string&
+		Token::
+		string() const {
+			auto iter = token_str.find(m_tokenType);
+			if(iter == token_str.end()) {
+				std::cout << "Token not found: " << m_tokenType << std::endl;
 				return iter->second;
 			}
 			return iter->second;
@@ -159,7 +172,7 @@ namespace token {
 		void
 		Token::
 		print(int indent) {
-			std::cout << get_spaces(indent) << token::token_string(this->token()) << " ";
+			std::cout << get_spaces(indent) << this->string() << " ";
 			printf("%lu : %lu - %lu: ", m_location.m_line, m_location.m_column, m_location.m_ecolumn);
 			switch(m_type) {
 				case Keyword:
@@ -187,20 +200,20 @@ namespace token {
 							std::cout << get_int();
 							break;
 						default:
-							// not handled
-							std::cout << "Should not happen" << std::endl;
-							std::cout << token_string(this->token()) << std::endl;
+							break;
 					}
 				} break;
 				default:
-					// not handled
-					std::cout << "Should not happen: " << m_type << " ";
-					std::cout << token_string(this->token());
+					break;
 			}
 			std::cout << std::endl;
 		}
 
-		std::string
+	void Token::print(int indent) const {
+		const_cast<Token*>(this)->print(indent);
+	}
+
+	std::string
 		get_spaces(int _index) {
 			std::string temp;
 			while(_index--) {
@@ -208,4 +221,80 @@ namespace token {
 			}
 			return temp;
 		}
+
+	std::string Token::error_string() {
+		switch(m_type) {
+			case Keyword:
+			case Operator:
+			case PrimativeType:
+				return string();
+			case Identifier:
+				return std::string(get_string());
+			case Constant: {
+				std::stringstream ss;
+				switch(m_tokenType) {
+					case TKN_LSTRING:
+						ss << get_string();
+						break;
+					case TKN_LCHAR:
+						ss<< get_char();
+						break;
+					case TKN_LDOUBLE:
+						ss << get_float();
+						break;
+					case TKN_LBOOL:
+						ss << (get_boolean() ? "true" : "false");
+						break;
+					case TKN_LINT:
+						ss << get_int();
+						break;
+					default:
+						// will not happen.
+						break;
+				}
+				return ss.str();
+			}
+			default:
+				break;
+		}
+		return "";
+	}
+
+	std::string Token::error_string() const {
+		switch(m_type) {
+			case Keyword:
+			case Operator:
+			case PrimativeType:
+				return string();
+			case Identifier:
+				return std::string(get_string());
+			case Constant: {
+				std::stringstream ss;
+				switch(m_tokenType) {
+					case TKN_LSTRING:
+						ss << get_string();
+						break;
+					case TKN_LCHAR:
+						ss<< get_char();
+						break;
+					case TKN_LDOUBLE:
+						ss << get_float();
+						break;
+					case TKN_LBOOL:
+						ss << (get_boolean() ? "true" : "false");
+						break;
+					case TKN_LINT:
+						ss << get_int();
+						break;
+					default:
+						// will not happen.
+						break;
+				}
+				return ss.str();
+			}
+			default:
+				break;
+		}
+		return "";
+	}
 }

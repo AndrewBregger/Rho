@@ -208,6 +208,10 @@ namespace scanner {
 							token = TKN_NEQ;
 							next();
 						}
+						else if(m_ch == '!') {
+							token = TKN_NOTNOT;
+							next();
+						}
 						else {
 							token = TKN_NOT;
 						}
@@ -375,7 +379,9 @@ namespace scanner {
       	token = TKN_ERROR;
         break;
       }
-      next();
+			if(m_ch == '\\')
+				scan_escape(); // consumes the escape
+      next(); // consume the following character
     }
     next();
     auto lit = m_source.substr(start + 1, m_index - start - 2);
@@ -536,7 +542,34 @@ namespace scanner {
 	report_error(const Location& _loc, const char* _fmt, ...) {
 		printf("Error: %s|%zu:%zu: ", m_file->GetPath().c_str(), _loc.m_line, _loc.m_column);
 		va_list l;
-		printf(_fmt, l);
+		va_start(l, _fmt);
+		vprintf(_fmt, l);
+		va_end(l);
+		error = true;
+	}
+
+
+//	const std::vector<Token *> &Scanner::get_comments() {
+//		return <#initializer#>;
+//	}
+
+	void Scanner::scan_escape() {
+		// sanity check.
+		if(m_ch == '\\') {
+			next();
+			switch(m_ch) {
+				case '\\':
+				case 'n':
+				case 'r':
+				case '"':
+				case '\'':
+				case 'v':
+				case 't':
+					break;
+				default:
+					report_error(m_loc, "invalid escape character: '%c'\n", m_ch);
+			}
+		}
 	}
 }
 	// ScannerState

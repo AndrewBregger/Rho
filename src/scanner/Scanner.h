@@ -22,6 +22,7 @@ namespace scanner {
 
 			const std::vector<Token*>& get_comments();
 
+			bool error{false};
 		private:
 			char m_ch{-1};
 			Location m_loc{1,1};
@@ -33,10 +34,11 @@ namespace scanner {
 			std::vector<Token*> m_comments;
 			sys::File* m_file{nullptr};
 			std::string m_source;
-
 		private:
 			char peak(size_t _index);
 			void next();
+
+			void scan_escape();
 
 			Token scan_string();
 			double scan_double(size_t _start);

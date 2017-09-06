@@ -73,11 +73,16 @@ namespace sys {
 		return f;
 	}
 
-	std::string
+	const std::string &
 	File::
 	GetLine(size_t _size) {
 		assert(_size >= 1);
-		return m_lineCache[_size - 1];
+		return m_lineInfo[_size - 1].line;
+	}
+
+	const File::LineInfo& File::GetLineInfo(size_t _line) {
+		assert(_line >= 1);
+		return m_lineInfo[_line - 1];
 	}
 
 	void
@@ -87,9 +92,30 @@ namespace sys {
 		for(size_t i = 0; i < m_content.m_size; ++i) {
 			if(m_content.m_content[i] == '\n') {
 				std::string temp;
-				for(size_t j = start; j <= i; ++j)
+				// I do not want the new line.
+				size_t ltrim = 0, rtrim = 0;
+				for (size_t j = start; j <= i - 1; ++j)
 					temp += m_content.m_content[j];
-				m_lineCache.push_back(temp);
+
+				decltype(temp.begin()) biter;
+				decltype(temp.rbegin()) iter;
+				for (biter = temp.begin(); biter != temp.end(); ++biter) {
+					if (isspace(*biter))
+						ltrim++;
+					else
+						break;
+				}
+				for (iter = temp.rbegin(); iter != temp.rend(); ++iter) {
+					if (isspace(*iter))
+						rtrim++;
+					else
+						break;
+				}
+				long startIndex = biter - temp.begin();
+				long endIndex = iter - temp.rbegin();
+				temp = temp.substr((size_t) startIndex, (size_t) endIndex - startIndex);
+				std::cout << temp << std::endl;
+				m_lineInfo.push_back(LineInfo{temp, rtrim, ltrim});
 				start = i + 1;
 			}
 		}

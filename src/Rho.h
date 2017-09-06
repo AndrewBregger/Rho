@@ -19,7 +19,7 @@ class Rho_Interpreter {
 	private:
 
 		sys::File* file;
-		parse::Parser* parser{nullptr};
+		parser::Parser* parser{nullptr};
 
 
 		// TypeChecker* checker;
@@ -27,5 +27,6 @@ class Rho_Interpreter {
 
 		std::unordered_map<size_t, ast::AstFile*> files;
 };
+
 
 #endif

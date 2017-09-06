@@ -32,6 +32,7 @@ Token_Type(TKN_AND, "&") \
 Token_Type(TKN_OR, "|") \
 Token_Type(TKN_XOR, "^") \
 Token_Type(TKN_NOT, "!") \
+Token_Type(TKN_NOTNOT, "!!") \
 Token_Type(TKN_SHTL, "<<") \
 Token_Type(TKN_SHTR, ">>") \
 Token_Type(TKN_LITAND, "&&") \
@@ -98,6 +99,7 @@ Token_Type(TKN_DEFER, "defer") \
 Token_Type(TKN_PUB, "pub") \
 Token_Type(TKN_INLINE, "inline") \
 Token_Type(TKN_STATIC, "static") \
+Token_Type(TKN_VIRTUAL, "virtual") /*@Todo(Andrew): find a different way to represent this*/ \
 Token_Type(TKN_BREAK, "break") \
 Token_Type(TKN_CONTINUE, "continue") \
 Token_Type(TKN_WORKSPACE, "workspace") \
@@ -108,6 +110,8 @@ Token_Type(TKN_ENUM, "enum") \
 Token_Type(TKN_ASM, "asm") \
 Token_Type(TKN_LET, "let") \
 Token_Type(TKN_VAR, "var") \
+Token_Type(TKN_REF, "ref") \
+Token_Type(TKN_IN, "in") \
 Token_Type(end_keyword, "") \
 Token_Type(begin_types, "") \
 Token_Type(TKN_INT, "int") \
@@ -176,7 +180,6 @@ union Values {
 
 struct Token;
 Token_Type token_enum(const char* _str);
-const std::string& token_string(Token_Type _type);
 
 struct Token {
 	Token() = default;
@@ -232,7 +235,16 @@ struct Token {
 	char get_char() const;
 	bool get_boolean() const;
 
+	// the string used when printing error statements.
+	std::string error_string() const;
+	std::string error_string();
+
+
 	void print(int indent = 0);
+	void print(int indent = 0) const;
+
+	const std::string& string();
+	const std::string& string() const;
 
 	Token_Type m_tokenType;
 	Type m_type;

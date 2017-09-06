@@ -6,7 +6,7 @@
 
 
 
-using parse::Parser;
+using parser::Parser;
 using namespace ast;
 
 
@@ -23,9 +23,7 @@ compile() {
 	std::queue<sys::File*> unParsed;
 
 	// add the root file to the queue
-
 	unParsed.push(file);
-
 
 	// parses all of the needed file for root file.
 	// it also will not reparse files that have already been parsed.
@@ -38,16 +36,15 @@ compile() {
 			if(_files.find(i->fullPath) == _files.end())
 				unParsed.push(sys::File::read_file(i->fullPath));
 		}
-
 		_files.emplace(ast->m_file->GetFullPath(), ast);
 	}
 
-	// assosiate import asts to astfile ids.
+	// associates import asts to astfile ids.
 	for(auto f : _files) {
 		for(auto i : f.second->m_imports) {
 			auto iter = _files.find(i->fullPath);
 			if(iter == _files.end()) {
-				std::cout << "Compiler error: Unparsed import file\n";
+				std::cout << "Compiler error: Un-parsed import file\n";
 				exit(100);
 			}
 			i->ast = iter->second->m_id;
